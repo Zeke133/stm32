@@ -1,0 +1,74 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {            
+            "label": "build_cpp",
+            "type": "shell",
+            //"dependsOn": "",
+            "command": "arm-none-eabi-g++",
+            "args": [
+                "-mcpu=cortex-m3",
+                "-mthumb",
+                "-Wall",
+                "-ffunction-sections",
+                "-g",
+                "-O0",
+                //"-c",
+                "-DSTM32F103C8",
+                "-DSTM32F10X_MD",
+                "-DUSE_STDPERIPH_DRIVER",
+                "-D__ASSEMBLY__",
+                "-DSUPPORT_CPLUSPLUS",
+                "-I${workspaceRoot}/",
+                "-I${workspaceRoot}/cmsis",
+                "-I${workspaceRoot}/stm_lib/inc",
+                "-I${workspaceRoot}/cmsis_boot",
+                "${workspaceRoot}/delay.c",
+                "${workspaceRoot}/LiquidCrystal_I2C.c",
+                "${workspaceRoot}/stm_lib/src/stm32f10x_gpio.c",
+                "${workspaceRoot}/main.cpp",
+                "${workspaceRoot}/DS_1wire.cpp",
+                "${workspaceRoot}/stm_lib/src/stm32f10x_rcc.c",
+                "${workspaceRoot}/I2C.c",
+                "${workspaceRoot}/stm_lib/src/stm32f10x_usart.c",
+                "${workspaceRoot}/stm_lib/src/stm32f10x_i2c.c"
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-g",
+                "${workspaceRoot}/Source/Zipper/Puff/puff.c",
+                "${workspaceRoot}/Source/Zipper/ZipperOstreams.cpp",
+                "${workspaceRoot}/Source/Zipper/Zipper.cpp",
+                "${workspaceRoot}/Source/XML/DataModels/Entity.cpp",
+                "${workspaceRoot}/Source/XML/DataModels/Entities/Tag.cpp",
+                "${workspaceRoot}/Source/XML/DataModels/Entities/Data.cpp",
+                "${workspaceRoot}/Source/XML/DataModels/Entities/Tags/Definition.cpp",
+                "${workspaceRoot}/Source/XML/DataModels/Entities/Tags/Element.cpp",
+                "${workspaceRoot}/Source/XML/Builder/Builder.cpp",
+                "${workspaceRoot}/Source/XML/Xml.cpp",
+                "${workspaceRoot}/Source/XmlProcessors/DocConverter.cpp",
+                "${workspaceRoot}/Source/main.cpp",
+                "-o",
+                "bin/application",
+                "-Wall",
+                "-std=c++17"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        }
+    ]
+}
