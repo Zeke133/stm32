@@ -3,10 +3,10 @@
     // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
-        {            
-            "label": "build_cpp",
+        {
+            "label": "compile",
+            "identifier": "compile",
             "type": "shell",
-            //"dependsOn": "",
             "command": "arm-none-eabi-g++",
             "args": [
                 "-mcpu=cortex-m3",
@@ -15,60 +15,144 @@
                 "-ffunction-sections",
                 "-g",
                 "-O0",
-                //"-c",
+                "-c",
                 "-DSTM32F103C8",
                 "-DSTM32F10X_MD",
                 "-DUSE_STDPERIPH_DRIVER",
                 "-D__ASSEMBLY__",
                 "-DSUPPORT_CPLUSPLUS",
-                "-I${workspaceRoot}/",
-                "-I${workspaceRoot}/cmsis",
-                "-I${workspaceRoot}/stm_lib/inc",
-                "-I${workspaceRoot}/cmsis_boot",
-                "${workspaceRoot}/delay.c",
-                "${workspaceRoot}/LiquidCrystal_I2C.c",
-                "${workspaceRoot}/stm_lib/src/stm32f10x_gpio.c",
-                "${workspaceRoot}/main.cpp",
-                "${workspaceRoot}/DS_1wire.cpp",
-                "${workspaceRoot}/stm_lib/src/stm32f10x_rcc.c",
-                "${workspaceRoot}/I2C.c",
-                "${workspaceRoot}/stm_lib/src/stm32f10x_usart.c",
-                "${workspaceRoot}/stm_lib/src/stm32f10x_i2c.c"
+                "-I${workspaceRoot}/libs/",
+                "-I${workspaceRoot}/libs/cmsis",
+                "-I${workspaceRoot}/libs/stm_lib/inc",
+                "-I${workspaceRoot}/libs/cmsis_boot",
+                "-I${workspaceRoot}/src/drivers/inc",
+                "-I${workspaceRoot}/src/utils/inc",
+                "${workspaceRoot}/libs/stm_lib/src/misc.c",
+                "${workspaceRoot}/libs/stm_lib/src/stm32f10x_rcc.c",
+                "${workspaceRoot}/libs/stm_lib/src/stm32f10x_gpio.c",
+                "${workspaceRoot}/libs/stm_lib/src/stm32f10x_usart.c",
+                "${workspaceRoot}/libs/stm_lib/src/stm32f10x_i2c.c",
+                "${workspaceRoot}/src/utils/delay.c",
+                "${workspaceRoot}/src/utils/convertation.c",
+                "${workspaceRoot}/src/drivers/SysClock.c",
+                "${workspaceRoot}/src/drivers/gpio.c",
+                "${workspaceRoot}/src/drivers/led.cpp",
+                "${workspaceRoot}/src/drivers/uart.c",
+                "${workspaceRoot}/src/drivers/DS_1wire.cpp",
+                "${workspaceRoot}/src/main.cpp"
             ],
             "problemMatcher": [
                 "$gcc"
             ]
         },
         {
-            "label": "build",
+            "dependsOn": "compile",
+            "label": "link",
+            "identifier": "link",
             "type": "shell",
-            "command": "g++",
+            "command": "arm-none-eabi-g++",
             "args": [
+                "-mcpu=cortex-m3",
+                "-mthumb",
                 "-g",
-                "${workspaceRoot}/Source/Zipper/Puff/puff.c",
-                "${workspaceRoot}/Source/Zipper/ZipperOstreams.cpp",
-                "${workspaceRoot}/Source/Zipper/Zipper.cpp",
-                "${workspaceRoot}/Source/XML/DataModels/Entity.cpp",
-                "${workspaceRoot}/Source/XML/DataModels/Entities/Tag.cpp",
-                "${workspaceRoot}/Source/XML/DataModels/Entities/Data.cpp",
-                "${workspaceRoot}/Source/XML/DataModels/Entities/Tags/Definition.cpp",
-                "${workspaceRoot}/Source/XML/DataModels/Entities/Tags/Element.cpp",
-                "${workspaceRoot}/Source/XML/Builder/Builder.cpp",
-                "${workspaceRoot}/Source/XML/Xml.cpp",
-                "${workspaceRoot}/Source/XmlProcessors/DocConverter.cpp",
-                "${workspaceRoot}/Source/main.cpp",
+                "-Wl,-Map=${workspaceRoot}/out/app.map",
+                "-O0",
+                "-Wl,--gc-sections",
+                "-Wl,-T${workspaceRoot}/link/link.ld",
+                "-g",
                 "-o",
-                "bin/application",
-                "-Wall",
-                "-std=c++17"
+                "${workspaceRoot}/out/app.elf",
+                "${workspaceRoot}/misc.o",
+                "${workspaceRoot}/stm32f10x_rcc.o",
+                "${workspaceRoot}/stm32f10x_gpio.o",
+                "${workspaceRoot}/stm32f10x_usart.o",
+                "${workspaceRoot}/stm32f10x_i2c.o",
+                "${workspaceRoot}/delay.o",
+                "${workspaceRoot}/convertation.o",
+                "${workspaceRoot}/SysClock.o",
+                "${workspaceRoot}/gpio.o",
+                "${workspaceRoot}/led.o",
+                "${workspaceRoot}/uart.o",
+                "${workspaceRoot}/DS_1wire.o",
+                "${workspaceRoot}/main.o"
             ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
             "problemMatcher": [
                 "$gcc"
             ]
+        },
+        {
+            "dependsOn": "link",
+            "label": "del",
+            "identifier": "del",
+            "type": "shell",
+            "command": "DEL",
+            "args": [
+                "*.o"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "dependsOn": "del",
+            "label": "bin",
+            "identifier": "bin",
+            "type": "shell",
+            "command": "arm-none-eabi-objcopy",
+            "args": [
+                "-O",
+                "binary",
+                "${workspaceRoot}/out/app.elf",
+                "${workspaceRoot}/out/app.bin"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "dependsOn": "bin",
+            "label": "hex",
+            "identifier": "hex",
+            "type": "shell",
+            "command": "arm-none-eabi-objcopy",
+            "args": [
+                "-O",
+                "ihex",
+                "${workspaceRoot}/out/app.elf",
+                "${workspaceRoot}/out/app.hex"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "dependsOn": "hex",
+            "label": "nm",
+            "identifier": "nm",
+            "type": "shell",
+            "command": "arm-none-eabi-nm",
+            "args": [
+                "-n",
+                "${workspaceRoot}/out/app.elf",
+                ">",
+                "${workspaceRoot}/out/app.sym"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "dependsOn": "nm",
+            "label": "build",
+            "identifier": "build",
+            "type": "shell",
+            "command": "arm-none-eabi-size",
+            "args": [
+                "${workspaceRoot}/out/app.elf"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "clean",
+            "identifier": "clean",
+            "type": "shell",
+            "command": "DEL",
+            "args": [
+                "${workspaceRoot}\\out\\ /q *.*"
+            ],
+            "problemMatcher": []
         }
     ]
 }
