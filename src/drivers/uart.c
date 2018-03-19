@@ -1,17 +1,7 @@
 #include "inc/uart.h"
 
-
-char RX_FLAG_END_LINE = 0;
-int RXi;
-char RXc;
-char RX_BUF[RX_BUF_SIZE] = {'\0'};
-char buffer[80] = {'\0'};
-
-void clear_RXBuffer(void) {
-    for (RXi=0; RXi<RX_BUF_SIZE; RXi++)
-        RX_BUF[RXi] = '\0';
-    RXi = 0;
-}
+uint16_t sym;
+LED * ledGlobalPtr;
 
 void usart_init(void)
 {
@@ -77,24 +67,14 @@ void usart_init(void)
 
 void USART1_IRQHandler(void)
 {
-    if ((USART1->SR & USART_FLAG_RXNE) != (u16)RESET)
-    {
-            RXc = USART_ReceiveData(USART1);
-            RX_BUF[RXi] = RXc;
-            RXi++;
-
-            if (RXc != 13) {
-                if (RXi > RX_BUF_SIZE-1) {
-                    clear_RXBuffer();
-                }
-            }
-            else {
-                RX_FLAG_END_LINE = 1;
-            }
-
-            //Echo
-            USART_SendData(USART1, RXc);
-    }
+    //ledGlobalPtr->invert();
+    // if ((USART1->SR & USART_FLAG_RXNE) != (u16)RESET)
+    // {
+    //         sym = USART_ReceiveData(USART1);
+            
+    //         //Echo
+    //         USART_SendData(USART1, sym);
+    // }
 }
 
 void USARTSendByte(const char byte)

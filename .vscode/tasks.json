@@ -13,6 +13,7 @@
                 "-mthumb",
                 "-Wall",
                 "-ffunction-sections",
+                "-fno-exceptions", // if use exceptions - produse error: undefined reference to `_exit'; undefined reference to `_kill'; undefined reference to `_getpid'
                 "-g",
                 "-O0",
                 "-c",
@@ -39,10 +40,13 @@
                 "${workspaceRoot}/src/drivers/led.cpp",
                 "${workspaceRoot}/src/drivers/uart.c",
                 "${workspaceRoot}/src/drivers/DS_1wire.cpp",
+                //"${workspaceRoot}/src/startup_stm32f10x_md.c",              // ANSI C startup init
+                "${workspaceRoot}/src/startup_stm32f10x_md.S",            // ASM startup init
+                "${workspaceRoot}/libs/cmsis_boot/system_stm32f10x.c",
                 "${workspaceRoot}/src/main.cpp"
             ],
             "problemMatcher": [
-                "$gcc"
+                "$msCompile"
             ]
         },
         {
@@ -55,6 +59,8 @@
                 "-mcpu=cortex-m3",
                 "-mthumb",
                 "-g",
+                //"--specs=nosys.specs",  // no semi-hosting which produses - libg.a(lib_a-exit.o): In function `exit': exit.c:(.text.exit+0x16): undefined reference to `_exit'
+                "-nostartfiles",  // no standart libs! kills last error - libg.a(lib_a-exit.o): In function `exit': exit.c:(.text.exit+0x16): undefined reference to `_exit'
                 "-Wl,-Map=${workspaceRoot}/out/app.map",
                 "-O0",
                 "-Wl,--gc-sections",
@@ -63,6 +69,8 @@
                 "-o",
                 "${workspaceRoot}/out/app.elf",
                 "${workspaceRoot}/misc.o",
+                "${workspaceRoot}/startup_stm32f10x_md.o",
+                "${workspaceRoot}/system_stm32f10x.o",
                 "${workspaceRoot}/stm32f10x_rcc.o",
                 "${workspaceRoot}/stm32f10x_gpio.o",
                 "${workspaceRoot}/stm32f10x_usart.o",
@@ -77,7 +85,7 @@
                 "${workspaceRoot}/main.o"
             ],
             "problemMatcher": [
-                "$gcc"
+                "$msCompile"
             ]
         },
         {
@@ -142,7 +150,11 @@
             "args": [
                 "${workspaceRoot}/out/app.elf"
             ],
-            "problemMatcher": []
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         },
         {
             "label": "clean",

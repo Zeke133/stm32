@@ -13,11 +13,13 @@ public:
     LED(GPIO_TypeDef* port, uint16_t pin);
     void on();
     void off();
+    void invert();
 
 private:
 
 	GPIO_TypeDef* port;
 	uint16_t pin;
+    uint32_t state;
 
 };
 

@@ -9,9 +9,10 @@
 #include <misc.h>
 
 
-#define RX_BUF_SIZE 80
-extern char RX_FLAG_END_LINE;
-extern char RX_BUF[RX_BUF_SIZE];
+extern uint16_t sym;
+#include <led.h>
+extern LED * ledGlobalPtr;
+
 
 void usart_init(void);
 void USART1_IRQHandler(void);
