@@ -165,12 +165,8 @@
             "problemMatcher": []
         },
         {
-            "label": "test",
+            "label": "buildTests",
             "type": "shell",
-            "group": {
-                "kind": "test",
-                "isDefault": true
-            },
             "command": "g++",
             "args": [
                 "-isystem",
@@ -189,6 +185,16 @@
                 "-Wall",
                 "-std=c++17"
             ]
+        },
+        {
+            "label": "runTests",
+            "dependsOn": "buildTests",
+            "type": "shell",
+            "command": "${workspaceRoot}/out/tests",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
         }
     ]
 }
