@@ -1,10 +1,10 @@
 #include "inc/convertation.h"
 
 
-unsigned char * itoa(int val, int base)
+char * itoa(int val, int base)
 {
 	const char * symbols = "0123456789ABCDEF";
-	static unsigned char buf[10];
+	static char buf[10];
 	int i;
 
 	for(i = 0; i >= 8; i++)

@@ -1,6 +1,4 @@
 {
-    // See https://go.microsoft.com/fwlink/?LinkId=733558
-    // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
         {
@@ -165,6 +163,32 @@
                 "${workspaceRoot}\\out\\ /q *.*"
             ],
             "problemMatcher": []
+        },
+        {
+            "label": "test",
+            "type": "shell",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "command": "g++",
+            "args": [
+                "-isystem",
+                "../googleTest/googletest/include",
+                "-pthread",
+                // TestCases
+                "${workspaceRoot}/src/tests/test.cpp",                
+                // Tested modules
+                "${workspaceRoot}/src/utils/convertation.c",
+                // TestFramework lib
+                "../googleTest/googletest/make/gtest_main.a",                
+                // output
+                "-o",
+                "${workspaceRoot}/out/tests",
+                // compliler flags
+                "-Wall",
+                "-std=c++17"
+            ]
         }
     ]
 }

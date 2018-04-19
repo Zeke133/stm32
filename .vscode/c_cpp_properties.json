@@ -22,7 +22,8 @@
                 "${workspaceRoot}/libs/cmsis_boot",
                 "${workspaceRoot}/libs/cmsis",
                 "${workspaceRoot}/libs/stm_lib/inc",
-                "C:/Program Files (x86)/GNU Tools ARM Embedded/7_2017-q4-major/arm-none-eabi/include"
+                "C:/Program Files (x86)/GNU Tools ARM Embedded/7_2017-q4-major/arm-none-eabi/include",
+                "D:/Projects/googleTest/googletest/include"
             ],
             "defines": [
                 "_DEBUG",

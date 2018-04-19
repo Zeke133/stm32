@@ -5,7 +5,7 @@
 // Convertation of Integers to String representation
 // val - input value
 // base - 10 for decimal or 16 for HEX view
-unsigned char * itoa(int val, int base);
+char * itoa(int val, int base);
 
 
 #endif
