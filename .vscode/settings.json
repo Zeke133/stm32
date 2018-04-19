@@ -1,6 +1,12 @@
 {
     "files.associations": {
         "stm32f10x_rcc.h": "c",
-        "delay.h": "c"
-    }
+        "delay.h": "c",
+        "stm32f10x.h": "c",
+        "uart.h": "c",
+        "convertation.h": "c"
+    },
+    "C_Cpp.intelliSenseEngineFallback": "Enabled",
+    "terminal.integrated.fontWeightBold": "normal",
+    "terminal.explorerKind": "external"
 }

@@ -1,0 +1,744 @@
+
+Discarded input sections
+
+ .text          0x00000000        0x0 C:\Developement\stm32/misc.o
+ .data          0x00000000        0x0 C:\Developement\stm32/misc.o
+ .bss           0x00000000        0x0 C:\Developement\stm32/misc.o
+ .text.NVIC_PriorityGroupConfig
+                0x00000000       0x24 C:\Developement\stm32/misc.o
+ .text.NVIC_SetVectorTable
+                0x00000000       0x2c C:\Developement\stm32/misc.o
+ .text.NVIC_SystemLPConfig
+                0x00000000       0x40 C:\Developement\stm32/misc.o
+ .text.SysTick_CLKSourceConfig
+                0x00000000       0x38 C:\Developement\stm32/misc.o
+ .data          0x00000000        0x0 C:\Developement\stm32/startup_stm32f10x_md.o
+ .bss           0x00000000        0x0 C:\Developement\stm32/startup_stm32f10x_md.o
+ .text          0x00000000        0x0 C:\Developement\stm32/system_stm32f10x.o
+ .data          0x00000000       0x14 C:\Developement\stm32/system_stm32f10x.o
+ .bss           0x00000000        0x0 C:\Developement\stm32/system_stm32f10x.o
+ .text.SystemCoreClockUpdate
+                0x00000000       0xe4 C:\Developement\stm32/system_stm32f10x.o
+ .text          0x00000000        0x0 C:\Developement\stm32/stm32f10x_rcc.o
+ .bss           0x00000000        0x0 C:\Developement\stm32/stm32f10x_rcc.o
+ .text.RCC_AdjustHSICalibrationValue
+                0x00000000       0x3c C:\Developement\stm32/stm32f10x_rcc.o
+ .text.RCC_HSICmd
+                0x00000000       0x20 C:\Developement\stm32/stm32f10x_rcc.o
+ .text.RCC_ITConfig
+                0x00000000       0x4c C:\Developement\stm32/stm32f10x_rcc.o
+ .text.RCC_USBCLKConfig
+                0x00000000       0x1c C:\Developement\stm32/stm32f10x_rcc.o
+ .text.RCC_ADCCLKConfig
+                0x00000000       0x38 C:\Developement\stm32/stm32f10x_rcc.o
+ .text.RCC_LSEConfig
+                0x00000000       0x40 C:\Developement\stm32/stm32f10x_rcc.o
+ .text.RCC_LSICmd
+                0x00000000       0x20 C:\Developement\stm32/stm32f10x_rcc.o
+ .text.RCC_RTCCLKConfig
+                0x00000000       0x24 C:\Developement\stm32/stm32f10x_rcc.o
+ .text.RCC_RTCCLKCmd
+                0x00000000       0x20 C:\Developement\stm32/stm32f10x_rcc.o
+ .text.RCC_AHBPeriphClockCmd
+                0x00000000       0x3c C:\Developement\stm32/stm32f10x_rcc.o
+ .text.RCC_APB1PeriphClockCmd
+                0x00000000       0x3c C:\Developement\stm32/stm32f10x_rcc.o
+ .text.RCC_APB2PeriphResetCmd
+                0x00000000       0x3c C:\Developement\stm32/stm32f10x_rcc.o
+ .text.RCC_APB1PeriphResetCmd
+                0x00000000       0x3c C:\Developement\stm32/stm32f10x_rcc.o
+ .text.RCC_BackupResetCmd
+                0x00000000       0x20 C:\Developement\stm32/stm32f10x_rcc.o
+ .text.RCC_ClockSecuritySystemCmd
+                0x00000000       0x20 C:\Developement\stm32/stm32f10x_rcc.o
+ .text.RCC_MCOConfig
+                0x00000000       0x20 C:\Developement\stm32/stm32f10x_rcc.o
+ .text.RCC_ClearFlag
+                0x00000000       0x1c C:\Developement\stm32/stm32f10x_rcc.o
+ .text.RCC_GetITStatus
+                0x00000000       0x40 C:\Developement\stm32/stm32f10x_rcc.o
+ .text.RCC_ClearITPendingBit
+                0x00000000       0x20 C:\Developement\stm32/stm32f10x_rcc.o
+ .text          0x00000000        0x0 C:\Developement\stm32/stm32f10x_gpio.o
+ .data          0x00000000        0x0 C:\Developement\stm32/stm32f10x_gpio.o
+ .bss           0x00000000        0x0 C:\Developement\stm32/stm32f10x_gpio.o
+ .text.GPIO_DeInit
+                0x00000000       0xe4 C:\Developement\stm32/stm32f10x_gpio.o
+ .text.GPIO_AFIODeInit
+                0x00000000       0x18 C:\Developement\stm32/stm32f10x_gpio.o
+ .text.GPIO_StructInit
+                0x00000000       0x26 C:\Developement\stm32/stm32f10x_gpio.o
+ .text.GPIO_ReadInputDataBit
+                0x00000000       0x3c C:\Developement\stm32/stm32f10x_gpio.o
+ .text.GPIO_ReadInputData
+                0x00000000       0x18 C:\Developement\stm32/stm32f10x_gpio.o
+ .text.GPIO_ReadOutputDataBit
+                0x00000000       0x3c C:\Developement\stm32/stm32f10x_gpio.o
+ .text.GPIO_ReadOutputData
+                0x00000000       0x18 C:\Developement\stm32/stm32f10x_gpio.o
+ .text.GPIO_WriteBit
+                0x00000000       0x2e C:\Developement\stm32/stm32f10x_gpio.o
+ .text.GPIO_Write
+                0x00000000       0x1c C:\Developement\stm32/stm32f10x_gpio.o
+ .text.GPIO_PinLockConfig
+                0x00000000       0x42 C:\Developement\stm32/stm32f10x_gpio.o
+ .text.GPIO_EventOutputConfig
+                0x00000000       0x4c C:\Developement\stm32/stm32f10x_gpio.o
+ .text.GPIO_EventOutputCmd
+                0x00000000       0x20 C:\Developement\stm32/stm32f10x_gpio.o
+ .text.GPIO_PinRemapConfig
+                0x00000000       0xe0 C:\Developement\stm32/stm32f10x_gpio.o
+ .text.GPIO_EXTILineConfig
+                0x00000000       0x78 C:\Developement\stm32/stm32f10x_gpio.o
+ .text.GPIO_ETH_MediaInterfaceConfig
+                0x00000000       0x1c C:\Developement\stm32/stm32f10x_gpio.o
+ .text          0x00000000        0x0 C:\Developement\stm32/stm32f10x_usart.o
+ .data          0x00000000        0x0 C:\Developement\stm32/stm32f10x_usart.o
+ .bss           0x00000000        0x0 C:\Developement\stm32/stm32f10x_usart.o
+ .text.USART_DeInit
+                0x00000000       0xb8 C:\Developement\stm32/stm32f10x_usart.o
+ .text.USART_StructInit
+                0x00000000       0x38 C:\Developement\stm32/stm32f10x_usart.o
+ .text.USART_ClockInit
+                0x00000000       0x56 C:\Developement\stm32/stm32f10x_usart.o
+ .text.USART_ClockStructInit
+                0x00000000       0x2a C:\Developement\stm32/stm32f10x_usart.o
+ .text.USART_DMACmd
+                0x00000000       0x46 C:\Developement\stm32/stm32f10x_usart.o
+ .text.USART_SetAddress
+                0x00000000       0x38 C:\Developement\stm32/stm32f10x_usart.o
+ .text.USART_WakeUpConfig
+                0x00000000       0x36 C:\Developement\stm32/stm32f10x_usart.o
+ .text.USART_ReceiverWakeUpCmd
+                0x00000000       0x3e C:\Developement\stm32/stm32f10x_usart.o
+ .text.USART_LINBreakDetectLengthConfig
+                0x00000000       0x36 C:\Developement\stm32/stm32f10x_usart.o
+ .text.USART_LINCmd
+                0x00000000       0x3e C:\Developement\stm32/stm32f10x_usart.o
+ .text.USART_ReceiveData
+                0x00000000       0x1e C:\Developement\stm32/stm32f10x_usart.o
+ .text.USART_SendBreak
+                0x00000000       0x22 C:\Developement\stm32/stm32f10x_usart.o
+ .text.USART_SetGuardTime
+                0x00000000       0x3a C:\Developement\stm32/stm32f10x_usart.o
+ .text.USART_SetPrescaler
+                0x00000000       0x38 C:\Developement\stm32/stm32f10x_usart.o
+ .text.USART_SmartCardCmd
+                0x00000000       0x3e C:\Developement\stm32/stm32f10x_usart.o
+ .text.USART_SmartCardNACKCmd
+                0x00000000       0x3e C:\Developement\stm32/stm32f10x_usart.o
+ .text.USART_HalfDuplexCmd
+                0x00000000       0x3e C:\Developement\stm32/stm32f10x_usart.o
+ .text.USART_OverSampling8Cmd
+                0x00000000       0x42 C:\Developement\stm32/stm32f10x_usart.o
+ .text.USART_OneBitMethodCmd
+                0x00000000       0x3e C:\Developement\stm32/stm32f10x_usart.o
+ .text.USART_IrDAConfig
+                0x00000000       0x36 C:\Developement\stm32/stm32f10x_usart.o
+ .text.USART_IrDACmd
+                0x00000000       0x3e C:\Developement\stm32/stm32f10x_usart.o
+ .text.USART_ClearFlag
+                0x00000000       0x20 C:\Developement\stm32/stm32f10x_usart.o
+ .text.USART_GetITStatus
+                0x00000000       0xb0 C:\Developement\stm32/stm32f10x_usart.o
+ .text.USART_ClearITPendingBit
+                0x00000000       0x38 C:\Developement\stm32/stm32f10x_usart.o
+ .text          0x00000000        0x0 C:\Developement\stm32/stm32f10x_i2c.o
+ .data          0x00000000        0x0 C:\Developement\stm32/stm32f10x_i2c.o
+ .bss           0x00000000        0x0 C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_DeInit
+                0x00000000       0x48 C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_Init
+                0x00000000      0x184 C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_StructInit
+                0x00000000       0x3c C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_Cmd  0x00000000       0x3e C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_DMACmd
+                0x00000000       0x3e C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_DMALastTransferCmd
+                0x00000000       0x3e C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_GenerateSTART
+                0x00000000       0x3e C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_GenerateSTOP
+                0x00000000       0x3e C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_AcknowledgeConfig
+                0x00000000       0x3e C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_OwnAddress2Config
+                0x00000000       0x3e C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_DualAddressCmd
+                0x00000000       0x3e C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_GeneralCallCmd
+                0x00000000       0x3e C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_ITConfig
+                0x00000000       0x46 C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_SendData
+                0x00000000       0x1e C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_ReceiveData
+                0x00000000       0x1a C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_Send7bitAddress
+                0x00000000       0x3a C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_ReadRegister
+                0x00000000       0x2c C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_SoftwareResetCmd
+                0x00000000       0x42 C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_NACKPositionConfig
+                0x00000000       0x40 C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_SMBusAlertConfig
+                0x00000000       0x40 C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_TransmitPEC
+                0x00000000       0x3e C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_PECPositionConfig
+                0x00000000       0x40 C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_CalculatePEC
+                0x00000000       0x3e C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_GetPEC
+                0x00000000       0x1c C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_ARPCmd
+                0x00000000       0x3e C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_StretchClockCmd
+                0x00000000       0x3e C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_FastModeDutyCycleConfig
+                0x00000000       0x40 C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_CheckEvent
+                0x00000000       0x5e C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_GetLastEvent
+                0x00000000       0x42 C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_GetFlagStatus
+                0x00000000       0x78 C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_ClearFlag
+                0x00000000       0x2c C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_GetITStatus
+                0x00000000       0x62 C:\Developement\stm32/stm32f10x_i2c.o
+ .text.I2C_ClearITPendingBit
+                0x00000000       0x2c C:\Developement\stm32/stm32f10x_i2c.o
+ .debug_info    0x00000000      0xb2b C:\Developement\stm32/stm32f10x_i2c.o
+ .debug_abbrev  0x00000000      0x191 C:\Developement\stm32/stm32f10x_i2c.o
+ .debug_aranges
+                0x00000000      0x120 C:\Developement\stm32/stm32f10x_i2c.o
+ .debug_ranges  0x00000000      0x110 C:\Developement\stm32/stm32f10x_i2c.o
+ .debug_line    0x00000000      0x4f0 C:\Developement\stm32/stm32f10x_i2c.o
+ .debug_str     0x00000000      0x6f4 C:\Developement\stm32/stm32f10x_i2c.o
+ .comment       0x00000000       0x7f C:\Developement\stm32/stm32f10x_i2c.o
+ .debug_frame   0x00000000      0x530 C:\Developement\stm32/stm32f10x_i2c.o
+ .ARM.attributes
+                0x00000000       0x33 C:\Developement\stm32/stm32f10x_i2c.o
+ .text          0x00000000        0x0 C:\Developement\stm32/delay.o
+ .data          0x00000000        0x0 C:\Developement\stm32/delay.o
+ .bss           0x00000000        0x0 C:\Developement\stm32/delay.o
+ .text._Z7DelayMCm
+                0x00000000       0x48 C:\Developement\stm32/delay.o
+ .text          0x00000000        0x0 C:\Developement\stm32/convertation.o
+ .data          0x00000000        0x0 C:\Developement\stm32/convertation.o
+ .bss           0x00000000        0xa C:\Developement\stm32/convertation.o
+ .rodata        0x00000000       0x11 C:\Developement\stm32/convertation.o
+ .text._Z4itoaii
+                0x00000000       0x90 C:\Developement\stm32/convertation.o
+ .debug_info    0x00000000       0xc8 C:\Developement\stm32/convertation.o
+ .debug_abbrev  0x00000000       0xa4 C:\Developement\stm32/convertation.o
+ .debug_aranges
+                0x00000000       0x20 C:\Developement\stm32/convertation.o
+ .debug_ranges  0x00000000       0x10 C:\Developement\stm32/convertation.o
+ .debug_line    0x00000000       0x84 C:\Developement\stm32/convertation.o
+ .debug_str     0x00000000      0x10f C:\Developement\stm32/convertation.o
+ .comment       0x00000000       0x7f C:\Developement\stm32/convertation.o
+ .debug_frame   0x00000000       0x38 C:\Developement\stm32/convertation.o
+ .ARM.attributes
+                0x00000000       0x33 C:\Developement\stm32/convertation.o
+ .text          0x00000000        0x0 C:\Developement\stm32/SysClock.o
+ .data          0x00000000        0x0 C:\Developement\stm32/SysClock.o
+ .bss           0x00000000        0x0 C:\Developement\stm32/SysClock.o
+ .text          0x00000000        0x0 C:\Developement\stm32/gpio.o
+ .data          0x00000000        0x0 C:\Developement\stm32/gpio.o
+ .bss           0x00000000        0x0 C:\Developement\stm32/gpio.o
+ .text          0x00000000        0x0 C:\Developement\stm32/led.o
+ .data          0x00000000        0x0 C:\Developement\stm32/led.o
+ .bss           0x00000000        0x0 C:\Developement\stm32/led.o
+ .text          0x00000000        0x0 C:\Developement\stm32/uart.o
+ .data          0x00000000        0x0 C:\Developement\stm32/uart.o
+ .text._Z17USART1_IRQHandlerv
+                0x00000000        0xc C:\Developement\stm32/uart.o
+ .text._Z13USARTSendBytec
+                0x00000000       0x3c C:\Developement\stm32/uart.o
+ .text          0x00000000        0x0 C:\Developement\stm32/DS_1wire.o
+ .data          0x00000000        0x0 C:\Developement\stm32/DS_1wire.o
+ .bss           0x00000000        0x0 C:\Developement\stm32/DS_1wire.o
+ .text._ZN19DS_1Wire_controllerC2EP12GPIO_TypeDeft
+                0x00000000       0xc8 C:\Developement\stm32/DS_1wire.o
+ .text._ZN19DS_1Wire_controller13WriteTimeslotEb
+                0x00000000       0x50 C:\Developement\stm32/DS_1wire.o
+ .text._ZN19DS_1Wire_controller12ReadTimeslotEv
+                0x00000000       0x54 C:\Developement\stm32/DS_1wire.o
+ .text._ZN19DS_1Wire_controller14InitializationEv
+                0x00000000       0x58 C:\Developement\stm32/DS_1wire.o
+ .text._ZN19DS_1Wire_controller9WriteByteEh
+                0x00000000       0x3a C:\Developement\stm32/DS_1wire.o
+ .text._ZN19DS_1Wire_controller8ReadByteEv
+                0x00000000       0x3e C:\Developement\stm32/DS_1wire.o
+ .text._ZN19DS_1Wire_controller8GetCodesEhPh
+                0x00000000       0x54 C:\Developement\stm32/DS_1wire.o
+ .debug_info    0x00000000      0x566 C:\Developement\stm32/DS_1wire.o
+ .debug_abbrev  0x00000000      0x247 C:\Developement\stm32/DS_1wire.o
+ .debug_aranges
+                0x00000000       0x50 C:\Developement\stm32/DS_1wire.o
+ .debug_ranges  0x00000000       0x40 C:\Developement\stm32/DS_1wire.o
+ .debug_line    0x00000000      0x30a C:\Developement\stm32/DS_1wire.o
+ .debug_str     0x00000000      0x501 C:\Developement\stm32/DS_1wire.o
+ .comment       0x00000000       0x7f C:\Developement\stm32/DS_1wire.o
+ .debug_frame   0x00000000      0x110 C:\Developement\stm32/DS_1wire.o
+ .ARM.attributes
+                0x00000000       0x33 C:\Developement\stm32/DS_1wire.o
+ .text          0x00000000        0x0 C:\Developement\stm32/main.o
+ .data          0x00000000        0x0 C:\Developement\stm32/main.o
+ .bss           0x00000000        0x0 C:\Developement\stm32/main.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+ROM              0x08000000         0x00010000         xr
+RAM              0x20000000         0x00005000         xrw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+
+.text           0x08000000     0x107c
+ *(.isr_vector)
+ .isr_vector    0x08000000       0xec C:\Developement\stm32/startup_stm32f10x_md.o
+                0x08000000                __isr_vector
+ *(.text*)
+ .text.NVIC_Init
+                0x080000ec       0xbc C:\Developement\stm32/misc.o
+                0x080000ec                NVIC_Init
+ .text          0x080001a8       0xb8 C:\Developement\stm32/startup_stm32f10x_md.o
+                0x080001a8                Reset_Handler
+                0x080001d8                _start
+                0x080001ee                NMI_Handler
+                0x080001f0                HardFault_Handler
+                0x080001f2                MemManage_Handler
+                0x080001f4                BusFault_Handler
+                0x080001f6                UsageFault_Handler
+                0x080001f8                SVC_Handler
+                0x080001fa                DebugMon_Handler
+                0x080001fc                PendSV_Handler
+                0x080001fe                SysTick_Handler
+                0x08000200                Default_Handler
+                0x08000202                WWDG_IRQHandler
+                0x08000204                PVD_IRQHandler
+                0x08000206                TAMPER_IRQHandler
+                0x08000208                RTC_IRQHandler
+                0x0800020a                FLASH_IRQHandler
+                0x0800020c                RCC_IRQHandler
+                0x0800020e                EXTI0_IRQHandler
+                0x08000210                EXTI1_IRQHandler
+                0x08000212                EXTI2_IRQHandler
+                0x08000214                EXTI3_IRQHandler
+                0x08000216                EXTI4_IRQHandler
+                0x08000218                DMA1_Channel1_IRQHandler
+                0x0800021a                DMA1_Channel2_IRQHandler
+                0x0800021c                DMA1_Channel3_IRQHandler
+                0x0800021e                DMA1_Channel4_IRQHandler
+                0x08000220                DMA1_Channel5_IRQHandler
+                0x08000222                DMA1_Channel6_IRQHandler
+                0x08000224                DMA1_Channel7_IRQHandler
+                0x08000226                ADC1_2_IRQHandler
+                0x08000228                USB_HP_CAN1_TX_IRQHandler
+                0x0800022a                USB_LP_CAN1_RX0_IRQHandler
+                0x0800022c                CAN1_RX1_IRQHandler
+                0x0800022e                CAN1_SCE_IRQHandler
+                0x08000230                EXTI9_5_IRQHandler
+                0x08000232                TIM1_BRK_IRQHandler
+                0x08000234                TIM1_UP_IRQHandler
+                0x08000236                TIM1_TRG_COM_IRQHandler
+                0x08000238                TIM1_CC_IRQHandler
+                0x0800023a                TIM2_IRQHandler
+                0x0800023c                TIM3_IRQHandler
+                0x0800023e                TIM4_IRQHandler
+                0x08000240                I2C1_EV_IRQHandler
+                0x08000242                I2C1_ER_IRQHandler
+                0x08000244                I2C2_EV_IRQHandler
+                0x08000246                I2C2_ER_IRQHandler
+                0x08000248                SPI1_IRQHandler
+                0x0800024a                SPI2_IRQHandler
+                0x0800024c                USART1_IRQHandler
+                0x0800024e                USART2_IRQHandler
+                0x08000250                USART3_IRQHandler
+                0x08000252                EXTI15_10_IRQHandler
+                0x08000254                RTCAlarm_IRQHandler
+                0x08000256                USBWakeUp_IRQHandler
+ .text.SystemInit
+                0x08000260       0x68 C:\Developement\stm32/system_stm32f10x.o
+                0x08000260                SystemInit
+ .text._ZL11SetSysClockv
+                0x080002c8        0xc C:\Developement\stm32/system_stm32f10x.o
+ .text._ZL15SetSysClockTo72v
+                0x080002d4      0x134 C:\Developement\stm32/system_stm32f10x.o
+ .text.RCC_DeInit
+                0x08000408       0x5c C:\Developement\stm32/stm32f10x_rcc.o
+                0x08000408                RCC_DeInit
+ .text.RCC_HSEConfig
+                0x08000464       0x5c C:\Developement\stm32/stm32f10x_rcc.o
+                0x08000464                RCC_HSEConfig
+ .text.RCC_WaitForHSEStartUp
+                0x080004c0       0x66 C:\Developement\stm32/stm32f10x_rcc.o
+                0x080004c0                RCC_WaitForHSEStartUp
+ *fill*         0x08000526        0x2 
+ .text.RCC_PLLConfig
+                0x08000528       0x3c C:\Developement\stm32/stm32f10x_rcc.o
+                0x08000528                RCC_PLLConfig
+ .text.RCC_PLLCmd
+                0x08000564       0x20 C:\Developement\stm32/stm32f10x_rcc.o
+                0x08000564                RCC_PLLCmd
+ .text.RCC_SYSCLKConfig
+                0x08000584       0x38 C:\Developement\stm32/stm32f10x_rcc.o
+                0x08000584                RCC_SYSCLKConfig
+ .text.RCC_GetSYSCLKSource
+                0x080005bc       0x1c C:\Developement\stm32/stm32f10x_rcc.o
+                0x080005bc                RCC_GetSYSCLKSource
+ .text.RCC_HCLKConfig
+                0x080005d8       0x38 C:\Developement\stm32/stm32f10x_rcc.o
+                0x080005d8                RCC_HCLKConfig
+ .text.RCC_PCLK1Config
+                0x08000610       0x38 C:\Developement\stm32/stm32f10x_rcc.o
+                0x08000610                RCC_PCLK1Config
+ .text.RCC_PCLK2Config
+                0x08000648       0x38 C:\Developement\stm32/stm32f10x_rcc.o
+                0x08000648                RCC_PCLK2Config
+ .text.RCC_GetClocksFreq
+                0x08000680      0x16c C:\Developement\stm32/stm32f10x_rcc.o
+                0x08000680                RCC_GetClocksFreq
+ .text.RCC_APB2PeriphClockCmd
+                0x080007ec       0x3c C:\Developement\stm32/stm32f10x_rcc.o
+                0x080007ec                RCC_APB2PeriphClockCmd
+ .text.RCC_GetFlagStatus
+                0x08000828       0x70 C:\Developement\stm32/stm32f10x_rcc.o
+                0x08000828                RCC_GetFlagStatus
+ .text.GPIO_Init
+                0x08000898      0x178 C:\Developement\stm32/stm32f10x_gpio.o
+                0x08000898                GPIO_Init
+ .text.GPIO_SetBits
+                0x08000a10       0x1c C:\Developement\stm32/stm32f10x_gpio.o
+                0x08000a10                GPIO_SetBits
+ .text.GPIO_ResetBits
+                0x08000a2c       0x1c C:\Developement\stm32/stm32f10x_gpio.o
+                0x08000a2c                GPIO_ResetBits
+ .text.USART_Init
+                0x08000a48      0x180 C:\Developement\stm32/stm32f10x_usart.o
+                0x08000a48                USART_Init
+ .text.USART_Cmd
+                0x08000bc8       0x3e C:\Developement\stm32/stm32f10x_usart.o
+                0x08000bc8                USART_Cmd
+ .text.USART_ITConfig
+                0x08000c06       0x8c C:\Developement\stm32/stm32f10x_usart.o
+                0x08000c06                USART_ITConfig
+ .text.USART_SendData
+                0x08000c92       0x22 C:\Developement\stm32/stm32f10x_usart.o
+                0x08000c92                USART_SendData
+ .text.USART_GetFlagStatus
+                0x08000cb4       0x40 C:\Developement\stm32/stm32f10x_usart.o
+                0x08000cb4                USART_GetFlagStatus
+ .text._Z5Delaym
+                0x08000cf4       0x48 C:\Developement\stm32/delay.o
+                0x08000cf4                Delay(unsigned long)
+ .text._Z15SetSysClockTo72v
+                0x08000d3c       0x84 C:\Developement\stm32/SysClock.o
+                0x08000d3c                SetSysClockTo72()
+ .text._Z12GPIO_Init_MyP12GPIO_TypeDeft16GPIOMode_TypeDef17GPIOSpeed_TypeDef
+                0x08000dc0       0xc4 C:\Developement\stm32/gpio.o
+                0x08000dc0                GPIO_Init_My(GPIO_TypeDef*, unsigned short, GPIOMode_TypeDef, GPIOSpeed_TypeDef)
+ .text._ZN3LEDC2EP12GPIO_TypeDeft
+                0x08000e84       0x36 C:\Developement\stm32/led.o
+                0x08000e84                LED::LED(GPIO_TypeDef*, unsigned short)
+                0x08000e84                LED::LED(GPIO_TypeDef*, unsigned short)
+ .text._ZN3LED2onEv
+                0x08000eba       0x26 C:\Developement\stm32/led.o
+                0x08000eba                LED::on()
+ .text._ZN3LED3offEv
+                0x08000ee0       0x26 C:\Developement\stm32/led.o
+                0x08000ee0                LED::off()
+ .text._ZN3LED6invertEv
+                0x08000f06       0x26 C:\Developement\stm32/led.o
+                0x08000f06                LED::invert()
+ .text._Z10usart_initv
+                0x08000f2c       0xa4 C:\Developement\stm32/uart.o
+                0x08000f2c                usart_init()
+ .text._Z9USARTSendPKc
+                0x08000fd0       0x48 C:\Developement\stm32/uart.o
+                0x08000fd0                USARTSend(char const*)
+ .text.main     0x08001018       0x48 C:\Developement\stm32/main.o
+                0x08001018                main
+ *(.init)
+ *(.fini)
+ *crtbegin.o(.ctors)
+ *crtbegin?.o(.ctors)
+ *(EXCLUDE_FILE(*crtend.o *crtend?.o) .ctors)
+ *(SORT_BY_NAME(.ctors.*))
+ *(.ctors)
+ *crtbegin.o(.dtors)
+ *crtbegin?.o(.dtors)
+ *(EXCLUDE_FILE(*crtend.o *crtend?.o) .dtors)
+ *(SORT_BY_NAME(.dtors.*))
+ *(.dtors)
+ *(.rodata*)
+ .rodata        0x08001060       0x1c C:\Developement\stm32/main.o
+ *(.eh_frame*)
+
+.glue_7         0x0800107c        0x0
+ .glue_7        0x0800107c        0x0 linker stubs
+
+.glue_7t        0x0800107c        0x0
+ .glue_7t       0x0800107c        0x0 linker stubs
+
+.vfp11_veneer   0x0800107c        0x0
+ .vfp11_veneer  0x0800107c        0x0 linker stubs
+
+.v4_bx          0x0800107c        0x0
+ .v4_bx         0x0800107c        0x0 linker stubs
+
+.iplt           0x0800107c        0x0
+ .iplt          0x0800107c        0x0 C:\Developement\stm32/misc.o
+
+.rel.dyn        0x0800107c        0x0
+ .rel.iplt      0x0800107c        0x0 C:\Developement\stm32/misc.o
+
+.ARM.extab
+ *(.ARM.extab* .gnu.linkonce.armextab.*)
+                0x0800107c                __exidx_start = .
+
+.ARM.exidx
+ *(.ARM.exidx* .gnu.linkonce.armexidx.*)
+                0x0800107c                __exidx_end = .
+                0x0800107c                __etext = .
+
+.data           0x20000000       0x14 load address 0x0800107c
+                0x20000000                __data_start__ = .
+ *(vtable)
+ *(.data*)
+ .data          0x20000000       0x14 C:\Developement\stm32/stm32f10x_rcc.o
+                0x20000014                . = ALIGN (0x4)
+                [!provide]                PROVIDE (__preinit_array_start, .)
+ *(.preinit_array)
+                [!provide]                PROVIDE (__preinit_array_end, .)
+                0x20000014                . = ALIGN (0x4)
+                [!provide]                PROVIDE (__init_array_start, .)
+ *(SORT_BY_NAME(.init_array.*))
+ *(.init_array)
+                [!provide]                PROVIDE (__init_array_end, .)
+                0x20000014                . = ALIGN (0x4)
+                [!provide]                PROVIDE (__fini_array_start, .)
+ *(SORT_BY_NAME(.fini_array.*))
+ *(.fini_array)
+                [!provide]                PROVIDE (__fini_array_end, .)
+                0x20000014                . = ALIGN (0x4)
+                0x20000014                __data_end__ = .
+
+.igot.plt       0x20000014        0x0 load address 0x08001090
+ .igot.plt      0x20000014        0x0 C:\Developement\stm32/misc.o
+
+.bss            0x20000014        0x8 load address 0x08001090
+                0x20000014                __bss_start__ = .
+ *(.bss*)
+ .bss           0x20000014        0x8 C:\Developement\stm32/uart.o
+                0x20000014                sym
+                0x20000018                ledGlobalPtr
+ *(COMMON)
+                0x2000001c                __bss_end__ = .
+
+.heap           0x20000020      0xc00
+                0x20000020                __end__ = .
+                0x20000020                end = __end__
+ *(.heap*)
+ .heap          0x20000020      0xc00 C:\Developement\stm32/startup_stm32f10x_md.o
+                0x20000020                __HeapBase
+                0x20000c20                __HeapLimit = .
+
+.stack_dummy    0x20000020      0x400
+ *(.stack)
+ .stack         0x20000020      0x400 C:\Developement\stm32/startup_stm32f10x_md.o
+                0x20005000                __StackTop = (ORIGIN (RAM) + LENGTH (RAM))
+                0x20004c00                __StackLimit = (__StackTop - SIZEOF (.stack_dummy))
+                [!provide]                PROVIDE (__stack, __StackTop)
+                0x00000001                ASSERT ((__StackLimit >= __HeapLimit), region RAM overflowed with stack)
+LOAD C:\Developement\stm32/misc.o
+LOAD C:\Developement\stm32/startup_stm32f10x_md.o
+LOAD C:\Developement\stm32/system_stm32f10x.o
+LOAD C:\Developement\stm32/stm32f10x_rcc.o
+LOAD C:\Developement\stm32/stm32f10x_gpio.o
+LOAD C:\Developement\stm32/stm32f10x_usart.o
+LOAD C:\Developement\stm32/stm32f10x_i2c.o
+LOAD C:\Developement\stm32/delay.o
+LOAD C:\Developement\stm32/convertation.o
+LOAD C:\Developement\stm32/SysClock.o
+LOAD C:\Developement\stm32/gpio.o
+LOAD C:\Developement\stm32/led.o
+LOAD C:\Developement\stm32/uart.o
+LOAD C:\Developement\stm32/DS_1wire.o
+LOAD C:\Developement\stm32/main.o
+LOAD c:/program files (x86)/gnu tools arm embedded/7_2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libstdc++.a
+LOAD c:/program files (x86)/gnu tools arm embedded/7_2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libm.a
+START GROUP
+LOAD c:/program files (x86)/gnu tools arm embedded/7_2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7-m\libgcc.a
+LOAD c:/program files (x86)/gnu tools arm embedded/7_2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libg.a
+LOAD c:/program files (x86)/gnu tools arm embedded/7_2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a
+END GROUP
+OUTPUT(C:\Developement\stm32/out/app.elf elf32-littlearm)
+
+.debug_info     0x00000000     0x35c2
+ .debug_info    0x00000000      0x547 C:\Developement\stm32/misc.o
+ .debug_info    0x00000547       0x26 C:\Developement\stm32/startup_stm32f10x_md.o
+ .debug_info    0x0000056d      0x4f0 C:\Developement\stm32/system_stm32f10x.o
+ .debug_info    0x00000a5d      0x8b3 C:\Developement\stm32/stm32f10x_rcc.o
+ .debug_info    0x00001310      0x71a C:\Developement\stm32/stm32f10x_gpio.o
+ .debug_info    0x00001a2a      0xa13 C:\Developement\stm32/stm32f10x_usart.o
+ .debug_info    0x0000243d      0x18f C:\Developement\stm32/delay.o
+ .debug_info    0x000025cc      0x16f C:\Developement\stm32/SysClock.o
+ .debug_info    0x0000273b      0x29b C:\Developement\stm32/gpio.o
+ .debug_info    0x000029d6      0x2d9 C:\Developement\stm32/led.o
+ .debug_info    0x00002caf      0x6e7 C:\Developement\stm32/uart.o
+ .debug_info    0x00003396      0x22c C:\Developement\stm32/main.o
+
+.debug_abbrev   0x00000000      0xfe5
+ .debug_abbrev  0x00000000      0x171 C:\Developement\stm32/misc.o
+ .debug_abbrev  0x00000171       0x14 C:\Developement\stm32/startup_stm32f10x_md.o
+ .debug_abbrev  0x00000185      0x165 C:\Developement\stm32/system_stm32f10x.o
+ .debug_abbrev  0x000002ea      0x1c4 C:\Developement\stm32/stm32f10x_rcc.o
+ .debug_abbrev  0x000004ae      0x1df C:\Developement\stm32/stm32f10x_gpio.o
+ .debug_abbrev  0x0000068d      0x18f C:\Developement\stm32/stm32f10x_usart.o
+ .debug_abbrev  0x0000081c       0xce C:\Developement\stm32/delay.o
+ .debug_abbrev  0x000008ea       0xb9 C:\Developement\stm32/SysClock.o
+ .debug_abbrev  0x000009a3      0x128 C:\Developement\stm32/gpio.o
+ .debug_abbrev  0x00000acb      0x1a8 C:\Developement\stm32/led.o
+ .debug_abbrev  0x00000c73      0x215 C:\Developement\stm32/uart.o
+ .debug_abbrev  0x00000e88      0x15d C:\Developement\stm32/main.o
+
+.debug_aranges  0x00000000      0x450
+ .debug_aranges
+                0x00000000       0x40 C:\Developement\stm32/misc.o
+ .debug_aranges
+                0x00000040       0x20 C:\Developement\stm32/startup_stm32f10x_md.o
+ .debug_aranges
+                0x00000060       0x38 C:\Developement\stm32/system_stm32f10x.o
+ .debug_aranges
+                0x00000098      0x118 C:\Developement\stm32/stm32f10x_rcc.o
+ .debug_aranges
+                0x000001b0       0xa8 C:\Developement\stm32/stm32f10x_gpio.o
+ .debug_aranges
+                0x00000258      0x100 C:\Developement\stm32/stm32f10x_usart.o
+ .debug_aranges
+                0x00000358       0x28 C:\Developement\stm32/delay.o
+ .debug_aranges
+                0x00000380       0x20 C:\Developement\stm32/SysClock.o
+ .debug_aranges
+                0x000003a0       0x20 C:\Developement\stm32/gpio.o
+ .debug_aranges
+                0x000003c0       0x38 C:\Developement\stm32/led.o
+ .debug_aranges
+                0x000003f8       0x38 C:\Developement\stm32/uart.o
+ .debug_aranges
+                0x00000430       0x20 C:\Developement\stm32/main.o
+
+.debug_ranges   0x00000000      0x380
+ .debug_ranges  0x00000000       0x30 C:\Developement\stm32/misc.o
+ .debug_ranges  0x00000030       0x28 C:\Developement\stm32/system_stm32f10x.o
+ .debug_ranges  0x00000058      0x108 C:\Developement\stm32/stm32f10x_rcc.o
+ .debug_ranges  0x00000160       0x98 C:\Developement\stm32/stm32f10x_gpio.o
+ .debug_ranges  0x000001f8       0xf0 C:\Developement\stm32/stm32f10x_usart.o
+ .debug_ranges  0x000002e8       0x18 C:\Developement\stm32/delay.o
+ .debug_ranges  0x00000300       0x10 C:\Developement\stm32/SysClock.o
+ .debug_ranges  0x00000310       0x10 C:\Developement\stm32/gpio.o
+ .debug_ranges  0x00000320       0x28 C:\Developement\stm32/led.o
+ .debug_ranges  0x00000348       0x28 C:\Developement\stm32/uart.o
+ .debug_ranges  0x00000370       0x10 C:\Developement\stm32/main.o
+
+.debug_line     0x00000000     0x1edd
+ .debug_line    0x00000000      0x241 C:\Developement\stm32/misc.o
+ .debug_line    0x00000241       0xbe C:\Developement\stm32/startup_stm32f10x_md.o
+ .debug_line    0x000002ff      0x226 C:\Developement\stm32/system_stm32f10x.o
+ .debug_line    0x00000525      0x4cb C:\Developement\stm32/stm32f10x_rcc.o
+ .debug_line    0x000009f0      0x3cb C:\Developement\stm32/stm32f10x_gpio.o
+ .debug_line    0x00000dbb      0x4b0 C:\Developement\stm32/stm32f10x_usart.o
+ .debug_line    0x0000126b      0x1fc C:\Developement\stm32/delay.o
+ .debug_line    0x00001467      0x1bd C:\Developement\stm32/SysClock.o
+ .debug_line    0x00001624      0x223 C:\Developement\stm32/gpio.o
+ .debug_line    0x00001847      0x21f C:\Developement\stm32/led.o
+ .debug_line    0x00001a66      0x28b C:\Developement\stm32/uart.o
+ .debug_line    0x00001cf1      0x1ec C:\Developement\stm32/main.o
+
+.debug_str      0x00000000     0x166b
+ .debug_str     0x00000000      0x3a6 C:\Developement\stm32/misc.o
+                                0x434 (size before relaxing)
+ .debug_str     0x000003a6       0x40 C:\Developement\stm32/startup_stm32f10x_md.o
+                                 0x56 (size before relaxing)
+ .debug_str     0x000003e6      0x13c C:\Developement\stm32/system_stm32f10x.o
+                                0x3a5 (size before relaxing)
+ .debug_str     0x00000522      0x3d7 C:\Developement\stm32/stm32f10x_rcc.o
+                                0x696 (size before relaxing)
+ .debug_str     0x000008f9      0x363 C:\Developement\stm32/stm32f10x_gpio.o
+                                0x5bb (size before relaxing)
+ .debug_str     0x00000c5c      0x43f C:\Developement\stm32/stm32f10x_usart.o
+                                0x72d (size before relaxing)
+ .debug_str     0x0000109b       0x53 C:\Developement\stm32/delay.o
+                                0x240 (size before relaxing)
+ .debug_str     0x000010ee       0x53 C:\Developement\stm32/SysClock.o
+                                0x257 (size before relaxing)
+ .debug_str     0x00001141       0xb4 C:\Developement\stm32/gpio.o
+                                0x3cf (size before relaxing)
+ .debug_str     0x000011f5       0x9e C:\Developement\stm32/led.o
+                                0x248 (size before relaxing)
+ .debug_str     0x00001293      0x3b0 C:\Developement\stm32/uart.o
+                                0x908 (size before relaxing)
+ .debug_str     0x00001643       0x28 C:\Developement\stm32/main.o
+                                0x233 (size before relaxing)
+
+.comment        0x00000000       0x7e
+ .comment       0x00000000       0x7e C:\Developement\stm32/misc.o
+                                 0x7f (size before relaxing)
+ .comment       0x0000007e       0x7f C:\Developement\stm32/system_stm32f10x.o
+ .comment       0x0000007e       0x7f C:\Developement\stm32/stm32f10x_rcc.o
+ .comment       0x0000007e       0x7f C:\Developement\stm32/stm32f10x_gpio.o
+ .comment       0x0000007e       0x7f C:\Developement\stm32/stm32f10x_usart.o
+ .comment       0x0000007e       0x7f C:\Developement\stm32/delay.o
+ .comment       0x0000007e       0x7f C:\Developement\stm32/SysClock.o
+ .comment       0x0000007e       0x7f C:\Developement\stm32/gpio.o
+ .comment       0x0000007e       0x7f C:\Developement\stm32/led.o
+ .comment       0x0000007e       0x7f C:\Developement\stm32/uart.o
+ .comment       0x0000007e       0x7f C:\Developement\stm32/main.o
+
+.ARM.attributes
+                0x00000000       0x31
+ .ARM.attributes
+                0x00000000       0x33 C:\Developement\stm32/misc.o
+ .ARM.attributes
+                0x00000033       0x1b C:\Developement\stm32/startup_stm32f10x_md.o
+ .ARM.attributes
+                0x0000004e       0x33 C:\Developement\stm32/system_stm32f10x.o
+ .ARM.attributes
+                0x00000081       0x33 C:\Developement\stm32/stm32f10x_rcc.o
+ .ARM.attributes
+                0x000000b4       0x33 C:\Developement\stm32/stm32f10x_gpio.o
+ .ARM.attributes
+                0x000000e7       0x33 C:\Developement\stm32/stm32f10x_usart.o
+ .ARM.attributes
+                0x0000011a       0x33 C:\Developement\stm32/delay.o
+ .ARM.attributes
+                0x0000014d       0x33 C:\Developement\stm32/SysClock.o
+ .ARM.attributes
+                0x00000180       0x33 C:\Developement\stm32/gpio.o
+ .ARM.attributes
+                0x000001b3       0x33 C:\Developement\stm32/led.o
+ .ARM.attributes
+                0x000001e6       0x33 C:\Developement\stm32/uart.o
+ .ARM.attributes
+                0x00000219       0x33 C:\Developement\stm32/main.o
+
+.debug_frame    0x00000000      0xff0
+ .debug_frame   0x00000000       0xd8 C:\Developement\stm32/misc.o
+ .debug_frame   0x000000d8       0x98 C:\Developement\stm32/system_stm32f10x.o
+ .debug_frame   0x00000170      0x4f4 C:\Developement\stm32/stm32f10x_rcc.o
+ .debug_frame   0x00000664      0x2d0 C:\Developement\stm32/stm32f10x_gpio.o
+ .debug_frame   0x00000934      0x490 C:\Developement\stm32/stm32f10x_usart.o
+ .debug_frame   0x00000dc4       0x58 C:\Developement\stm32/delay.o
+ .debug_frame   0x00000e1c       0x34 C:\Developement\stm32/SysClock.o
+ .debug_frame   0x00000e50       0x34 C:\Developement\stm32/gpio.o
+ .debug_frame   0x00000e84       0xa0 C:\Developement\stm32/led.o
+ .debug_frame   0x00000f24       0x9c C:\Developement\stm32/uart.o
+ .debug_frame   0x00000fc0       0x30 C:\Developement\stm32/main.o
