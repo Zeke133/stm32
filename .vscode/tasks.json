@@ -36,7 +36,7 @@
                 "${workspaceRoot}/src/drivers/SysClock.c",
                 "${workspaceRoot}/src/drivers/gpio.c",
                 "${workspaceRoot}/src/drivers/led.cpp",
-                "${workspaceRoot}/src/drivers/uart.c",
+                "${workspaceRoot}/src/drivers/usart.cpp",
                 "${workspaceRoot}/src/drivers/DS_1wire.cpp",
                 //"${workspaceRoot}/src/startup_stm32f10x_md.c",              // ANSI C startup init
                 "${workspaceRoot}/src/startup_stm32f10x_md.S",            // ASM startup init
@@ -78,7 +78,7 @@
                 "${workspaceRoot}/SysClock.o",
                 "${workspaceRoot}/gpio.o",
                 "${workspaceRoot}/led.o",
-                "${workspaceRoot}/uart.o",
+                "${workspaceRoot}/usart.o",
                 "${workspaceRoot}/DS_1wire.o",
                 "${workspaceRoot}/main.o"
             ],
@@ -198,3 +198,5 @@
         }
     ]
 }
+
+

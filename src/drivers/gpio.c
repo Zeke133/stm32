@@ -1,4 +1,4 @@
-#include "inc/gpio.h"
+#include <gpio.h>
 
 void GPIO_Init_My(GPIO_TypeDef* port, uint16_t pins, GPIOMode_TypeDef mode, GPIOSpeed_TypeDef speed) {
 
