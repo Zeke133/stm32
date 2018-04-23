@@ -15,27 +15,27 @@ public:
 	DS_1Wire_controller(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
 	DS_1Wire_controller(GPIO_TypeDef* GPIOx,
 						uint16_t GPIO_Pin,
-						unsigned int InitTOs[3],
-						unsigned int WriteTOs[3],
-						unsigned int ReadTOs[3]);
+						uint8_t InitTOs[3],
+						uint8_t WriteTOs[3],
+						uint8_t ReadTOs[3]);
 
-	bool GetCodes(unsigned char req, unsigned char * resp);
+	uint8_t GetCodes(unsigned char req, unsigned char * resp);
 
 private:
 
-	bool Initialization(void);
-	void WriteTimeslot(unsigned char bit);
-	unsigned char ReadTimeslot(void);
+	uint8_t Initialization(void);
+	void WriteTimeslot(uint8_t bit);
+	uint8_t ReadTimeslot(void);
 
-	void WriteByte(unsigned char byte);
-	unsigned char ReadByte(void);
+	void WriteByte(uint8_t byte);
+	uint8_t ReadByte(void);
 
 	GPIO_TypeDef* GPIOx;				// Port to run
 	const uint16_t GPIO_Pin;			// Pin of port for communication
 
-	const unsigned int InitTOs[3];		// Timeouts in initialization - us
-	const unsigned int WriteTOs[3];		// Timeouts in write timeslot - us
-	const unsigned int ReadTOs[3];		// Timeouts in read timeslot - us
+	const uint8_t InitTOs[3];			// Timeouts in initialization - us
+	const uint8_t WriteTOs[3];			// Timeouts in write timeslot - us
+	const uint8_t ReadTOs[3];			// Timeouts in read timeslot - us
 
 };
 
