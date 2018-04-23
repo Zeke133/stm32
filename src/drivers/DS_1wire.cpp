@@ -29,10 +29,11 @@ DS_1Wire_controller::DS_1Wire_controller(GPIO_TypeDef* GPIOx,
 
 void DS_1Wire_controller::WriteTimeslot(unsigned char bit) {
 
+	Delay& wait = *delay;
 	//Both  types  of  write  time  slots  are  initiated  by  the
 	//master pulling the 1-Wire bus low
 	GPIO_ResetBits(GPIOx, GPIO_Pin);
-	DelayMC(WriteTOs[0]); // should release within 15us
+	wait.us(WriteTOs[0]); // should release within 15us
 
 	if(bit) {
 		//To  generate  a  Write  1  time  slot,  after  pulling  the  1-Wire
@@ -44,21 +45,22 @@ void DS_1Wire_controller::WriteTimeslot(unsigned char bit) {
 	//slot, after pulling the 1-Wire bus low, the bus master must
 	//continue  to  hold  the  bus  low  for  the  duration  of  the  time
 	//slot (at least 60us).
-	DelayMC(WriteTOs[1]);
+	wait.us(WriteTOs[1]);
 
 	//All  write time slots must be a minimum of 60us in duration with a minimum of a 1us recovery time between individual write
 	//slots.  Both  types  of  write  time  slots  are  initiated  by  the master pulling the 1-Wire bus low
 	GPIO_SetBits(GPIOx, GPIO_Pin);
-	DelayMC(WriteTOs[2]);	// minimum 1us recovery between time slots
+	wait.us(WriteTOs[2]);	// minimum 1us recovery between time slots
 
 }
 
 unsigned char DS_1Wire_controller::ReadTimeslot(void) {
 
+	Delay& wait = *delay;
 	//A read time slot is initiated by the master device pulling the
 	//1-Wire bus low for a minimum of 1us and then releasing the  bus
 	GPIO_ResetBits(GPIOx, GPIO_Pin);
-	DelayMC(ReadTOs[0]);
+	wait.us(ReadTOs[0]);
 	//After  the  master  initiates  the  read  time  slot,  the  DS18B20  will  begin  transmitting  a  1
 	//or  0  on  bus
 	GPIO_SetBits(GPIOx, GPIO_Pin);
@@ -66,9 +68,9 @@ unsigned char DS_1Wire_controller::ReadTimeslot(void) {
 	//initiated  the  read  time  slot.  Therefore,  the  master  must
 	//release  the  bus  and  then  sample  the  bus  state  within
 	//15us from the start of the slot.
-	DelayMC(ReadTOs[1]);
+	wait.us(ReadTOs[1]);
 	auto stat = GPIO_ReadInputDataBit(GPIOx, GPIO_Pin);
-	DelayMC(ReadTOs[2]);
+	wait.us(ReadTOs[2]);
 	return stat;
 }
 
@@ -76,16 +78,17 @@ unsigned char DS_1Wire_controller::ReadTimeslot(void) {
 // false - error
 bool DS_1Wire_controller::Initialization(void) {
 
+	Delay& wait = *delay;
 	// reset  pulse  by  pulling  the  1-Wire  bus  low for  a  minimum  of  480us
 	GPIO_ResetBits(GPIOx, GPIO_Pin);
-	DelayMC(InitTOs[0]);
+	wait.us(InitTOs[0]);
 
 	// When the DS18B20 detects this rising edge, it waits 15us to 60us and then transmits a presence pulse by pulling the 1-Wire bus low for 60us to 240us.
 	GPIO_SetBits(GPIOx, GPIO_Pin);
-	DelayMC(InitTOs[1]);
+	wait.us(InitTOs[1]);
 
 	auto stat = GPIO_ReadInputDataBit(GPIOx, GPIO_Pin);
-	DelayMC(InitTOs[2]);
+	wait.us(InitTOs[2]);
 
 	return !stat;
 }
