@@ -1,26 +1,19 @@
 #include <usart.h>
 
-// Made to link Cpp class with extern C code. Assignment in class constructor.
-USART * usart1ObjPtr = nullptr;
-
-
+// Interrypt handler
 void USART1_IRQHandler(void)
 {
     if ((USART1->SR & USART_FLAG_RXNE) != (u16)RESET) {
 
-            if (!usart1ObjPtr) {
-
-                usart1ObjPtr->push(USART_ReceiveData(USART1));
-            }
+        usart1->push(USART_ReceiveData(USART1));
     }
 }
 
+// Class implementation
 USART::USART(int usartN, uint32_t bauld, uint16_t dataBits, uint16_t stopBits, uint16_t parity) {
 
-    usart1ObjPtr = this;
-
     uint8_t irqChannel;
-    GPIO_TypeDef* port;
+    GPIO_TypeDef * port;
     uint16_t txPin, rxPin;
 
     if (usartN == 1) {
@@ -52,6 +45,13 @@ USART::USART(int usartN, uint32_t bauld, uint16_t dataBits, uint16_t stopBits, u
     /* Configure Rx as input floating */
     GPIO_Init_My(port, rxPin, GPIO_Mode_IN_FLOATING, GPIO_Speed_50MHz);
 
+    set(bauld, dataBits, stopBits, parity);
+
+    usart1 = this;
+}
+
+void USART::set(uint32_t bauld, uint16_t dataBits, uint16_t stopBits, uint16_t parity) {
+
     /* Configure the usart */
     USART_InitTypeDef USART_InitStructure;
 
@@ -79,7 +79,6 @@ USART::USART(int usartN, uint32_t bauld, uint16_t dataBits, uint16_t stopBits, u
     /* Enable the usart Receive interrupt: this interrupt is generated when the
         usart receive data register is not empty */
     USART_ITConfig(usart, USART_IT_RXNE, ENABLE);
-
 }
 
 void USART::send(char byte) {
@@ -118,5 +117,7 @@ uint8_t* USART::getData() {
 
     return buffer;
 }
+
+USART* usart1;
 
 

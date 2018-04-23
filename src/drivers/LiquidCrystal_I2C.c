@@ -59,14 +59,15 @@ void LCDI2C_begin(uint8_t cols, uint8_t lines) {//, uint8_t dotsize) {
 		_displayfunction |= LCD_5x10DOTS;
 	}*/
 
+	Delay& wait = Delay::getInstanse();
 	// SEE PAGE 45/46 FOR INITIALIZATION SPECIFICATION!
 	// according to datasheet, we need at least 40ms after power rises above 2.7V
 	// before sending commands. Arduino can turn on way befer 4.5V so we'll wait 50
-	Delay(50);
+	wait.ms(50);
 
 	// Now we pull both RS and R/W low to begin commands
 	LCDI2C_expanderWrite(lcdi2c.backlightval);	// reset expanderand turn backlight off (Bit 8 =1)
-	Delay(1000);
+	wait.ms(1000);
 
   	//put the LCD into 4 bit mode
 	// this is according to the hitachi HD44780 datasheet
@@ -74,15 +75,15 @@ void LCDI2C_begin(uint8_t cols, uint8_t lines) {//, uint8_t dotsize) {
 
 	  // we start in 8bit mode, try to set 4 bit mode
    LCDI2C_write4bits(0x03 << 4);
-   DelayMC(4500); // wait min 4.1ms
+   wait.us(4500); // wait min 4.1ms
 
    // second try
    LCDI2C_write4bits(0x03 << 4);
-   DelayMC(4500); // wait min 4.1ms
+   wait.us(4500); // wait min 4.1ms
 
    // third go!
    LCDI2C_write4bits(0x03 << 4);
-   DelayMC(150);
+   wait.us(150);
 
    // finally, set to 4-bit interface
    LCDI2C_write4bits(0x02 << 4);
@@ -111,12 +112,12 @@ void LCDI2C_begin(uint8_t cols, uint8_t lines) {//, uint8_t dotsize) {
 /********** high level commands, for the user! */
 void LCDI2C_clear(){
 	LCDI2C_command(LCD_CLEARDISPLAY);// clear display, set cursor position to zero
-	DelayMC(3000);  // this command takes a long time!
+	Delay::getInstanse().us(3000);  // this command takes a long time!
 }
 
 void LCDI2C_home(){
 	LCDI2C_command(LCD_RETURNHOME);  // set cursor position to zero
-	DelayMC(3000);  // this command takes a long time!
+	Delay::getInstanse().us(3000);  // this command takes a long time!
 }
 
 void LCDI2C_setCursor(uint8_t col, uint8_t row){
@@ -244,11 +245,12 @@ void LCDI2C_expanderWrite(uint8_t _data){
 }
 
 void LCDI2C_pulseEnable(uint8_t _data){
+	Delay& wait = Delay::getInstanse();
 	LCDI2C_expanderWrite(_data | En);	// En high
-	DelayMC(1);		// enable pulse must be >450ns
+	wait.us(1);			// enable pulse must be >450ns
 
 	LCDI2C_expanderWrite(_data & ~En);	// En low
-	DelayMC(50);		// commands need > 37us to settle
+	wait.us(50);		// commands need > 37us to settle
 }
 
 
