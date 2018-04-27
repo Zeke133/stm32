@@ -1,14 +1,13 @@
-//YWROBOT
 #ifndef LiquidCrystal_I2C_h
 #define LiquidCrystal_I2C_h
 
-#include "stm32f10x.h"
-#include "stm32f10x_gpio.h"
-#include "stm32f10x_rcc.h"
-#include "stm32f10x_i2c.h"
+#include <stm32f10x.h>
+#include <stm32f10x_gpio.h>
+#include <stm32f10x_rcc.h>
+#include <stm32f10x_i2c.h>
 
-#include "delay.h"
-#include "I2C.h"
+#include <delay.h>
+#include <I2C.h>
 
 // commands
 #define LCD_CLEARDISPLAY 0x01
@@ -52,9 +51,9 @@
 #define LCD_BACKLIGHT 0x08
 #define LCD_NOBACKLIGHT 0x00
 
-#define En 0x04  // Enable bit
-#define Rw 0x02  // Read/Write bit
-#define Rs 0x01  // Register select bit
+#define En 0x04 // Enable bit
+#define Rw 0x02 // Read/Write bit
+#define Rs 0x01 // Register select bit
 
 typedef struct
 {
@@ -68,43 +67,42 @@ typedef struct
   uint8_t backlightval;
 } LiquidCrystal_I2C_Def;
 
-
-  void LCDI2C_write(uint8_t value);
-  void LCDI2C_init(uint8_t lcd_Addr,uint8_t lcd_cols,uint8_t lcd_rows);
-  void LCDI2C_begin(uint8_t cols, uint8_t rows);//, uint8_t charsize = LCD_5x8DOTS ); если у вас другой размер символов - поправьте тут и в описании функции
-  void LCDI2C_clear();
-  void LCDI2C_home();
-  void LCDI2C_noDisplay();
-  void LCDI2C_display();
-  void LCDI2C_noBlink();
-  void LCDI2C_blink();
-  void LCDI2C_noCursor();
-  void LCDI2C_cursor();
-  void LCDI2C_scrollDisplayLeft();
-  void LCDI2C_scrollDisplayRight();
-  void LCDI2C_printLeft();
-  void LCDI2C_printRight();
-  void LCDI2C_leftToRight();
-  void LCDI2C_rightToLeft();
-  void LCDI2C_shiftIncrement();
-  void LCDI2C_shiftDecrement();
-  void LCDI2C_noBacklight();
-  void LCDI2C_backlight();
-  void LCDI2C_autoscroll();
-  void LCDI2C_noAutoscroll();
-  void LCDI2C_createChar(uint8_t location, uint8_t charmap[]);
-  void LCDI2C_setCursor(uint8_t col, uint8_t row);
-  void LCDI2C_write_String(const char* str);
-  void LCDI2C_command(uint8_t value);
+void LCDI2C_write(uint8_t value);
+void LCDI2C_init(uint8_t lcd_Addr = 0x27, uint8_t lcd_cols = 16, uint8_t lcd_rows = 2); //0x27,16,2
+void LCDI2C_begin(uint8_t cols, uint8_t rows); //, uint8_t charsize = LCD_5x8DOTS ); пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+void LCDI2C_clear();
+void LCDI2C_home();
+void LCDI2C_noDisplay();
+void LCDI2C_display();
+void LCDI2C_noBlink();
+void LCDI2C_blink();
+void LCDI2C_noCursor();
+void LCDI2C_cursor();
+void LCDI2C_scrollDisplayLeft();
+void LCDI2C_scrollDisplayRight();
+void LCDI2C_printLeft();
+void LCDI2C_printRight();
+void LCDI2C_leftToRight();
+void LCDI2C_rightToLeft();
+void LCDI2C_shiftIncrement();
+void LCDI2C_shiftDecrement();
+void LCDI2C_noBacklight();
+void LCDI2C_backlight();
+void LCDI2C_autoscroll();
+void LCDI2C_noAutoscroll();
+void LCDI2C_createChar(uint8_t location, uint8_t charmap[]);
+void LCDI2C_setCursor(uint8_t col, uint8_t row);
+void LCDI2C_write_String(const char *str);
+void LCDI2C_command(uint8_t value);
 //  void LCDI2C_init();
 
 ////compatibility API function aliases
-void LCDI2C_blink_on();						// alias for blink()
-void LCDI2C_blink_off();       					// alias for noBlink()
-void LCDI2C_cursor_on();      	 					// alias for cursor()
-void LCDI2C_cursor_off();      					// alias for noCursor()
-void LCDI2C_setBacklight(uint8_t new_val);				// alias for backlight() and nobacklight()
-void LCDI2C_load_custom_character(uint8_t char_num, uint8_t *rows);	// alias for createChar()
+void LCDI2C_blink_on();                                             // alias for blink()
+void LCDI2C_blink_off();                                            // alias for noBlink()
+void LCDI2C_cursor_on();                                            // alias for cursor()
+void LCDI2C_cursor_off();                                           // alias for noCursor()
+void LCDI2C_setBacklight(uint8_t new_val);                          // alias for backlight() and nobacklight()
+void LCDI2C_load_custom_character(uint8_t char_num, uint8_t *rows); // alias for createChar()
 void LCDI2C_printstr(const char[]);
 
 //void LCDI2C_init_priv();
@@ -112,6 +110,5 @@ void LCDI2C_send(uint8_t, uint8_t);
 void LCDI2C_write4bits(uint8_t);
 void LCDI2C_expanderWrite(uint8_t);
 void LCDI2C_pulseEnable(uint8_t);
-
 
 #endif

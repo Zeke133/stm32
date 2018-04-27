@@ -1,12 +1,5 @@
-#include "LiquidCrystal_I2C.h"
+#include <LiquidCrystal_I2C.h>
 
-//YWROBOT
-//last updated on 21/12/2011
-//Tim Starling Fix the reset bug (Thanks Tim)
-//wiki doc http://www.dfrobot.com/wiki/index.php?title=I2C/TWI_LCD1602_Module_(SKU:_DFR0063)
-//Support Forum: http://www.dfrobot.com/forum/
-//Compatible with the Arduino IDE 1.0
-//Library version:1.1
 
 
 void LCDI2C_write(uint8_t value){
@@ -273,7 +266,7 @@ void LCDI2C_blink_off(){
 }
 
 void LCDI2C_load_custom_character(uint8_t char_num, uint8_t *rows){
-		LCDI2C_createChar(char_num, rows);
+	LCDI2C_createChar(char_num, rows);
 }
 
 //Функция передачи строки через USART

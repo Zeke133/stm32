@@ -1,16 +1,32 @@
 #ifndef I2C_H
 #define I2C_H
 
-#include "stm32f10x.h"
-#include "stm32f10x_gpio.h"
-#include "stm32f10x_rcc.h"
-#include "stm32f10x_i2c.h"
+#include <stm32f10x_i2c.h>
 
-#include "delay.h"
 
-void init_I2C1(void);
-void I2C_StartTransmission(I2C_TypeDef* I2Cx, uint8_t transmissionDirection,  uint8_t slaveAddress);
-void I2C_WriteData(I2C_TypeDef* I2Cx, uint8_t data);
-uint8_t I2C_ReadData(I2C_TypeDef* I2Cx);
+#include <gpio.h>
+
+
+// some to interface
+
+class I2c {
+
+    friend int main(void);
+
+public:    
+
+    void write(uint8_t byte);
+    uint8_t read(void);
+
+private:
+
+    I2c(uint8_t portNumber, uint8_t slaveAddress);
+
+    inline void startTransmit(uint8_t transmissionDirection = I2C_Direction_Transmitter);
+    
+    I2C_TypeDef* port;        //Hardware port used for communication by this instanse
+    uint8_t slaveAddress;
+
+};
 
 #endif

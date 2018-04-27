@@ -2,8 +2,10 @@
 #include <led.h>
 #include <usart.h>
 #include <DS_1wire.h>
-
+#include <i2c.h>
 #include <delay.h>
+
+
 #include <convertation.h>
 
 void TakeTimeouts(uint8_t* timeoutsPtr) {
@@ -32,19 +34,19 @@ int main(void) {
 	SetSysClockTo72();
 
     // Init resourses
-    Delay delayObj;
-    USART usart1Obj(1);
+    Delay delayObj;                 // Delay based on SysTickTimer
+    USART usart1Obj(1);             // USART1
+    LED led(GPIOC, GPIO_Pin_13);    // LED on gpio
+    I2c i2cPort(1, 0x27);           // I2C parallel converter
+
     // Take global resourses
     USART& usart = *usart1;
     Delay& wait = *delay;
 
-    // Init LED
-    LED led(GPIOC, GPIO_Pin_13);
-
     // usart test
     usart << "Hello.\r\nUSART1 is ready.\r\n";
 
-    // 1-wire
+    // 1-wire test
     unsigned char buf[8];
 
     DS_1Wire_controller one_wire(GPIOA, GPIO_Pin_8);
@@ -77,10 +79,10 @@ int main(void) {
         DS_1Wire_controller oneWire(GPIOA, GPIO_Pin_8, timeouts[0], timeouts[1], timeouts[2]);
         usart << "one_wire send: 0x33, ";
         if (one_wire.GetCodes(0x33, buf)) {
-        usart << "Succ";
-    } else {
-        usart << "Err";
-    }
+            usart << "Succ";
+        } else {
+            usart << "Err";
+        }
         usart << "\r\none_wire resp: ";
         for(int i = 0; i < 8; i++) {
             usart << itoa(buf[i],16);

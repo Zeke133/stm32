@@ -35,6 +35,9 @@ private:
     
 };
 
+/*
+Global pointer to class instanse. Because we can't make it singleton without including c++ libs.
+*/
 extern Delay* delay;
 
 #endif
