@@ -3,6 +3,7 @@
 #include <usart.h>
 #include <DS_1wire.h>
 #include <i2c.h>
+#include <lcd.h>
 #include <delay.h>
 
 
@@ -39,12 +40,18 @@ int main(void) {
     LED led(GPIOC, GPIO_Pin_13);    // LED on gpio
     I2c i2cPort(1, 0x27);           // I2C parallel converter
 
+    Lcd lcd(i2cPort, delayObj, 2);  // LCD on I2C adaptor
+
     // Take global resourses
     USART& usart = *usart1;
     Delay& wait = *delay;
 
     // usart test
     usart << "Hello.\r\nUSART1 is ready.\r\n";
+
+    // lcd test
+    lcd.backlightSet(1);
+    lcd.puts("Hello LCD");
 
     // 1-wire test
     unsigned char buf[8];

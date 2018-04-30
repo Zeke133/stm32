@@ -12,7 +12,9 @@ void SysTick_Handler() {
 // Class implementation
 uint32_t Delay::msTicks = 0;
 
-Delay::Delay() {
+Delay::Delay()
+	: ClkCyclPerUs(SystemCoreClock / 1000000)
+	{
 
 	// Update SystemCoreClock value
 	SystemCoreClockUpdate();
@@ -21,8 +23,6 @@ Delay::Delay() {
 	SysTick_Config(SystemCoreClock / 1000);
 
 	// DWT_Init
-	ClkCyclPerUs = SystemCoreClock / 1000000;
-
 	if (!(CoreDebug->DEMCR & CoreDebug_DEMCR_TRCENA_Msk)) {
 
 		CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
@@ -33,7 +33,7 @@ Delay::Delay() {
 	delay = this;
 }
 
-void Delay::ms(uint32_t ms) {
+void Delay::ms(uint32_t ms) const {
 
 	// Reload ms value
 	msTicks = ms;
@@ -42,7 +42,7 @@ void Delay::ms(uint32_t ms) {
 		;
 }
 
-void Delay::us(uint32_t us) {
+void Delay::us(uint32_t us) const {
 
 	int32_t tp = DWT->CYCCNT + us * ClkCyclPerUs;
 	while (((int32_t)DWT->CYCCNT - tp) < 0) ;

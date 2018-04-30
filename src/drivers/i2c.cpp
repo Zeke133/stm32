@@ -50,7 +50,7 @@ I2c::I2c(uint8_t portNumber, uint8_t slaveAddr) {
 
 }
 
-void I2c::startTransmit(uint8_t transmissionDirection) {
+void I2c::startTransmit(uint8_t transmissionDirection) const {
 
     //wait for free bus
     while (I2C_GetFlagStatus(port, I2C_FLAG_BUSY));
@@ -71,18 +71,20 @@ void I2c::startTransmit(uint8_t transmissionDirection) {
     }
 }
 
-void I2c::write(uint8_t data) {
+void I2c::write(uint8_t data) const {
     
     startTransmit();
     
     I2C_SendData(port, data);
     while (!I2C_CheckEvent(port, I2C_EVENT_MASTER_BYTE_TRANSMITTED));
+    I2C_GenerateSTOP(port, ENABLE);
 }
 
-uint8_t I2c::read(void) {
+uint8_t I2c::read(void) const {
 
     startTransmit();
 
-    while (!I2C_CheckEvent(port, I2C_EVENT_MASTER_BYTE_RECEIVED));    
+    while (!I2C_CheckEvent(port, I2C_EVENT_MASTER_BYTE_RECEIVED));
+    I2C_GenerateSTOP(port, ENABLE);
     return I2C_ReceiveData(port);
 }

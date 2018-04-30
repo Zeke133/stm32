@@ -19,8 +19,8 @@ class Delay {
 
 public:
 
-    void ms(uint32_t ms);
-    void us(uint32_t us);
+    void ms(uint32_t ms) const;
+    void us(uint32_t us) const;
 
     // delete copy constructor and assignment operator
     Delay(const Delay&) = delete;
@@ -30,7 +30,7 @@ private:
     
     Delay();
 
-    uint32_t ClkCyclPerUs;
+    const uint32_t ClkCyclPerUs;
     static uint32_t msTicks;    // For store tick counts in ms
     
 };
