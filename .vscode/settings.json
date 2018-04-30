@@ -4,7 +4,9 @@
         "delay.h": "c",
         "stm32f10x.h": "c",
         "convertation.h": "c",
-        "led.h": "c"
+        "led.h": "c",
+        "system_stm32f10x.h": "c",
+        "core_cm3.h": "c"
     },
     "C_Cpp.intelliSenseEngineFallback": "Enabled",
     "terminal.integrated.fontWeightBold": "normal",
