@@ -37,7 +37,8 @@
                 "${workspaceRoot}/src/drivers/gpio.c",
                 "${workspaceRoot}/src/drivers/led.cpp",
                 "${workspaceRoot}/src/drivers/usart.cpp",
-                "${workspaceRoot}/src/drivers/DS_1wire.cpp",
+                "${workspaceRoot}/src/drivers/dallas_1wire.cpp",
+                "${workspaceRoot}/src/drivers/ds18b20.cpp",
                 "${workspaceRoot}/src/drivers/i2c.cpp",
                 "${workspaceRoot}/src/drivers/lcd.cpp",
                 //"${workspaceRoot}/src/startup_stm32f10x_md.c",              // ANSI C startup init
@@ -81,7 +82,8 @@
                 "${workspaceRoot}/gpio.o",
                 "${workspaceRoot}/led.o",
                 "${workspaceRoot}/usart.o",
-                "${workspaceRoot}/DS_1wire.o",
+                "${workspaceRoot}/dallas_1wire.o",
+                "${workspaceRoot}/ds18b20.o",
                 "${workspaceRoot}/i2c.o",
                 "${workspaceRoot}/lcd.o",
                 "${workspaceRoot}/main.o"
@@ -176,10 +178,13 @@
                 "-isystem",
                 "../googleTest/googletest/include",
                 "-pthread",
+                // Tested includes
+                "-I${workspaceRoot}/src/utils/inc",
                 // TestCases
                 "${workspaceRoot}/src/tests/test.cpp",                
                 // Tested modules
                 "${workspaceRoot}/src/utils/convertation.c",
+                "${workspaceRoot}/src/utils/crc.c",
                 // TestFramework lib
                 "../googleTest/googletest/make/gtest_main.a",                
                 // output

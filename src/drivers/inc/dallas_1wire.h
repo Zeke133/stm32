@@ -1,5 +1,5 @@
-#ifndef DS_1WIRE_H
-#define DS_1WIRE_H
+#ifndef Dallas_1wire_H
+#define Dallas_1wire_H
 
 #include <stm32f10x_rcc.h>
 #include <stm32f10x_gpio.h>
@@ -8,27 +8,34 @@
 #include <delay.h>
 
 
-class DS_1Wire_controller {
+class Dallas_1wire_controller {
 
 public:
 
-	DS_1Wire_controller(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
-	DS_1Wire_controller(GPIO_TypeDef* GPIOx,
+	Dallas_1wire_controller(Delay& timer, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
+	Dallas_1wire_controller(Delay& timer, GPIO_TypeDef* GPIOx,
 						uint16_t GPIO_Pin,
 						uint8_t InitTOs[3],
 						uint8_t WriteTOs[3],
 						uint8_t ReadTOs[3]);
 
-	uint8_t GetCodes(unsigned char req, unsigned char * resp);
+	uint8_t ReadROM(uint8_t * resp);
+	uint8_t MatchROM(const uint8_t * romCode /*64 bit RomCode*/);
+	uint8_t SkipROM(void);
 
-private:
+protected:
 
-	uint8_t Initialization(void);
 	void WriteTimeslot(uint8_t bit);
 	uint8_t ReadTimeslot(void);
 
 	void WriteByte(uint8_t byte);
 	uint8_t ReadByte(void);
+
+	const Delay& wait;					// timer
+
+private:
+
+	uint8_t Initialization(void);
 
 	GPIO_TypeDef* GPIOx;				// Port to run
 	const uint16_t GPIO_Pin;			// Pin of port for communication

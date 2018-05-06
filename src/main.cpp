@@ -1,7 +1,7 @@
 #include <SysClock.h>
 #include <led.h>
 #include <usart.h>
-#include <DS_1wire.h>
+#include <dallas_1wire.h>
 #include <i2c.h>
 #include <lcd.h>
 #include <delay.h>
@@ -56,10 +56,10 @@ int main(void) {
     // 1-wire test
     unsigned char buf[8];
 
-    DS_1Wire_controller one_wire(GPIOA, GPIO_Pin_8);
+    Dallas_1wire_controller one_wire(wait, GPIOA, GPIO_Pin_8);
 
     usart << "one_wire send: 0x33, ";
-    if (one_wire.GetCodes(0x33, buf)) {
+    if (one_wire.ReadROM(buf)) {
         usart << "Succ";
     } else {
         usart << "Err";
@@ -83,9 +83,9 @@ int main(void) {
         TakeTimeouts((uint8_t*)timeouts);
 
         // Run and print results
-        DS_1Wire_controller oneWire(GPIOA, GPIO_Pin_8, timeouts[0], timeouts[1], timeouts[2]);
+        Dallas_1wire_controller oneWire(wait, GPIOA, GPIO_Pin_8, timeouts[0], timeouts[1], timeouts[2]);
         usart << "one_wire send: 0x33, ";
-        if (one_wire.GetCodes(0x33, buf)) {
+        if (one_wire.ReadROM(buf)) {
             usart << "Succ";
         } else {
             usart << "Err";

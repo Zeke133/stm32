@@ -1,35 +1,41 @@
-#include <DS_1wire.h>
+#include <dallas_1wire.h>
 
 
-DS_1Wire_controller::DS_1Wire_controller(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin) 
-	: GPIOx(GPIOx),
+Dallas_1wire_controller::Dallas_1wire_controller(Delay& timer, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin) 
+	: wait(timer),
+		GPIOx(GPIOx),
 		GPIO_Pin(GPIO_Pin),
 		InitTOs{60, 10, 50},	// *10
 		WriteTOs{3, 90, 5},
 		ReadTOs{1, 7, 90} {
 
+		// Timings from other libs
+		// 48, 7, 41
+		// 10, 55, x
+		// 3, 10, 53
+
 	GPIO_Init_My(GPIOx, GPIO_Pin, GPIO_Mode_Out_OD, GPIO_Speed_50MHz);
 
 }
 
-DS_1Wire_controller::DS_1Wire_controller(GPIO_TypeDef* GPIOx,
+Dallas_1wire_controller::Dallas_1wire_controller(Delay& timer, GPIO_TypeDef* GPIOx,
 										uint16_t GPIO_Pin,
 										uint8_t InitTOs[3],
 										uint8_t WriteTOs[3],
 										uint8_t ReadTOs[3])
-	:  GPIOx(GPIOx),
-	GPIO_Pin(GPIO_Pin),
-	InitTOs {InitTOs[0], InitTOs[1], InitTOs[2]},
-	WriteTOs {WriteTOs[0], WriteTOs[1], WriteTOs[2]},
-	ReadTOs {ReadTOs[0], ReadTOs[1], ReadTOs[2]} {
+	: wait(timer),
+		GPIOx(GPIOx),
+		GPIO_Pin(GPIO_Pin),
+		InitTOs {InitTOs[0], InitTOs[1], InitTOs[2]},
+		WriteTOs {WriteTOs[0], WriteTOs[1], WriteTOs[2]},
+		ReadTOs {ReadTOs[0], ReadTOs[1], ReadTOs[2]} {
 
 	GPIO_Init_My(GPIOx, GPIO_Pin, GPIO_Mode_Out_OD, GPIO_Speed_50MHz);
 
 }
 
-void DS_1Wire_controller::WriteTimeslot(uint8_t bit) {
+void Dallas_1wire_controller::WriteTimeslot(uint8_t bit) {
 
-	Delay& wait = *delay;
 	//Both  types  of  write  time  slots  are  initiated  by  the
 	//master pulling the 1-Wire bus low
 	GPIO_ResetBits(GPIOx, GPIO_Pin);
@@ -54,9 +60,8 @@ void DS_1Wire_controller::WriteTimeslot(uint8_t bit) {
 
 }
 
-uint8_t DS_1Wire_controller::ReadTimeslot(void) {
+uint8_t Dallas_1wire_controller::ReadTimeslot(void) {
 
-	Delay& wait = *delay;
 	//A read time slot is initiated by the master device pulling the
 	//1-Wire bus low for a minimum of 1us and then releasing the  bus
 	GPIO_ResetBits(GPIOx, GPIO_Pin);
@@ -76,9 +81,8 @@ uint8_t DS_1Wire_controller::ReadTimeslot(void) {
 
 // 0 - success
 // 1 - error
-uint8_t DS_1Wire_controller::Initialization(void) {
+uint8_t Dallas_1wire_controller::Initialization(void) {
 
-	Delay& wait = *delay;
 	// reset  pulse  by  pulling  the  1-Wire  bus  low for  a  minimum  of  480us
 	GPIO_ResetBits(GPIOx, GPIO_Pin);
 	wait.us(InitTOs[0]*10);
@@ -93,7 +97,7 @@ uint8_t DS_1Wire_controller::Initialization(void) {
 	return stat;
 }
 
-void DS_1Wire_controller::WriteByte(uint8_t byte) {
+void Dallas_1wire_controller::WriteByte(uint8_t byte) {
 
 	for(int i = 0; i < 8; i++) {
 		WriteTimeslot(byte & 0x01);
@@ -101,7 +105,7 @@ void DS_1Wire_controller::WriteByte(uint8_t byte) {
 	}
 }
 
-uint8_t DS_1Wire_controller::ReadByte(void) {
+uint8_t Dallas_1wire_controller::ReadByte(void) {
 
 	uint8_t result = 0;
 	for(int i = 0; i < 8; i++) {
@@ -111,15 +115,40 @@ uint8_t DS_1Wire_controller::ReadByte(void) {
 	return result;
 }
 
-uint8_t DS_1Wire_controller::GetCodes(uint8_t req, uint8_t * resp) {
+uint8_t Dallas_1wire_controller::ReadROM(uint8_t * resp) {
 
 	if (Initialization())
 		return 1;
 	
-	WriteByte(req);
+	WriteByte(0x33);
 	for(int i = 0; i < 8; i++) {
 		resp[i] = ReadByte();
 	}
 	return 0;
 }
+
+uint8_t Dallas_1wire_controller::MatchROM(const uint8_t * romCode /*64 bit RomCode*/) {
+
+	if (Initialization())
+		return 1;
+	
+	WriteByte(0x55);
+	for(int i = 7; i >= 0; i--) {
+		WriteByte(romCode[i]);
+	}
+	return 0;
+}
+
+uint8_t Dallas_1wire_controller::SkipROM(void) {
+
+	if (Initialization())
+		return 1;
+	
+	WriteByte(0xCC);
+	return 0;
+}
+
+//uint8_t Dallas_1wire_controller::SearchRom(void) { /* 0xF0 */ }
+
+//uint8_t Dallas_1wire_controller::AlarmSearch(void) { /* 0xEC */ }
 
