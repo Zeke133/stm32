@@ -241,7 +241,7 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x68 D:\Projects\stm32/ds18b20.o
  .debug_ranges  0x00000000       0x58 D:\Projects\stm32/ds18b20.o
- .debug_line    0x00000000      0x330 D:\Projects\stm32/ds18b20.o
+ .debug_line    0x00000000      0x332 D:\Projects\stm32/ds18b20.o
  .debug_str     0x00000000      0x762 D:\Projects\stm32/ds18b20.o
  .comment       0x00000000       0x7f D:\Projects\stm32/ds18b20.o
  .debug_frame   0x00000000      0x188 D:\Projects\stm32/ds18b20.o

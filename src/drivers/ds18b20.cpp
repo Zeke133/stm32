@@ -1,5 +1,7 @@
 #include <ds18b20.h>
 
+
+
 DS18B20::DS18B20(Delay& timer, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, enum Resolution res)
     : Dallas_1wire_controller(timer, GPIOx, GPIO_Pin) {
 
@@ -82,7 +84,8 @@ uint8_t DS18B20::readScratchpad(void) {
 
 void DS18B20::copyScratchpad(void) {
 
-    // If  the  device  is  being  used  in  parasite  power mode, within 10μs (max) after this command is issued the 
+    // If  the  device  is  being  used  in  parasite  power mode,
+    // within 10μs (max) after this command is issued the 
     // master must enable a strong pullup on the 1-Wire bus for at least 10ms
     WriteByte(0x48);
 
@@ -91,7 +94,8 @@ void DS18B20::copyScratchpad(void) {
 
         wait.ms(10);
     } else {
-        // If the DS18B20 is powered by an external supply, the master can issue read time slots after the command and the DS18B20 
+        // If the DS18B20 is powered by an external supply,
+        // the master can issue read time slots after the command and the DS18B20 
         // will respond by transmitting a 0 while in progress and a 1 when done.
         for (uint16_t i = 10; i > 0; i--) {
 
@@ -150,8 +154,10 @@ void DS18B20::convertT(void) {
                 break;
         }
     } else {
-        // If the DS18B20 is powered by an external supply, the master can issue read time slots after the Convert T command and the DS18B20 
-        // will respond by transmitting a 0 while the temperature conversion is in progress and a 1 when the conversion is done.
+        // If the DS18B20 is powered by an external supply,
+        // the master can issue read time slots after the Convert T command and the DS18B20 
+        // will respond by transmitting a 0 while the temperature conversion is in progress
+        // and a 1 when the conversion is done.
         for (uint16_t i = 1000; i > 0; i -= 10) {
 
             wait.ms(10);
