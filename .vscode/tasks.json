@@ -11,40 +11,49 @@
                 "-mthumb",
                 "-Wall",
                 "-ffunction-sections",
-                "-fno-exceptions", // if use exceptions - produse error: undefined reference to `_exit'; undefined reference to `_kill'; undefined reference to `_getpid'
+                "-fno-exceptions",      // if use exceptions - produse error: undefined reference to `_exit'; undefined reference to `_kill'; undefined reference to `_getpid'
                 "-g",
                 "-O0",
                 "-c",
+                // defines
                 "-DSTM32F103C8",
                 "-DSTM32F10X_MD",
                 "-DUSE_STDPERIPH_DRIVER",
                 "-D__ASSEMBLY__",
                 "-DSUPPORT_CPLUSPLUS",
-                "-I${workspaceRoot}/libs/",
-                "-I${workspaceRoot}/libs/cmsis",
-                "-I${workspaceRoot}/libs/stm_lib/inc",
-                "-I${workspaceRoot}/libs/cmsis_boot",
-                "-I${workspaceRoot}/src/drivers/inc",
-                "-I${workspaceRoot}/src/utils/inc",
-                "${workspaceRoot}/libs/stm_lib/src/misc.c",
-                "${workspaceRoot}/libs/stm_lib/src/stm32f10x_rcc.c",
-                "${workspaceRoot}/libs/stm_lib/src/stm32f10x_gpio.c",
-                "${workspaceRoot}/libs/stm_lib/src/stm32f10x_usart.c",
-                "${workspaceRoot}/libs/stm_lib/src/stm32f10x_i2c.c",
-                "${workspaceRoot}/src/utils/convertation.c",
-                "${workspaceRoot}/src/drivers/delay.cpp",
-                "${workspaceRoot}/src/drivers/SysClock.c",
-                "${workspaceRoot}/src/drivers/gpio.c",
-                "${workspaceRoot}/src/drivers/led.cpp",
-                "${workspaceRoot}/src/drivers/usart.cpp",
-                "${workspaceRoot}/src/drivers/dallas_1wire.cpp",
-                "${workspaceRoot}/src/drivers/ds18b20.cpp",
-                "${workspaceRoot}/src/drivers/i2c.cpp",
-                "${workspaceRoot}/src/drivers/lcd.cpp",
-                //"${workspaceRoot}/src/startup_stm32f10x_md.c",              // ANSI C startup init
-                "${workspaceRoot}/src/startup_stm32f10x_md.S",            // ASM startup init
-                "${workspaceRoot}/libs/cmsis_boot/system_stm32f10x.c",
-                "${workspaceRoot}/src/main.cpp"
+                // includes
+                "-I${workspaceRoot}/libs/cmsis/CM3/CoreSupport",
+                "-I${workspaceRoot}/libs/cmsis/CM3/DeviceSupport/ST/STM32F10x",
+                "-I${workspaceRoot}/libs/STM32F10x_StdPeriph_Driver/inc",
+                // ---
+                "-I${workspaceRoot}/drivers/inc",
+                "-I${workspaceRoot}/utils/inc",
+                // sources
+                "${workspaceRoot}/modules/src/startup_stm32f10x_md.S",              // ASM startup init
+                //"${workspaceRoot}/modules/src/startup_stm32f10x_md.c",            // ANSI C startup init
+                "${workspaceRoot}/libs/cmsis/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c",
+                "${workspaceRoot}/libs/STM32F10x_StdPeriph_Driver/src/misc.c",
+                "${workspaceRoot}/libs/STM32F10x_StdPeriph_Driver/src/stm32f10x_rcc.c",
+                "${workspaceRoot}/libs/STM32F10x_StdPeriph_Driver/src/stm32f10x_gpio.c",
+                "${workspaceRoot}/libs/STM32F10x_StdPeriph_Driver/src/stm32f10x_usart.c",
+                "${workspaceRoot}/libs/STM32F10x_StdPeriph_Driver/src/stm32f10x_i2c.c",
+                "${workspaceRoot}/libs/STM32F10x_StdPeriph_Driver/src/stm32f10x_rtc.c",
+                "${workspaceRoot}/libs/STM32F10x_StdPeriph_Driver/src/stm32f10x_pwr.c",
+                // ---
+                "${workspaceRoot}/drivers/src/delay.cpp",
+                "${workspaceRoot}/drivers/src/SysClock.c",
+                "${workspaceRoot}/drivers/src/gpio.c",
+                "${workspaceRoot}/drivers/src/led.cpp",
+                "${workspaceRoot}/drivers/src/usart.cpp",
+                "${workspaceRoot}/drivers/src/oneWire.cpp",
+                "${workspaceRoot}/drivers/src/oneWireSearch.cpp",
+                "${workspaceRoot}/drivers/src/ds18b20.cpp",
+                "${workspaceRoot}/drivers/src/i2c.cpp",
+                "${workspaceRoot}/drivers/src/lcd.cpp",
+                "${workspaceRoot}/drivers/src/rtc.cpp",
+                "${workspaceRoot}/utils/src/convertation.cpp",
+                "${workspaceRoot}/utils/src/crc.cpp",
+                "${workspaceRoot}/modules/src/main.cpp"
             ],
             "problemMatcher": [
                 "$msCompile"
@@ -76,16 +85,21 @@
                 "${workspaceRoot}/stm32f10x_gpio.o",
                 "${workspaceRoot}/stm32f10x_usart.o",
                 "${workspaceRoot}/stm32f10x_i2c.o",
+                "${workspaceRoot}/stm32f10x_rtc.o",
+                "${workspaceRoot}/stm32f10x_pwr.o",
                 "${workspaceRoot}/delay.o",
-                "${workspaceRoot}/convertation.o",
                 "${workspaceRoot}/SysClock.o",
                 "${workspaceRoot}/gpio.o",
                 "${workspaceRoot}/led.o",
                 "${workspaceRoot}/usart.o",
-                "${workspaceRoot}/dallas_1wire.o",
+                "${workspaceRoot}/oneWire.o",
+                "${workspaceRoot}/oneWireSearch.o",
                 "${workspaceRoot}/ds18b20.o",
                 "${workspaceRoot}/i2c.o",
                 "${workspaceRoot}/lcd.o",
+                "${workspaceRoot}/rtc.o",
+                "${workspaceRoot}/convertation.o",
+                "${workspaceRoot}/crc.o",
                 "${workspaceRoot}/main.o"
             ],
             "problemMatcher": [
@@ -179,12 +193,12 @@
                 "../googleTest/googletest/include",
                 "-pthread",
                 // Tested includes
-                "-I${workspaceRoot}/src/utils/inc",
+                "-I${workspaceRoot}/utils/inc",
                 // TestCases
-                "${workspaceRoot}/src/tests/test.cpp",                
+                "${workspaceRoot}/tests/test.cpp",                
                 // Tested modules
-                "${workspaceRoot}/src/utils/convertation.c",
-                "${workspaceRoot}/src/utils/crc.c",
+                "${workspaceRoot}/utils/convertation.cpp",
+                "${workspaceRoot}/utils/crc.c",
                 // TestFramework lib
                 "../googleTest/googletest/make/gtest_main.a",                
                 // output
