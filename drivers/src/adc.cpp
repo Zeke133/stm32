@@ -168,7 +168,5 @@ uint32_t ADC::getValue(uint32_t channel) {
     else {
         return ADC_GetInjectedConversionValue(adcUsed, mapChannel2Injected[channel]);
     }
-    
-    //temperature = (uint16_t)((V25-adc_value)/Avg_Slope+25);
 }
 
