@@ -6,6 +6,7 @@
 #include <i2c.h>
 #include <lcd.h>
 #include <rtc.h>
+#include <adc.h>
 #include <delay.h>
 
 
@@ -42,6 +43,9 @@ int main(void) {
     Lcd lcd(i2cPort, wait, 2);      // LCD on I2C adaptor
 
     RealTimeClock rtc(wait);        // RealTime Clock
+
+    uint8_t channels[12] = {16, 17};
+    ADC adc1(1, RCC_PCLK2_Div6, ADC::ResultStoreMode::Regular, 2, channels); // ADC setup
 
     // usart test
     usart1 << "Hello.\r\nUSART1 is ready.\r\n";
@@ -85,6 +89,11 @@ int main(void) {
     else {
         usart1 << "not found";
     }
+
+    // ADC test
+    usart1 << "\r\nADC test: ";
+    usart1 << itoa(adc1.getValue(16), 16) << ", ";  // temp
+    usart1 << itoa(adc1.getValue(17), 16);  // Vref
 
     while (1) {
 
