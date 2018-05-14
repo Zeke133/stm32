@@ -13,24 +13,20 @@ I2c::I2c(uint8_t portNumber, uint8_t slaveAddr) {
         gpioPort = GPIOB;
         gpioPins = GPIO_Pin_6 | GPIO_Pin_7;
 
-        //Turn needed modules tacting
-        RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
-        RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
         RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1, ENABLE);
-
-    } else if (portNumber == 2) {
-
-        // Need to configure!
-
-        // port = I2C1;
-        // gpioPort = GPIOB;
-        // gpioPins = GPIO_Pin_6 | GPIO_Pin_7;
-
-        // //Turn needed modules tacting
-        // RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
-        // RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
-        // RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1, ENABLE);
     }
+    else if (portNumber == 2) {
+
+        port = I2C2;
+        gpioPort = GPIOB;
+        gpioPins = GPIO_Pin_10 | GPIO_Pin_11;
+
+        RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C2, ENABLE);
+    }
+
+    //Turn needed modules tacting
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
 
     //I2C configuration
     I2C_InitTypeDef i2c;
@@ -58,14 +54,14 @@ void I2c::startTransmit(uint8_t transmissionDirection) const {
     I2C_GenerateSTART(port, ENABLE);
     //wait flag
     while (!I2C_CheckEvent(port, I2C_EVENT_MASTER_MODE_SELECT));
-    //send slave adr, may need bit shift
-    //http://microtechnics.ru/stm32-ispolzovanie-i2c/#comment-8109
+    //send slave adr, LSB used for read/write indication so need shift
     I2C_Send7bitAddress(port, slaveAddress << 1, transmissionDirection);
     //wait flag
     if (transmissionDirection == I2C_Direction_Transmitter) {
 
     	while (!I2C_CheckEvent(port, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED));
-    } else if (transmissionDirection == I2C_Direction_Receiver) {
+    }
+    else if (transmissionDirection == I2C_Direction_Receiver) {
 
 	    while (!I2C_CheckEvent(port, I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED));
     }
@@ -73,18 +69,21 @@ void I2c::startTransmit(uint8_t transmissionDirection) const {
 
 void I2c::write(uint8_t data) const {
     
-    startTransmit();
-    
     I2C_SendData(port, data);
     while (!I2C_CheckEvent(port, I2C_EVENT_MASTER_BYTE_TRANSMITTED));
-    I2C_GenerateSTOP(port, ENABLE);
+    
 }
 
 uint8_t I2c::read(void) const {
 
-    startTransmit();
-
     while (!I2C_CheckEvent(port, I2C_EVENT_MASTER_BYTE_RECEIVED));
-    I2C_GenerateSTOP(port, ENABLE);
     return I2C_ReceiveData(port);
 }
+
+void I2c::stopTransmit(void) const {
+
+    I2C_GenerateSTOP(port, ENABLE);
+    while (!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_TRANSMITTED));
+}
+
+

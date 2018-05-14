@@ -1,5 +1,5 @@
-#ifndef LED_H
-#define LED_H
+#ifndef _LED_H
+#define _LED_H
 
 #include <stm32f10x_rcc.h>
 #include <stm32f10x_gpio.h>
@@ -8,14 +8,21 @@
 
 class LED {
 
+friend int main(void);
+
 public:
 
-    LED(GPIO_TypeDef* port, uint16_t pin);
     void on();
     void off();
     void invert();
 
+    // delete copy constructor and assignment operator
+    LED(const LED&) = delete;
+    LED& operator=(const LED&) = delete;
+
 private:
+
+    LED(GPIO_TypeDef* port, uint16_t pin);
 
 	GPIO_TypeDef* port;
 	uint16_t pin;

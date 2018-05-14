@@ -34,16 +34,20 @@ class Lcd {
         // hardware dependent feature!
         void backlightSet(uint8_t mode /*1 - on, 0 - off*/);
 
+        // delete copy constructor and assignment operator
+        Lcd(const Lcd&) = delete;
+        Lcd& operator=(const Lcd&) = delete;
+
     private:
 
-        Lcd(I2c& interface, Delay& delay, uint8_t lines);
+        Lcd(I2c& i2c, Delay& delay, uint8_t lines);
 
         void write4bits(uint8_t data);
         void writeData(uint8_t value, uint8_t mode);
         void sendInstruction(uint8_t value);
         void sendData(uint8_t value);
 
-        const I2c& interface;
+        const I2c& i2c;
         const Delay& wait;
 
         uint8_t backlightPin;

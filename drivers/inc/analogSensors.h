@@ -4,18 +4,22 @@
 #include <adc.h>
 
 
-
 class InternalTemp {
+
+friend int main(void);
     
 public:
 
-    InternalTemp(ADC& adcRef);
-
     int32_t getTemperatureC(void);
+    void calibrate(int32_t tempC);
 
-    void calibrate(int32_t temp);
+    // delete copy constructor and assignment operator
+    InternalTemp(const InternalTemp&) = delete;
+    InternalTemp& operator=(const InternalTemp&) = delete;
 
 private:
+
+    InternalTemp(ADC& adcRef);
 
     ADC& adcRef;
     uint32_t channelTemp;

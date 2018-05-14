@@ -11,6 +11,8 @@
 
 class ADC {
 
+friend int main(void);
+
 public:
 
     enum ResultStoreMode {
@@ -18,11 +20,15 @@ public:
         Regular
     };
 
-    ADC(uint32_t adcN, uint32_t clkDiv, enum ResultStoreMode chType, uint32_t chCnt, const uint8_t * chNumbers);
-
     uint32_t getValue(uint32_t channel);
 
+    // delete copy constructor and assignment operator
+    ADC(const ADC&) = delete;
+    ADC& operator=(const ADC&) = delete;
+
 private:
+
+    ADC(uint32_t adcN, uint32_t clkDiv, enum ResultStoreMode chType, uint32_t chCnt, const uint8_t * chNumbers);
 
     void init(void);
 

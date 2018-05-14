@@ -9,8 +9,8 @@
 #include <adc.h>
 #include <delay.h>
 
-
 #include <convertation.h>
+
 
 void TakeTimeouts(USART& usart, Delay& wait, uint8_t* timeoutsPtr) {
     

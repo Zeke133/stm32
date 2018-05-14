@@ -1,19 +1,41 @@
 #include <usart.h>
 
 
-// refactor to DMA using in interruption handlers
-
-
-USART* usart1;
-
+uint8_t * uart1buf;
+uint8_t * uart2buf;
+uint8_t * uart1bufCnt;
+uint8_t * uart2bufCnt;
 
 // Interrypt handler
-void USART1_IRQHandler(void)
-{
+void USART1_IRQHandler(void) {
+
     if ((USART1->SR & USART_FLAG_RXNE) != (u16)RESET) {
 
-        usart1->push(USART_ReceiveData(USART1));
+        if (*uart1bufCnt < sizeof 100) {
+
+            uart1buf[(*uart1bufCnt)++] = USART_ReceiveData(USART1);
+        }
     }
+}
+void USART2_IRQHandler(void) {
+    
+    if ((USART2->SR & USART_FLAG_RXNE) != (u16)RESET) {
+
+        if (*uart2bufCnt < sizeof 100) {
+
+            uart2buf[(*uart2bufCnt)++] = USART_ReceiveData(USART2);
+        }
+    }
+}
+void DMA1_Channel4_IRQHandler(void) {
+
+    DMA_ClearITPendingBit(DMA1_IT_TC4);
+    DMA_Cmd(DMA1_Channel4, DISABLE);
+}
+void DMA1_Channel7_IRQHandler(void) {
+
+    DMA_ClearITPendingBit(DMA1_IT_TC7);
+    DMA_Cmd(DMA1_Channel7, DISABLE);
 }
 
 // Class implementation
@@ -22,24 +44,63 @@ USART::USART(int usartN, uint32_t bauld, uint16_t dataBits, uint16_t stopBits, u
     uint8_t irqChannel;
     GPIO_TypeDef * port;
     uint16_t txPin, rxPin;
+    IRQn_Type dmaIrq;
 
     if (usartN == 1) {
+        
+        uart1buf = inputBuffer;
+        uart1bufCnt = &inputBufferCnt;
 
         /* Enable USART1 and GPIOA clock */
         RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1 | RCC_APB2Periph_GPIOA, ENABLE);
+        // DMA enable
+        RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
 
         irqChannel = USART1_IRQn;
         port = GPIOA;
         txPin = GPIO_Pin_9;
         rxPin = GPIO_Pin_10;
         usart = USART1;
+        dmaChannel = DMA1_Channel4;
+        dmaIrq = DMA1_Channel4_IRQn;
+    }
+    else if (usartN == 2) {
+        
+        uart2buf = inputBuffer;
+        uart2bufCnt = &inputBufferCnt;
 
-    }   // add configuration for other USARTS later
-    else return;
+        /* Enable USART1 and GPIOA clock */
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+        RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
+        // DMA enable
+        RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA2, ENABLE);
+
+        irqChannel = USART2_IRQn;
+        port = GPIOA;
+        txPin = GPIO_Pin_2;
+        rxPin = GPIO_Pin_3;
+        usart = USART2;
+        dmaChannel = DMA1_Channel7;
+        dmaIrq = DMA1_Channel7_IRQn;
+    }
+
+    /* DMA for Transmiting*/
+    DMA_InitTypeDef DMA_InitStruct;
+    DMA_InitStruct.DMA_PeripheralBaseAddr = (uint32_t)&(usart->DR);
+    DMA_InitStruct.DMA_MemoryBaseAddr = (uint32_t)&outputBuffer[0];
+    DMA_InitStruct.DMA_DIR = DMA_DIR_PeripheralDST;
+    DMA_InitStruct.DMA_BufferSize = sizeof(outputBuffer);
+    DMA_InitStruct.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+    DMA_InitStruct.DMA_MemoryInc = DMA_MemoryInc_Enable;
+    DMA_InitStruct.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
+    DMA_InitStruct.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
+    DMA_InitStruct.DMA_Mode = DMA_Mode_Normal;
+    DMA_InitStruct.DMA_Priority = DMA_Priority_Low;
+    DMA_InitStruct.DMA_M2M = DMA_M2M_Disable;
+    DMA_Init(dmaChannel, &DMA_InitStruct);
     
-    /* NVIC Configuration */
+    /* NVIC Configuration: Enable the USARTx Interrupt */
     NVIC_InitTypeDef NVIC_InitStructure;
-    /* Enable the USARTx Interrupt */
     NVIC_InitStructure.NVIC_IRQChannel = irqChannel;
     NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
     NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
@@ -53,8 +114,17 @@ USART::USART(int usartN, uint32_t bauld, uint16_t dataBits, uint16_t stopBits, u
     GPIO_Init_My(port, rxPin, GPIO_Mode_IN_FLOATING, GPIO_Speed_50MHz);
 
     set(bauld, dataBits, stopBits, parity);
+    
+    /* Enable usart */
+    USART_Cmd(usart, ENABLE);
+    USART_DMACmd(usart, USART_DMAReq_Tx, ENABLE);
 
-    usart1 = this;
+    DMA_ITConfig(dmaChannel, DMA_IT_TC, ENABLE);
+    NVIC_EnableIRQ(dmaIrq);
+
+    /* Enable the usart Receive interrupt: this interrupt is generated when the
+        usart receive data register is not empty */
+    USART_ITConfig(usart, USART_IT_RXNE, ENABLE);
 }
 
 void USART::set(uint32_t bauld, uint16_t dataBits, uint16_t stopBits, uint16_t parity) {
@@ -80,21 +150,15 @@ void USART::set(uint32_t bauld, uint16_t dataBits, uint16_t stopBits, uint16_t p
 
     USART_Init(usart, &USART_InitStructure);
 
-    /* Enable usart */
-    USART_Cmd(usart, ENABLE);
-
-    /* Enable the usart Receive interrupt: this interrupt is generated when the
-        usart receive data register is not empty */
-    USART_ITConfig(usart, USART_IT_RXNE, ENABLE);
 }
 
-void USART::send(char byte) {
+void USART::sendBlocking(char byte) {
 
     USART_SendData(usart, byte);
     while(USART_GetFlagStatus(usart, USART_FLAG_TC) == RESET) {}
 }
 
-void USART::send(const char *str) {
+void USART::sendBlocking(const char *str) {
 
     while (*str) {
         USART_SendData(usart, *str++);
@@ -102,27 +166,53 @@ void USART::send(const char *str) {
     }
 }
 
-void USART::push(uint8_t byte) {
+void USART::send(uint8_t byte) {
 
-    if (bufferCnt < sizeof buffer) {
+    outputBuffer[0] = byte;
+    /* Restart DMA Channel*/
+    DMA_Cmd(dmaChannel, DISABLE);
+    dmaChannel->CNDTR = 1;
+    DMA_Cmd(dmaChannel, ENABLE);
+}
 
-        buffer[bufferCnt++] = byte;
-    }
+void USART::send(const uint8_t * str) {
+
+    uint32_t i = 0;
+    for( ; str[i] != 0; i++) {
+
+        outputBuffer[i] = str[i];
+    }    
+    /* Restart DMA Channel*/
+    DMA_Cmd(dmaChannel, DISABLE);
+    dmaChannel->CNDTR = i;
+    DMA_Cmd(dmaChannel, ENABLE);
+}
+
+void USART::send(const uint8_t * data, uint32_t len) {
+
+    for(uint32_t i = 0; i < len; i++) {
+
+        outputBuffer[i] = data[i];
+    }    
+    /* Restart DMA Channel*/
+    DMA_Cmd(dmaChannel, DISABLE);
+    dmaChannel->CNDTR = len;
+    DMA_Cmd(dmaChannel, ENABLE);
 }
 
 void USART::clear() {
 
-    bufferCnt = 0;
+    inputBufferCnt = 0;
 }
 
 uint32_t USART::getCount() {
 
-    return bufferCnt;
+    return inputBufferCnt;
 }
 
 uint8_t* USART::getData() {
 
-    return buffer;
+    return inputBuffer;
 }
 
 

@@ -7,6 +7,8 @@
 
 class OneWireSearch {
 
+friend int main(void);
+
 public:
 
     // storage of connected devices
@@ -14,13 +16,17 @@ public:
 	uint8_t devicesConnected[MaxDevicesConnected][8];   // Array of connected devices ROMs
 	uint32_t devicesConnectedCount;                     // Number of connected devoces
 
-    OneWireSearch(OneWire& driver);
-
     uint32_t searchAllDevices(void);
     uint32_t searchOnly(uint8_t family);
     uint32_t searchExcept(uint8_t family);
 
+    // delete copy constructor and assignment operator
+    OneWireSearch(const OneWireSearch&) = delete;
+    OneWireSearch& operator=(const OneWireSearch&) = delete;
+
 private:
+
+    OneWireSearch(OneWire& driver);
 
     // hardware driver
     OneWire& driver;

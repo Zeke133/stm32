@@ -7,47 +7,53 @@
 
 class DS18B20 : private OneWire {
 
-    public:
+friend int main(void);
 
-        enum class Resolution : uint8_t {
+public:
 
-            // masks with bits for Configuraion register
-            _9bit = 0x00,       // 9-bit resolution  93.75 ms
-            _10bit = 0x20,      // 10-bit resolution  187.5 ms
-            _11bit = 0x40,      // 11-bit resolution  375 ms
-            _12bit = 0x60       // 12-bit resolution  750 ms
-        };
-        enum class PowerMode : uint8_t {
+    enum class Resolution : uint8_t {
 
-            parasite = 0,
-            external = 1
-        };
+        // masks with bits for Configuraion register
+        _9bit = 0x00,       // 9-bit resolution  93.75 ms
+        _10bit = 0x20,      // 10-bit resolution  187.5 ms
+        _11bit = 0x40,      // 11-bit resolution  375 ms
+        _12bit = 0x60       // 12-bit resolution  750 ms
+    };
+    enum class PowerMode : uint8_t {
 
-        DS18B20(Delay& timer, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, uint8_t InitTOs[3], uint8_t WriteTOs[3], uint8_t ReadTOs[3], enum Resolution res = Resolution::_12bit);
+        parasite = 0,
+        external = 1
+    };
+    
+    void convertT(void);
 
-        void convertT(void);
+    // configuration
+    void setAlarmTemp(int8_t Th, int8_t Tl);
+    void setResolution(enum Resolution res);
+    enum Resolution getResolution(void);
 
-        // configuration
-        void setAlarmTemp(int8_t Th, int8_t Tl);
-        void setResolution(enum Resolution res);
-        enum Resolution getResolution(void);
+    void writeScratchpad(void);
+    uint8_t readScratchpad(void);        
+    void copyScratchpad(void);
+    void recallEE(void);
 
-        void writeScratchpad(void);
-        uint8_t readScratchpad(void);        
-        void copyScratchpad(void);
-        void recallEE(void);
+    enum PowerMode readPowerSupply(void);
 
-        enum PowerMode readPowerSupply(void);
+    // delete copy constructor and assignment operator
+    DS18B20(const DS18B20&) = delete;
+    DS18B20& operator=(const DS18B20&) = delete;
 
-    private:
+private:
 
-        enum PowerMode powerMode;
+    DS18B20(Delay& timer, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, uint8_t InitTOs[3], uint8_t WriteTOs[3], uint8_t ReadTOs[3], enum Resolution res = Resolution::_12bit);
 
-        uint8_t tempTrigerHigh;
-        uint8_t tempTrigerLow;
-        enum Resolution configRegister;     // 0 R1 R0 1  1 1 1 1
-        uint16_t temperature;
-        
+    enum PowerMode powerMode;
+
+    uint8_t tempTrigerHigh;
+    uint8_t tempTrigerLow;
+    enum Resolution configRegister;     // 0 R1 R0 1  1 1 1 1
+    uint16_t temperature;
+    
 };
 
 #endif

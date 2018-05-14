@@ -11,19 +11,25 @@
 
 class RealTimeClock {
 
-    public:
+friend int main(void);
 
-        RealTimeClock(Delay& wait);
+public:
 
-        void setTime(const struct DateTime& dateTime);
-        void setTime(uint32_t unixTime);
+    void setTime(const struct DateTime& dateTime);
+    void setTime(uint32_t unixTime);
 
-        void getTime(struct DateTime& dateTime) const;
-        uint32_t getUnixTime(void) const;
-        
-    private:
+    void getTime(struct DateTime& dateTime) const;
+    uint32_t getUnixTime(void) const;
 
-        inline uint8_t init(void);
+    // delete copy constructor and assignment operator
+    RealTimeClock(const RealTimeClock&) = delete;
+    RealTimeClock& operator=(const RealTimeClock&) = delete;
+    
+private:
+
+    RealTimeClock(Delay& wait);
+
+    inline uint8_t init(void);
 
 };
 

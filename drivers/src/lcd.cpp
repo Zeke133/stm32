@@ -3,7 +3,7 @@
 
 
 Lcd::Lcd(I2c& interfaceHw, Delay& delay, uint8_t lines)
-    :   interface(interfaceHw),
+    :   i2c(interfaceHw),
         wait(delay) {
 
     backlightPin = 0;
@@ -32,7 +32,9 @@ Lcd::Lcd(I2c& interfaceHw, Delay& delay, uint8_t lines)
 
     //-------------------------------------------------777
 	// Now we pull both RS and R/W low to begin commands
-    interface.write(0);
+    i2c.startTransmit();
+    i2c.write(0);
+    i2c.stopTransmit();
     // reset expander and turn backlight off (Bit 8 = 1)
 	wait.ms(1000);
     //-------------------------------------------------777
@@ -75,13 +77,15 @@ void Lcd::write4bits(uint8_t data) {
 
     data |= backlightPin;
 
-	interface.write(data);
+    i2c.startTransmit();
+	i2c.write(data);
 
-	interface.write(data | static_cast<uint8_t>(CmdBusBits::En));     // En high
+	i2c.write(data | static_cast<uint8_t>(CmdBusBits::En));     // En high
 	wait.us(1);                     // enable pulse must be >450ns
 
-	interface.write(data & ~static_cast<uint8_t>(CmdBusBits::En));    // En low
+	i2c.write(data & ~static_cast<uint8_t>(CmdBusBits::En));    // En low
 	wait.us(50);                    // commands need >37us to settle
+    i2c.stopTransmit();
 }
 
 void Lcd::writeData(uint8_t value, uint8_t mode) {
