@@ -40,7 +40,7 @@ public:
 
     void clear(void);
 
-    void set(uint32_t bauld, uint16_t dataBits, uint16_t stopBits, uint16_t parity);
+    void setUart(uint32_t bauld, uint16_t dataBits, uint16_t stopBits, uint16_t parity);
 
     inline USART& operator<<(char byte) {
         send(static_cast<uint8_t>(byte));
@@ -62,6 +62,9 @@ private:
                 uint16_t dataBits = USART_WordLength_8b,
                 uint16_t stopBits = USART_StopBits_1,
                 uint16_t parity = USART_Parity_No);
+
+    void setNvic(uint8_t irqChannel);
+    void setDMA(void);
 
     USART_TypeDef * usart;
 

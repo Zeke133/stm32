@@ -38,9 +38,10 @@
                 "${workspaceRoot}/libs/STM32F10x_StdPeriph_Driver/src/stm32f10x_usart.c",
                 "${workspaceRoot}/libs/STM32F10x_StdPeriph_Driver/src/stm32f10x_i2c.c",
                 "${workspaceRoot}/libs/STM32F10x_StdPeriph_Driver/src/stm32f10x_rtc.c",
-                "${workspaceRoot}/libs/STM32F10x_StdPeriph_Driver/src/stm32f10x_pwr.c",                
-                "${workspaceRoot}/libs/STM32F10x_StdPeriph_Driver/src/stm32f10x_dma.c",                
+                "${workspaceRoot}/libs/STM32F10x_StdPeriph_Driver/src/stm32f10x_pwr.c",
+                "${workspaceRoot}/libs/STM32F10x_StdPeriph_Driver/src/stm32f10x_dma.c",
                 "${workspaceRoot}/libs/STM32F10x_StdPeriph_Driver/src/stm32f10x_adc.c",
+                "${workspaceRoot}/libs/STM32F10x_StdPeriph_Driver/src/stm32f10x_tim.c",
                 // ---
                 "${workspaceRoot}/drivers/src/delay.cpp",
                 "${workspaceRoot}/drivers/src/SysClock.c",
@@ -54,6 +55,7 @@
                 "${workspaceRoot}/drivers/src/lcd.cpp",
                 "${workspaceRoot}/drivers/src/rtc.cpp",
                 "${workspaceRoot}/drivers/src/adc.cpp",
+                "${workspaceRoot}/drivers/src/tacho.cpp",
                 "${workspaceRoot}/utils/src/convertation.cpp",
                 "${workspaceRoot}/utils/src/crc.cpp",
                 "${workspaceRoot}/modules/src/main.cpp"
@@ -92,6 +94,7 @@
                 "${workspaceRoot}/stm32f10x_pwr.o",
                 "${workspaceRoot}/stm32f10x_dma.o",
                 "${workspaceRoot}/stm32f10x_adc.o",
+                "${workspaceRoot}/stm32f10x_tim.o",
                 "${workspaceRoot}/delay.o",
                 "${workspaceRoot}/SysClock.o",
                 "${workspaceRoot}/gpio.o",
@@ -103,7 +106,8 @@
                 "${workspaceRoot}/i2c.o",
                 "${workspaceRoot}/lcd.o",
                 "${workspaceRoot}/rtc.o",
-                "${workspaceRoot}/adc.o",
+                "${workspaceRoot}/adc.o",                
+                "${workspaceRoot}/tacho.o",
                 "${workspaceRoot}/convertation.o",
                 "${workspaceRoot}/crc.o",
                 "${workspaceRoot}/main.o"

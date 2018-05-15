@@ -1,10 +1,10 @@
 #include <usart.h>
 
 
-uint8_t * uart1buf;
-uint8_t * uart2buf;
-uint8_t * uart1bufCnt;
-uint8_t * uart2bufCnt;
+static uint8_t * uart1buf;
+static uint8_t * uart2buf;
+static uint8_t * uart1bufCnt;
+static uint8_t * uart2bufCnt;
 
 // Interrypt handler
 void USART1_IRQHandler(void) {
@@ -85,27 +85,10 @@ USART::USART(int usartN, uint32_t bauld, uint16_t dataBits, uint16_t stopBits, u
     }
 
     /* DMA for Transmiting*/
-    DMA_InitTypeDef DMA_InitStruct;
-    DMA_InitStruct.DMA_PeripheralBaseAddr = (uint32_t)&(usart->DR);
-    DMA_InitStruct.DMA_MemoryBaseAddr = (uint32_t)&outputBuffer[0];
-    DMA_InitStruct.DMA_DIR = DMA_DIR_PeripheralDST;
-    DMA_InitStruct.DMA_BufferSize = sizeof(outputBuffer);
-    DMA_InitStruct.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
-    DMA_InitStruct.DMA_MemoryInc = DMA_MemoryInc_Enable;
-    DMA_InitStruct.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
-    DMA_InitStruct.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
-    DMA_InitStruct.DMA_Mode = DMA_Mode_Normal;
-    DMA_InitStruct.DMA_Priority = DMA_Priority_Low;
-    DMA_InitStruct.DMA_M2M = DMA_M2M_Disable;
-    DMA_Init(dmaChannel, &DMA_InitStruct);
+    setDMA();
     
-    /* NVIC Configuration: Enable the USARTx Interrupt */
-    NVIC_InitTypeDef NVIC_InitStructure;
-    NVIC_InitStructure.NVIC_IRQChannel = irqChannel;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    NVIC_Init(&NVIC_InitStructure);
+    // Set UART interupt
+    setNvic(irqChannel);
 
     /* Configure the GPIOs */
     /* Configure Tx as alternate function push-pull */
@@ -113,7 +96,8 @@ USART::USART(int usartN, uint32_t bauld, uint16_t dataBits, uint16_t stopBits, u
     /* Configure Rx as input floating */
     GPIO_Init_My(port, rxPin, GPIO_Mode_IN_FLOATING, GPIO_Speed_50MHz);
 
-    set(bauld, dataBits, stopBits, parity);
+    // Configure UART
+    setUart(bauld, dataBits, stopBits, parity);
     
     /* Enable usart */
     USART_Cmd(usart, ENABLE);
@@ -127,7 +111,7 @@ USART::USART(int usartN, uint32_t bauld, uint16_t dataBits, uint16_t stopBits, u
     USART_ITConfig(usart, USART_IT_RXNE, ENABLE);
 }
 
-void USART::set(uint32_t bauld, uint16_t dataBits, uint16_t stopBits, uint16_t parity) {
+void USART::setUart(uint32_t bauld, uint16_t dataBits, uint16_t stopBits, uint16_t parity) {
 
     /* Configure the usart */
     USART_InitTypeDef USART_InitStructure;
@@ -150,6 +134,36 @@ void USART::set(uint32_t bauld, uint16_t dataBits, uint16_t stopBits, uint16_t p
 
     USART_Init(usart, &USART_InitStructure);
 
+}
+
+void USART::setDMA(void) {
+
+    DMA_InitTypeDef DMA_InitStruct;
+
+    DMA_InitStruct.DMA_PeripheralBaseAddr = (uint32_t)&(usart->DR);
+    DMA_InitStruct.DMA_MemoryBaseAddr = (uint32_t)&outputBuffer[0];
+    DMA_InitStruct.DMA_DIR = DMA_DIR_PeripheralDST;
+    DMA_InitStruct.DMA_BufferSize = sizeof(outputBuffer);
+    DMA_InitStruct.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+    DMA_InitStruct.DMA_MemoryInc = DMA_MemoryInc_Enable;
+    DMA_InitStruct.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
+    DMA_InitStruct.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
+    DMA_InitStruct.DMA_Mode = DMA_Mode_Normal;
+    DMA_InitStruct.DMA_Priority = DMA_Priority_Low;
+    DMA_InitStruct.DMA_M2M = DMA_M2M_Disable;
+
+    DMA_Init(dmaChannel, &DMA_InitStruct);
+}
+
+void USART::setNvic(uint8_t irqChannel) {
+
+    /* NVIC Configuration: Enable the USARTx Interrupt */
+    NVIC_InitTypeDef NVIC_InitStructure;
+    NVIC_InitStructure.NVIC_IRQChannel = irqChannel;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&NVIC_InitStructure);
 }
 
 void USART::sendBlocking(char byte) {
