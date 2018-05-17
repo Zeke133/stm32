@@ -2,7 +2,7 @@
 
 static uint16_t prevTicks;
 static uint16_t currentTicks;
-static uint32_t rpm;
+static uint32_t ticks;
 
 void TIM2_IRQHandler(void) {
  
@@ -12,8 +12,7 @@ void TIM2_IRQHandler(void) {
 
         prevTicks = currentTicks;
         currentTicks = TIM_GetCapture2(TIM2);
-        uint32_t ticks = (currentTicks >= prevTicks) ? (currentTicks - prevTicks) : (UINT16_MAX - prevTicks + currentTicks);
-        rpm = 6000000/ticks;
+        ticks = (currentTicks >= prevTicks) ? (currentTicks - prevTicks) : (UINT16_MAX - prevTicks + currentTicks);
         
         // over-capture: The counter value has been captured in TIMx_CCR1 register while CC1IF flag was already set
         if (TIM_GetFlagStatus(TIM2, TIM_FLAG_CC2OF) != RESET) {
@@ -62,7 +61,18 @@ Tacho::Tacho() {
 
 uint32_t Tacho::getRpm(void) {
     
-    return rpm;
+    return 6000000/ticks;
+}
+
+uint32_t Tacho::getSpeed(void) {
+    
+    // https://ru.wikipedia.org/wiki/%D0%9C%D0%B5%D1%82%D1%80_%D0%B2_%D1%81%D0%B5%D0%BA%D1%83%D0%BD%D0%B4%D1%83
+    return (100000*rotateLength*3600)/(1000000*ticks);
+}
+
+void Tacho::setRotationLength(uint32_t len) {
+    
+    rotateLength = len;
 }
 
 

@@ -42,6 +42,7 @@
                 "${workspaceRoot}/libs/STM32F10x_StdPeriph_Driver/src/stm32f10x_dma.c",
                 "${workspaceRoot}/libs/STM32F10x_StdPeriph_Driver/src/stm32f10x_adc.c",
                 "${workspaceRoot}/libs/STM32F10x_StdPeriph_Driver/src/stm32f10x_tim.c",
+                "${workspaceRoot}/libs/STM32F10x_StdPeriph_Driver/src/stm32f10x_flash.c",
                 // ---
                 "${workspaceRoot}/drivers/src/delay.cpp",
                 "${workspaceRoot}/drivers/src/SysClock.c",
@@ -95,6 +96,7 @@
                 "${workspaceRoot}/stm32f10x_dma.o",
                 "${workspaceRoot}/stm32f10x_adc.o",
                 "${workspaceRoot}/stm32f10x_tim.o",
+                "${workspaceRoot}/stm32f10x_flash.o",
                 "${workspaceRoot}/delay.o",
                 "${workspaceRoot}/SysClock.o",
                 "${workspaceRoot}/gpio.o",
