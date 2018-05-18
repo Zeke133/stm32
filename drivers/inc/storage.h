@@ -4,18 +4,11 @@
 #include <stm32f10x_flash.h>
 
 
-class Settings {
+class Storage {
 
 friend int main(void);
 
 public:
-
-    struct SettingsData data;
-
-    void readToRam(void);
-    void writeToFlash(void);
-
-private:
 
     struct SettingsData {
         uint32_t var1;
@@ -23,8 +16,19 @@ private:
         uint32_t var3;
         uint32_t var4;
     };
-    
-    Settings();
+
+    struct SettingsData data;
+
+    void readToRam(void);
+    void writeToFlash(void);
+
+    // delete copy constructor and assignment operator
+    Storage(const Storage&) = delete;
+    Storage& operator=(const Storage&) = delete;
+
+private:
+
+    Storage();
 
     const uint32_t MY_FLASH_PAGE_ADDR = 0x800FC00;
     const uint16_t SETTINGS_WORDS = sizeof(data)/4;

@@ -8,6 +8,7 @@
 #include <rtc.h>
 #include <adc.h>
 #include <delay.h>
+#include <storage.h>
 
 #include <convertation.h>
 
@@ -45,7 +46,13 @@ int main(void) {
     RealTimeClock rtc(wait);        // RealTime Clock
 
     uint8_t channels[12] = {16, 17};
-    ADC adc1(1, RCC_PCLK2_Div6, ADC::ResultStoreMode::Regular, 2, channels); // ADC setup
+    ADC adc1(1, 
+                RCC_PCLK2_Div6, 
+                ADC::ResultStoreMode::Regular, 
+                2, 
+                channels);          // ADC setup
+
+    Storage flash;
 
     // usart test
     usart1 << "Hello.\r\nUSART1 is ready.\r\n";
@@ -94,6 +101,18 @@ int main(void) {
     usart1 << "\r\nADC test: ";
     usart1 << itoa(adc1.getValue(16), 16) << ", ";  // temp
     usart1 << itoa(adc1.getValue(17), 16);  // Vref
+
+    // Flash test
+    usart1 << "\r\nFlash test: ";
+    usart1 << itoa(flash.data.var1, 10) << ", ";
+    usart1 << itoa(flash.data.var4, 10) << ", ";
+    flash.data.var1 = 1001;
+    flash.data.var4 = 4004;
+    flash.writeToFlash();
+    flash.readToRam();
+    usart1 << "\r\nafter update: ";
+    usart1 << itoa(flash.data.var1, 10) << ", ";
+    usart1 << itoa(flash.data.var4, 10) << ", ";
 
     while (1) {
 

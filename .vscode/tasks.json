@@ -56,7 +56,8 @@
                 "${workspaceRoot}/drivers/src/lcd.cpp",
                 "${workspaceRoot}/drivers/src/rtc.cpp",
                 "${workspaceRoot}/drivers/src/adc.cpp",
-                "${workspaceRoot}/drivers/src/tacho.cpp",
+                "${workspaceRoot}/drivers/src/tacho.cpp",                
+                "${workspaceRoot}/drivers/src/storage.cpp",
                 "${workspaceRoot}/utils/src/convertation.cpp",
                 "${workspaceRoot}/utils/src/crc.cpp",
                 "${workspaceRoot}/modules/src/main.cpp"
@@ -108,8 +109,9 @@
                 "${workspaceRoot}/i2c.o",
                 "${workspaceRoot}/lcd.o",
                 "${workspaceRoot}/rtc.o",
-                "${workspaceRoot}/adc.o",                
+                "${workspaceRoot}/adc.o",
                 "${workspaceRoot}/tacho.o",
+                "${workspaceRoot}/storage.o",
                 "${workspaceRoot}/convertation.o",
                 "${workspaceRoot}/crc.o",
                 "${workspaceRoot}/main.o"
