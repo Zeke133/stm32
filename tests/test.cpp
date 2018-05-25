@@ -5,7 +5,7 @@
 
 #include <vector>
 
-namespace /*UnitTest*/ {
+namespace {
 
 using std::vector;
 
@@ -46,8 +46,7 @@ TEST_P(ItoaTestBase16, Base_16) {
 vector<struct ValuePair> ValuesBase2 {
 	{0, "0"},
 	{1, "1"},
-	{3, "11"},
-	{4, "101"}
+	{3, "11"}
 };
 
 vector<struct ValuePair> ValuesBase8 {
@@ -201,10 +200,6 @@ TEST(TempSensor_API, calcCRCTable) {
 
 int main(int argc, char **argv)
 {
-	
-
-	
-
 	::testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();
 }
