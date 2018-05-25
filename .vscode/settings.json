@@ -2,7 +2,11 @@
     "files.associations": {
         "sstream": "cpp",
         "array": "cpp",
-        "string_view": "cpp"
+        "string_view": "cpp",
+        "initializer_list": "cpp",
+        "optional": "cpp",
+        "type_traits": "cpp",
+        "utility": "cpp"
     },
     "C_Cpp.intelliSenseEngineFallback": "Enabled",
     "terminal.integrated.fontWeightBold": "normal",

@@ -3,36 +3,84 @@
 #include <crc.h>
 #include <gtest/gtest.h>
 
-TEST(ITOA, zero) {
+#include <vector>
 
-	EXPECT_STREQ("0", itoa(0, 2));
-	EXPECT_STREQ("0", itoa(0, 8));
-	EXPECT_STREQ("0", itoa(0, 10));
-	EXPECT_STREQ("0", itoa(0, 16));
+namespace /*UnitTest*/ {
+
+using std::vector;
+
+struct ValuePair {
+	int val;
+	const char * text;
+};
+
+class ItoaTestBase2 : public ::testing::TestWithParam<struct ValuePair> {};
+class ItoaTestBase8 : public ::testing::TestWithParam<struct ValuePair> {};
+class ItoaTestBase10 : public ::testing::TestWithParam<struct ValuePair> {};
+class ItoaTestBase16 : public ::testing::TestWithParam<struct ValuePair> {};
+
+TEST_P(ItoaTestBase2, Base_2) {
+
+	auto val = GetParam();
+	EXPECT_STREQ(val.text, itoa(val.val, 2));
 }
 
-TEST(ITOA, one) {
+TEST_P(ItoaTestBase8, Base_8) {
 
-	EXPECT_STREQ("1", itoa(1, 16));
-	EXPECT_STREQ("1", itoa(1, 10));
-	EXPECT_STREQ("1", itoa(1, 8));
-	EXPECT_STREQ("1", itoa(1, 2));
+	auto val = GetParam();
+	EXPECT_STREQ(val.text, itoa(val.val, 8));
 }
 
-TEST(ITOA, maxRange) {
+TEST_P(ItoaTestBase10, Base_10) {
 
-	EXPECT_STREQ("7777777777", itoa(0xffffffff, 8));		// out of range, so it's shrinked
-	EXPECT_STREQ("4294967295", itoa(0xffffffff, 10));
-	EXPECT_STREQ("FFFFFFFF", itoa(0xffffffff, 16));
+	auto val = GetParam();
+	EXPECT_STREQ(val.text, itoa(val.val, 10));
 }
 
-TEST(ITOA, random) {
+TEST_P(ItoaTestBase16, Base_16) {
 
-	EXPECT_STREQ("4821881", itoa(4821881, 10));
-	EXPECT_STREQ("499379", itoa(4821881, 16));	
-	EXPECT_STREQ("22311571", itoa(4821881, 8));
+	auto val = GetParam();
+	EXPECT_STREQ(val.text, itoa(val.val, 16));
 }
 
+vector<struct ValuePair> ValuesBase2 {
+	{0, "0"},
+	{1, "1"},
+	{3, "11"},
+	{4, "101"}
+};
+
+vector<struct ValuePair> ValuesBase8 {
+	{0, "0"},
+	{1, "1"},
+	{(int)0xffffffff, "7777777777"},		// out of range, so it's shrinked
+	{4821881, "22311571"}
+};
+
+vector<struct ValuePair> ValuesBase10 {
+	{0, "0"},
+	{1, "1"},
+	{(int)4294967295, "4294967295"},
+	{4821881, "4821881"}
+};
+
+vector<struct ValuePair> ValuesBase16 {
+	{0, "0"},
+	{1, "1"},
+	{(int)0xffffffff, "FFFFFFFF"},
+	{4821881, "499379"}
+};
+
+INSTANTIATE_TEST_CASE_P(ItoaTestBase2Name, ItoaTestBase2,
+                        ::testing::ValuesIn(ValuesBase2));
+INSTANTIATE_TEST_CASE_P(ItoaTestBase8Name, ItoaTestBase8,
+					::testing::ValuesIn(ValuesBase8));
+INSTANTIATE_TEST_CASE_P(ItoaTestBase10Name, ItoaTestBase10,
+					::testing::ValuesIn(ValuesBase10));
+INSTANTIATE_TEST_CASE_P(ItoaTestBase16Name, ItoaTestBase16,
+					::testing::ValuesIn(ValuesBase16));
+
+// ---
 TEST(DateTimeConvertation, unixStartToDate) {
 
 	DateTime dt;
@@ -149,8 +197,14 @@ TEST(TempSensor_API, calcCRCTable) {
 	EXPECT_EQ(0x6D, crc);
 }
 
+} // namespace UnitTest
+
 int main(int argc, char **argv)
 {
+	
+
+	
+
 	::testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();
 }

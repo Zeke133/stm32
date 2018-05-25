@@ -211,10 +211,10 @@
                 // TestCases
                 "${workspaceRoot}/tests/test.cpp",                
                 // Tested modules
-                "${workspaceRoot}/utils/convertation.cpp",
-                "${workspaceRoot}/utils/crc.c",
+                "${workspaceRoot}/utils/src/convertation.cpp",
+                "${workspaceRoot}/utils/src/crc.cpp",
                 // TestFramework lib
-                "../googleTest/googletest/make/gtest_main.a",                
+                "../googleTest/googletest/build/gtest_main.a",                
                 // output
                 "-o",
                 "${workspaceRoot}/out/tests",
