@@ -11,7 +11,7 @@ void USART1_IRQHandler(void) {
 
     if ((USART1->SR & USART_FLAG_RXNE) != (u16)RESET) {
 
-        if (*uart1bufCnt < sizeof 100) {
+        if (*uart1bufCnt < 100) {
 
             uart1buf[(*uart1bufCnt)++] = USART_ReceiveData(USART1);
         }
@@ -21,7 +21,7 @@ void USART2_IRQHandler(void) {
     
     if ((USART2->SR & USART_FLAG_RXNE) != (u16)RESET) {
 
-        if (*uart2bufCnt < sizeof 100) {
+        if (*uart2bufCnt < 100) {
 
             uart2buf[(*uart2bufCnt)++] = USART_ReceiveData(USART2);
         }
