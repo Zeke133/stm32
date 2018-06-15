@@ -58,8 +58,10 @@ int main(void) {
     usart1 << "Hello.\r\nUSART1 is ready.\r\n";
 
     // lcd test
-    // lcd.backlightSet(1);
-    lcd.puts("Hello LCD2");
+    lcd.backlightSet(1);
+    lcd.puts("Hello Katerina =)");
+    lcd.cursorGoTo(0,1);
+    lcd.puts("Good night!");
 
     // 1-wire test
     // uint8_t timeouts[3][3] = { {60, 10, 50}, {3, 90, 5}, {1, 7, 90} };

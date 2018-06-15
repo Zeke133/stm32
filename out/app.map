@@ -26,12 +26,22 @@ Discarded input sections
                 0x00000000       0x4c D:\Projects\stm32/stm32f10x_rcc.o
  .text.RCC_USBCLKConfig
                 0x00000000       0x1c D:\Projects\stm32/stm32f10x_rcc.o
+ .text.RCC_ADCCLKConfig
+                0x00000000       0x38 D:\Projects\stm32/stm32f10x_rcc.o
+ .text.RCC_LSEConfig
+                0x00000000       0x40 D:\Projects\stm32/stm32f10x_rcc.o
  .text.RCC_LSICmd
+                0x00000000       0x20 D:\Projects\stm32/stm32f10x_rcc.o
+ .text.RCC_RTCCLKConfig
+                0x00000000       0x24 D:\Projects\stm32/stm32f10x_rcc.o
+ .text.RCC_RTCCLKCmd
                 0x00000000       0x20 D:\Projects\stm32/stm32f10x_rcc.o
  .text.RCC_APB2PeriphResetCmd
                 0x00000000       0x3c D:\Projects\stm32/stm32f10x_rcc.o
  .text.RCC_APB1PeriphResetCmd
                 0x00000000       0x3c D:\Projects\stm32/stm32f10x_rcc.o
+ .text.RCC_BackupResetCmd
+                0x00000000       0x20 D:\Projects\stm32/stm32f10x_rcc.o
  .text.RCC_ClockSecuritySystemCmd
                 0x00000000       0x20 D:\Projects\stm32/stm32f10x_rcc.o
  .text.RCC_MCOConfig
@@ -51,6 +61,8 @@ Discarded input sections
                 0x00000000       0x18 D:\Projects\stm32/stm32f10x_gpio.o
  .text.GPIO_StructInit
                 0x00000000       0x26 D:\Projects\stm32/stm32f10x_gpio.o
+ .text.GPIO_ReadInputDataBit
+                0x00000000       0x3c D:\Projects\stm32/stm32f10x_gpio.o
  .text.GPIO_ReadInputData
                 0x00000000       0x18 D:\Projects\stm32/stm32f10x_gpio.o
  .text.GPIO_ReadOutputDataBit
@@ -182,14 +194,24 @@ Discarded input sections
  .bss           0x00000000        0x0 D:\Projects\stm32/stm32f10x_rtc.o
  .text.RTC_ITConfig
                 0x00000000       0x4c D:\Projects\stm32/stm32f10x_rtc.o
+ .text.RTC_EnterConfigMode
+                0x00000000       0x20 D:\Projects\stm32/stm32f10x_rtc.o
+ .text.RTC_ExitConfigMode
+                0x00000000       0x20 D:\Projects\stm32/stm32f10x_rtc.o
  .text.RTC_GetCounter
                 0x00000000       0x2c D:\Projects\stm32/stm32f10x_rtc.o
+ .text.RTC_SetCounter
+                0x00000000       0x30 D:\Projects\stm32/stm32f10x_rtc.o
+ .text.RTC_SetPrescaler
+                0x00000000       0x34 D:\Projects\stm32/stm32f10x_rtc.o
  .text.RTC_SetAlarm
                 0x00000000       0x30 D:\Projects\stm32/stm32f10x_rtc.o
  .text.RTC_GetDivider
                 0x00000000       0x38 D:\Projects\stm32/stm32f10x_rtc.o
  .text.RTC_WaitForLastTask
                 0x00000000       0x2c D:\Projects\stm32/stm32f10x_rtc.o
+ .text.RTC_WaitForSynchro
+                0x00000000       0x3c D:\Projects\stm32/stm32f10x_rtc.o
  .text.RTC_GetFlagStatus
                 0x00000000       0x44 D:\Projects\stm32/stm32f10x_rtc.o
  .text.RTC_ClearFlag
@@ -198,11 +220,24 @@ Discarded input sections
                 0x00000000       0x58 D:\Projects\stm32/stm32f10x_rtc.o
  .text.RTC_ClearITPendingBit
                 0x00000000       0x2c D:\Projects\stm32/stm32f10x_rtc.o
+ .debug_info    0x00000000      0x44e D:\Projects\stm32/stm32f10x_rtc.o
+ .debug_abbrev  0x00000000      0x19a D:\Projects\stm32/stm32f10x_rtc.o
+ .debug_aranges
+                0x00000000       0x88 D:\Projects\stm32/stm32f10x_rtc.o
+ .debug_ranges  0x00000000       0x78 D:\Projects\stm32/stm32f10x_rtc.o
+ .debug_line    0x00000000      0x304 D:\Projects\stm32/stm32f10x_rtc.o
+ .debug_str     0x00000000      0x407 D:\Projects\stm32/stm32f10x_rtc.o
+ .comment       0x00000000       0x7f D:\Projects\stm32/stm32f10x_rtc.o
+ .debug_frame   0x00000000      0x214 D:\Projects\stm32/stm32f10x_rtc.o
+ .ARM.attributes
+                0x00000000       0x33 D:\Projects\stm32/stm32f10x_rtc.o
  .text          0x00000000        0x0 D:\Projects\stm32/stm32f10x_pwr.o
  .data          0x00000000        0x0 D:\Projects\stm32/stm32f10x_pwr.o
  .bss           0x00000000        0x0 D:\Projects\stm32/stm32f10x_pwr.o
  .text.PWR_DeInit
                 0x00000000       0x1c D:\Projects\stm32/stm32f10x_pwr.o
+ .text.PWR_BackupAccessCmd
+                0x00000000       0x20 D:\Projects\stm32/stm32f10x_pwr.o
  .text.PWR_PVDCmd
                 0x00000000       0x20 D:\Projects\stm32/stm32f10x_pwr.o
  .text.PWR_PVDLevelConfig
@@ -217,6 +252,17 @@ Discarded input sections
                 0x00000000       0x3c D:\Projects\stm32/stm32f10x_pwr.o
  .text.PWR_ClearFlag
                 0x00000000       0x24 D:\Projects\stm32/stm32f10x_pwr.o
+ .debug_info    0x00000000      0x475 D:\Projects\stm32/stm32f10x_pwr.o
+ .debug_abbrev  0x00000000      0x18a D:\Projects\stm32/stm32f10x_pwr.o
+ .debug_aranges
+                0x00000000       0x60 D:\Projects\stm32/stm32f10x_pwr.o
+ .debug_ranges  0x00000000       0x50 D:\Projects\stm32/stm32f10x_pwr.o
+ .debug_line    0x00000000      0x28e D:\Projects\stm32/stm32f10x_pwr.o
+ .debug_str     0x00000000      0x385 D:\Projects\stm32/stm32f10x_pwr.o
+ .comment       0x00000000       0x7f D:\Projects\stm32/stm32f10x_pwr.o
+ .debug_frame   0x00000000      0x164 D:\Projects\stm32/stm32f10x_pwr.o
+ .ARM.attributes
+                0x00000000       0x33 D:\Projects\stm32/stm32f10x_pwr.o
  .text          0x00000000        0x0 D:\Projects\stm32/stm32f10x_dma.o
  .data          0x00000000        0x0 D:\Projects\stm32/stm32f10x_dma.o
  .bss           0x00000000        0x0 D:\Projects\stm32/stm32f10x_dma.o
@@ -239,36 +285,67 @@ Discarded input sections
  .bss           0x00000000        0x0 D:\Projects\stm32/stm32f10x_adc.o
  .text.ADC_DeInit
                 0x00000000       0x74 D:\Projects\stm32/stm32f10x_adc.o
+ .text.ADC_Init
+                0x00000000       0xa4 D:\Projects\stm32/stm32f10x_adc.o
  .text.ADC_StructInit
+                0x00000000       0x36 D:\Projects\stm32/stm32f10x_adc.o
+ .text.ADC_Cmd  0x00000000       0x36 D:\Projects\stm32/stm32f10x_adc.o
+ .text.ADC_DMACmd
                 0x00000000       0x36 D:\Projects\stm32/stm32f10x_adc.o
  .text.ADC_ITConfig
                 0x00000000       0x44 D:\Projects\stm32/stm32f10x_adc.o
+ .text.ADC_ResetCalibration
+                0x00000000       0x1e D:\Projects\stm32/stm32f10x_adc.o
+ .text.ADC_GetResetCalibrationStatus
+                0x00000000       0x38 D:\Projects\stm32/stm32f10x_adc.o
+ .text.ADC_StartCalibration
+                0x00000000       0x1e D:\Projects\stm32/stm32f10x_adc.o
+ .text.ADC_GetCalibrationStatus
+                0x00000000       0x38 D:\Projects\stm32/stm32f10x_adc.o
+ .text.ADC_SoftwareStartConvCmd
+                0x00000000       0x36 D:\Projects\stm32/stm32f10x_adc.o
  .text.ADC_GetSoftwareStartConvStatus
                 0x00000000       0x38 D:\Projects\stm32/stm32f10x_adc.o
  .text.ADC_DiscModeChannelCountConfig
                 0x00000000       0x42 D:\Projects\stm32/stm32f10x_adc.o
  .text.ADC_DiscModeCmd
                 0x00000000       0x36 D:\Projects\stm32/stm32f10x_adc.o
+ .text.ADC_RegularChannelConfig
+                0x00000000      0x192 D:\Projects\stm32/stm32f10x_adc.o
  .text.ADC_ExternalTrigConvCmd
                 0x00000000       0x36 D:\Projects\stm32/stm32f10x_adc.o
+ .text.ADC_GetConversionValue
+                0x00000000       0x18 D:\Projects\stm32/stm32f10x_adc.o
  .text.ADC_GetDualModeConversionValue
                 0x00000000       0x14 D:\Projects\stm32/stm32f10x_adc.o
+ .text.ADC_AutoInjectedConvCmd
+                0x00000000       0x36 D:\Projects\stm32/stm32f10x_adc.o
  .text.ADC_InjectedDiscModeCmd
                 0x00000000       0x36 D:\Projects\stm32/stm32f10x_adc.o
+ .text.ADC_ExternalTrigInjectedConvConfig
+                0x00000000       0x34 D:\Projects\stm32/stm32f10x_adc.o
  .text.ADC_ExternalTrigInjectedConvCmd
                 0x00000000       0x36 D:\Projects\stm32/stm32f10x_adc.o
  .text.ADC_SoftwareStartInjectedConvCmd
                 0x00000000       0x36 D:\Projects\stm32/stm32f10x_adc.o
  .text.ADC_GetSoftwareStartInjectedConvCmdStatus
                 0x00000000       0x38 D:\Projects\stm32/stm32f10x_adc.o
+ .text.ADC_InjectedChannelConfig
+                0x00000000      0x120 D:\Projects\stm32/stm32f10x_adc.o
+ .text.ADC_InjectedSequencerLengthConfig
+                0x00000000       0x42 D:\Projects\stm32/stm32f10x_adc.o
  .text.ADC_SetInjectedOffset
                 0x00000000       0x32 D:\Projects\stm32/stm32f10x_adc.o
+ .text.ADC_GetInjectedConversionValue
+                0x00000000       0x2e D:\Projects\stm32/stm32f10x_adc.o
  .text.ADC_AnalogWatchdogCmd
                 0x00000000       0x38 D:\Projects\stm32/stm32f10x_adc.o
  .text.ADC_AnalogWatchdogThresholdsConfig
                 0x00000000       0x26 D:\Projects\stm32/stm32f10x_adc.o
  .text.ADC_AnalogWatchdogSingleChannelConfig
                 0x00000000       0x36 D:\Projects\stm32/stm32f10x_adc.o
+ .text.ADC_TempSensorVrefintCmd
+                0x00000000       0x38 D:\Projects\stm32/stm32f10x_adc.o
  .text.ADC_GetFlagStatus
                 0x00000000       0x3c D:\Projects\stm32/stm32f10x_adc.o
  .text.ADC_ClearFlag
@@ -277,6 +354,17 @@ Discarded input sections
                 0x00000000       0x5c D:\Projects\stm32/stm32f10x_adc.o
  .text.ADC_ClearITPendingBit
                 0x00000000       0x28 D:\Projects\stm32/stm32f10x_adc.o
+ .debug_info    0x00000000      0xb92 D:\Projects\stm32/stm32f10x_adc.o
+ .debug_abbrev  0x00000000      0x1a9 D:\Projects\stm32/stm32f10x_adc.o
+ .debug_aranges
+                0x00000000      0x138 D:\Projects\stm32/stm32f10x_adc.o
+ .debug_ranges  0x00000000      0x128 D:\Projects\stm32/stm32f10x_adc.o
+ .debug_line    0x00000000      0x585 D:\Projects\stm32/stm32f10x_adc.o
+ .debug_str     0x00000000      0x772 D:\Projects\stm32/stm32f10x_adc.o
+ .comment       0x00000000       0x7f D:\Projects\stm32/stm32f10x_adc.o
+ .debug_frame   0x00000000      0x5a4 D:\Projects\stm32/stm32f10x_adc.o
+ .ARM.attributes
+                0x00000000       0x33 D:\Projects\stm32/stm32f10x_adc.o
  .text          0x00000000        0x0 D:\Projects\stm32/stm32f10x_tim.o
  .data          0x00000000        0x0 D:\Projects\stm32/stm32f10x_tim.o
  .bss           0x00000000        0x0 D:\Projects\stm32/stm32f10x_tim.o
@@ -456,16 +544,24 @@ Discarded input sections
  .bss           0x00000000        0x0 D:\Projects\stm32/stm32f10x_flash.o
  .text.FLASH_HalfCycleAccessCmd
                 0x00000000       0x30 D:\Projects\stm32/stm32f10x_flash.o
+ .text.FLASH_Unlock
+                0x00000000       0x24 D:\Projects\stm32/stm32f10x_flash.o
  .text.FLASH_UnlockBank1
                 0x00000000       0x24 D:\Projects\stm32/stm32f10x_flash.o
+ .text.FLASH_Lock
+                0x00000000       0x1c D:\Projects\stm32/stm32f10x_flash.o
  .text.FLASH_LockBank1
                 0x00000000       0x1c D:\Projects\stm32/stm32f10x_flash.o
+ .text.FLASH_ErasePage
+                0x00000000       0x64 D:\Projects\stm32/stm32f10x_flash.o
  .text.FLASH_EraseAllPages
                 0x00000000       0x5c D:\Projects\stm32/stm32f10x_flash.o
  .text.FLASH_EraseAllBank1Pages
                 0x00000000       0x5c D:\Projects\stm32/stm32f10x_flash.o
  .text.FLASH_EraseOptionBytes
                 0x00000000       0xe0 D:\Projects\stm32/stm32f10x_flash.o
+ .text.FLASH_ProgramWord
+                0x00000000       0x94 D:\Projects\stm32/stm32f10x_flash.o
  .text.FLASH_ProgramHalfWord
                 0x00000000       0x5c D:\Projects\stm32/stm32f10x_flash.o
  .text.FLASH_ProgramOptionByteData
@@ -492,6 +588,10 @@ Discarded input sections
                 0x00000000       0x1c D:\Projects\stm32/stm32f10x_flash.o
  .text.FLASH_GetStatus
                 0x00000000       0x74 D:\Projects\stm32/stm32f10x_flash.o
+ .text.FLASH_GetBank1Status
+                0x00000000       0x74 D:\Projects\stm32/stm32f10x_flash.o
+ .text.FLASH_WaitForLastOperation
+                0x00000000       0x44 D:\Projects\stm32/stm32f10x_flash.o
  .text.FLASH_WaitForLastBank1Operation
                 0x00000000       0x44 D:\Projects\stm32/stm32f10x_flash.o
  .group         0x00000000        0x8 D:\Projects\stm32/delay.o
@@ -518,26 +618,76 @@ Discarded input sections
                 0x00000000       0x5c D:\Projects\stm32/usart.o
  .text._ZN5USART5clearEv
                 0x00000000       0x1a D:\Projects\stm32/usart.o
+ .text._ZN5USART8getCountEv
+                0x00000000       0x18 D:\Projects\stm32/usart.o
+ .text._ZN5USART7getDataEv
+                0x00000000       0x16 D:\Projects\stm32/usart.o
  .text          0x00000000        0x0 D:\Projects\stm32/oneWire.o
  .data          0x00000000        0x0 D:\Projects\stm32/oneWire.o
  .bss           0x00000000        0x0 D:\Projects\stm32/oneWire.o
+ .text._ZN7OneWireC2ER5DelayP12GPIO_TypeDeftPhS4_S4_
+                0x00000000       0x7e D:\Projects\stm32/oneWire.o
+ .text._ZN7OneWire13WriteTimeslotEh
+                0x00000000       0x7a D:\Projects\stm32/oneWire.o
+ .text._ZN7OneWire12ReadTimeslotEv
+                0x00000000       0x76 D:\Projects\stm32/oneWire.o
+ .text._ZN7OneWire14InitializationEv
+                0x00000000       0x8e D:\Projects\stm32/oneWire.o
+ .text._ZN7OneWire9WriteByteEh
+                0x00000000       0x3c D:\Projects\stm32/oneWire.o
+ .text._ZN7OneWire8ReadByteEv
+                0x00000000       0x3e D:\Projects\stm32/oneWire.o
+ .text._ZN7OneWire7ReadROMEPh
+                0x00000000       0x58 D:\Projects\stm32/oneWire.o
  .text._ZN7OneWire8MatchROMEPKh
                 0x00000000       0x58 D:\Projects\stm32/oneWire.o
  .text._ZN7OneWire7SkipROMEv
                 0x00000000       0x34 D:\Projects\stm32/oneWire.o
+ .debug_info    0x00000000      0x787 D:\Projects\stm32/oneWire.o
+ .debug_abbrev  0x00000000      0x286 D:\Projects\stm32/oneWire.o
+ .debug_aranges
+                0x00000000       0x60 D:\Projects\stm32/oneWire.o
+ .debug_ranges  0x00000000       0x50 D:\Projects\stm32/oneWire.o
+ .debug_line    0x00000000      0x303 D:\Projects\stm32/oneWire.o
+ .debug_str     0x00000000      0x512 D:\Projects\stm32/oneWire.o
+ .comment       0x00000000       0x7f D:\Projects\stm32/oneWire.o
+ .debug_frame   0x00000000      0x158 D:\Projects\stm32/oneWire.o
+ .ARM.attributes
+                0x00000000       0x33 D:\Projects\stm32/oneWire.o
  .text          0x00000000        0x0 D:\Projects\stm32/oneWireSearch.o
  .data          0x00000000        0x0 D:\Projects\stm32/oneWireSearch.o
  .bss           0x00000000        0x0 D:\Projects\stm32/oneWireSearch.o
+ .text._ZN13OneWireSearchC2ER7OneWire
+                0x00000000       0x34 D:\Projects\stm32/oneWireSearch.o
+ .text._ZN13OneWireSearch5firstEv
+                0x00000000       0x2a D:\Projects\stm32/oneWireSearch.o
+ .text._ZN13OneWireSearch4nextEv
+                0x00000000       0x18 D:\Projects\stm32/oneWireSearch.o
+ .text._ZN13OneWireSearch6searchEv
+                0x00000000      0x1dc D:\Projects\stm32/oneWireSearch.o
  .text._ZN13OneWireSearch6verifyEv
                 0x00000000       0xe0 D:\Projects\stm32/oneWireSearch.o
  .text._ZN13OneWireSearch11targetSetupEh
                 0x00000000       0x4e D:\Projects\stm32/oneWireSearch.o
  .text._ZN13OneWireSearch15familySkipSetupEv
                 0x00000000       0x2e D:\Projects\stm32/oneWireSearch.o
+ .text._ZN13OneWireSearch16searchAllDevicesEv
+                0x00000000       0x7e D:\Projects\stm32/oneWireSearch.o
  .text._ZN13OneWireSearch10searchOnlyEh
                 0x00000000       0x9c D:\Projects\stm32/oneWireSearch.o
  .text._ZN13OneWireSearch12searchExceptEh
                 0x00000000       0x96 D:\Projects\stm32/oneWireSearch.o
+ .debug_info    0x00000000      0xa52 D:\Projects\stm32/oneWireSearch.o
+ .debug_abbrev  0x00000000      0x306 D:\Projects\stm32/oneWireSearch.o
+ .debug_aranges
+                0x00000000       0x68 D:\Projects\stm32/oneWireSearch.o
+ .debug_ranges  0x00000000       0x58 D:\Projects\stm32/oneWireSearch.o
+ .debug_line    0x00000000      0x3b9 D:\Projects\stm32/oneWireSearch.o
+ .debug_str     0x00000000      0x7f1 D:\Projects\stm32/oneWireSearch.o
+ .comment       0x00000000       0x7f D:\Projects\stm32/oneWireSearch.o
+ .debug_frame   0x00000000      0x184 D:\Projects\stm32/oneWireSearch.o
+ .ARM.attributes
+                0x00000000       0x33 D:\Projects\stm32/oneWireSearch.o
  .text          0x00000000        0x0 D:\Projects\stm32/ds18b20.o
  .data          0x00000000        0x0 D:\Projects\stm32/ds18b20.o
  .bss           0x00000000        0x0 D:\Projects\stm32/ds18b20.o
@@ -584,8 +734,6 @@ Discarded input sections
  .text          0x00000000        0x0 D:\Projects\stm32/lcd.o
  .data          0x00000000        0x0 D:\Projects\stm32/lcd.o
  .bss           0x00000000        0x0 D:\Projects\stm32/lcd.o
- .text._ZN3Lcd10cursorGoToEhh
-                0x00000000       0x3c D:\Projects\stm32/lcd.o
  .text._ZN3Lcd10displaySetEh
                 0x00000000       0x4a D:\Projects\stm32/lcd.o
  .text._ZN3Lcd9cursorSetEh
@@ -604,15 +752,51 @@ Discarded input sections
  .text          0x00000000        0x0 D:\Projects\stm32/rtc.o
  .data          0x00000000        0x0 D:\Projects\stm32/rtc.o
  .bss           0x00000000        0x0 D:\Projects\stm32/rtc.o
+ .rodata        0x00000000        0xc D:\Projects\stm32/rtc.o
+ .text._ZN13RealTimeClockC2ER5Delay
+                0x00000000       0x54 D:\Projects\stm32/rtc.o
+ .text._ZN13RealTimeClock4initEv
+                0x00000000       0x88 D:\Projects\stm32/rtc.o
+ .text._ZN13RealTimeClock7setTimeERK8DateTime
+                0x00000000       0x20 D:\Projects\stm32/rtc.o
  .text._ZN13RealTimeClock7setTimeEm
                 0x00000000       0x18 D:\Projects\stm32/rtc.o
  .text._ZNK13RealTimeClock7getTimeER8DateTime
                 0x00000000       0x20 D:\Projects\stm32/rtc.o
  .text._ZNK13RealTimeClock11getUnixTimeEv
                 0x00000000       0x16 D:\Projects\stm32/rtc.o
+ .debug_info    0x00000000      0x638 D:\Projects\stm32/rtc.o
+ .debug_abbrev  0x00000000      0x286 D:\Projects\stm32/rtc.o
+ .debug_aranges
+                0x00000000       0x48 D:\Projects\stm32/rtc.o
+ .debug_ranges  0x00000000       0x38 D:\Projects\stm32/rtc.o
+ .debug_line    0x00000000      0x28e D:\Projects\stm32/rtc.o
+ .debug_str     0x00000000      0x50f D:\Projects\stm32/rtc.o
+ .comment       0x00000000       0x7f D:\Projects\stm32/rtc.o
+ .debug_frame   0x00000000       0xe8 D:\Projects\stm32/rtc.o
+ .ARM.attributes
+                0x00000000       0x33 D:\Projects\stm32/rtc.o
  .text          0x00000000        0x0 D:\Projects\stm32/adc.o
  .data          0x00000000        0x0 D:\Projects\stm32/adc.o
  .bss           0x00000000        0x0 D:\Projects\stm32/adc.o
+ .rodata        0x00000000        0x4 D:\Projects\stm32/adc.o
+ .text._ZN3ADCC2EmmNS_15ResultStoreModeEmPKh
+                0x00000000       0xd8 D:\Projects\stm32/adc.o
+ .text._ZN3ADC4initEv
+                0x00000000      0x2d0 D:\Projects\stm32/adc.o
+ .text._ZN3ADC8getValueEm
+                0x00000000       0x52 D:\Projects\stm32/adc.o
+ .debug_info    0x00000000      0x814 D:\Projects\stm32/adc.o
+ .debug_abbrev  0x00000000      0x2a7 D:\Projects\stm32/adc.o
+ .debug_aranges
+                0x00000000       0x30 D:\Projects\stm32/adc.o
+ .debug_ranges  0x00000000       0x20 D:\Projects\stm32/adc.o
+ .debug_line    0x00000000      0x372 D:\Projects\stm32/adc.o
+ .debug_str     0x00000000      0x684 D:\Projects\stm32/adc.o
+ .comment       0x00000000       0x7f D:\Projects\stm32/adc.o
+ .debug_frame   0x00000000       0x80 D:\Projects\stm32/adc.o
+ .ARM.attributes
+                0x00000000       0x33 D:\Projects\stm32/adc.o
  .text          0x00000000        0x0 D:\Projects\stm32/tacho.o
  .data          0x00000000        0x0 D:\Projects\stm32/tacho.o
  .text.__NVIC_EnableIRQ
@@ -628,18 +812,68 @@ Discarded input sections
  .text          0x00000000        0x0 D:\Projects\stm32/storage.o
  .data          0x00000000        0x0 D:\Projects\stm32/storage.o
  .bss           0x00000000        0x0 D:\Projects\stm32/storage.o
+ .text._ZN7StorageC2Ev
+                0x00000000       0x28 D:\Projects\stm32/storage.o
+ .text._ZN7Storage9readToRamEv
+                0x00000000       0x46 D:\Projects\stm32/storage.o
+ .text._ZN7Storage12writeToFlashEv
+                0x00000000       0x5c D:\Projects\stm32/storage.o
+ .debug_info    0x00000000      0x2f4 D:\Projects\stm32/storage.o
+ .debug_abbrev  0x00000000      0x1b4 D:\Projects\stm32/storage.o
+ .debug_aranges
+                0x00000000       0x30 D:\Projects\stm32/storage.o
+ .debug_ranges  0x00000000       0x20 D:\Projects\stm32/storage.o
+ .debug_line    0x00000000      0x244 D:\Projects\stm32/storage.o
+ .debug_str     0x00000000      0x2ab D:\Projects\stm32/storage.o
+ .comment       0x00000000       0x7f D:\Projects\stm32/storage.o
+ .debug_frame   0x00000000       0x80 D:\Projects\stm32/storage.o
+ .ARM.attributes
+                0x00000000       0x33 D:\Projects\stm32/storage.o
  .text          0x00000000        0x0 D:\Projects\stm32/convertation.o
  .data          0x00000000        0x0 D:\Projects\stm32/convertation.o
+ .bss           0x00000000        0xb D:\Projects\stm32/convertation.o
+ .rodata        0x00000000       0x15 D:\Projects\stm32/convertation.o
+ .text._Z4itoaji
+                0x00000000       0x90 D:\Projects\stm32/convertation.o
  .text._Z13unix2DateTimeR8DateTimem
                 0x00000000      0x1dc D:\Projects\stm32/convertation.o
+ .text._Z13dateTime2UnixRK8DateTime
+                0x00000000      0x130 D:\Projects\stm32/convertation.o
+ .debug_info    0x00000000      0x2cb D:\Projects\stm32/convertation.o
+ .debug_abbrev  0x00000000       0xf0 D:\Projects\stm32/convertation.o
+ .debug_aranges
+                0x00000000       0x30 D:\Projects\stm32/convertation.o
+ .debug_ranges  0x00000000       0x20 D:\Projects\stm32/convertation.o
+ .debug_line    0x00000000      0x1d6 D:\Projects\stm32/convertation.o
+ .debug_str     0x00000000      0x26a D:\Projects\stm32/convertation.o
+ .comment       0x00000000       0x7f D:\Projects\stm32/convertation.o
+ .debug_frame   0x00000000       0x88 D:\Projects\stm32/convertation.o
+ .ARM.attributes
+                0x00000000       0x33 D:\Projects\stm32/convertation.o
  .text          0x00000000        0x0 D:\Projects\stm32/crc.o
+ .data          0x00000000      0x100 D:\Projects\stm32/crc.o
  .bss           0x00000000        0x0 D:\Projects\stm32/crc.o
  .text._Z13calcCRC_1wirehh
                 0x00000000       0x58 D:\Projects\stm32/crc.o
+ .text._Z18calcCRC_1wireQuickhh
+                0x00000000       0x2c D:\Projects\stm32/crc.o
+ .debug_info    0x00000000       0xf3 D:\Projects\stm32/crc.o
+ .debug_abbrev  0x00000000       0xbd D:\Projects\stm32/crc.o
+ .debug_aranges
+                0x00000000       0x28 D:\Projects\stm32/crc.o
+ .debug_ranges  0x00000000       0x18 D:\Projects\stm32/crc.o
+ .debug_line    0x00000000       0x80 D:\Projects\stm32/crc.o
+ .debug_str     0x00000000      0x14b D:\Projects\stm32/crc.o
+ .comment       0x00000000       0x7f D:\Projects\stm32/crc.o
+ .debug_frame   0x00000000       0x60 D:\Projects\stm32/crc.o
+ .ARM.attributes
+                0x00000000       0x33 D:\Projects\stm32/crc.o
  .group         0x00000000        0xc D:\Projects\stm32/main.o
  .text          0x00000000        0x0 D:\Projects\stm32/main.o
  .data          0x00000000        0x0 D:\Projects\stm32/main.o
  .bss           0x00000000        0x0 D:\Projects\stm32/main.o
+ .text._Z12TakeTimeoutsR5USARTR5DelayPh
+                0x00000000       0xa0 D:\Projects\stm32/main.o
 
 Memory Configuration
 
@@ -651,7 +885,7 @@ RAM              0x20000000         0x00005000         xrw
 Linker script and memory map
 
 
-.text           0x08000000     0x3fd9
+.text           0x08000000     0x2344
  *(.isr_vector)
  .isr_vector    0x08000000       0xec D:\Projects\stm32/startup_stm32f10x_md.o
                 0x08000000                __isr_vector
@@ -750,416 +984,228 @@ Linker script and memory map
  .text.RCC_PCLK2Config
                 0x0800072c       0x38 D:\Projects\stm32/stm32f10x_rcc.o
                 0x0800072c                RCC_PCLK2Config
- .text.RCC_ADCCLKConfig
-                0x08000764       0x38 D:\Projects\stm32/stm32f10x_rcc.o
-                0x08000764                RCC_ADCCLKConfig
- .text.RCC_LSEConfig
-                0x0800079c       0x40 D:\Projects\stm32/stm32f10x_rcc.o
-                0x0800079c                RCC_LSEConfig
- .text.RCC_RTCCLKConfig
-                0x080007dc       0x24 D:\Projects\stm32/stm32f10x_rcc.o
-                0x080007dc                RCC_RTCCLKConfig
- .text.RCC_RTCCLKCmd
-                0x08000800       0x20 D:\Projects\stm32/stm32f10x_rcc.o
-                0x08000800                RCC_RTCCLKCmd
  .text.RCC_GetClocksFreq
-                0x08000820      0x16c D:\Projects\stm32/stm32f10x_rcc.o
-                0x08000820                RCC_GetClocksFreq
+                0x08000764      0x16c D:\Projects\stm32/stm32f10x_rcc.o
+                0x08000764                RCC_GetClocksFreq
  .text.RCC_AHBPeriphClockCmd
-                0x0800098c       0x3c D:\Projects\stm32/stm32f10x_rcc.o
-                0x0800098c                RCC_AHBPeriphClockCmd
+                0x080008d0       0x3c D:\Projects\stm32/stm32f10x_rcc.o
+                0x080008d0                RCC_AHBPeriphClockCmd
  .text.RCC_APB2PeriphClockCmd
-                0x080009c8       0x3c D:\Projects\stm32/stm32f10x_rcc.o
-                0x080009c8                RCC_APB2PeriphClockCmd
+                0x0800090c       0x3c D:\Projects\stm32/stm32f10x_rcc.o
+                0x0800090c                RCC_APB2PeriphClockCmd
  .text.RCC_APB1PeriphClockCmd
-                0x08000a04       0x3c D:\Projects\stm32/stm32f10x_rcc.o
-                0x08000a04                RCC_APB1PeriphClockCmd
- .text.RCC_BackupResetCmd
-                0x08000a40       0x20 D:\Projects\stm32/stm32f10x_rcc.o
-                0x08000a40                RCC_BackupResetCmd
+                0x08000948       0x3c D:\Projects\stm32/stm32f10x_rcc.o
+                0x08000948                RCC_APB1PeriphClockCmd
  .text.RCC_GetFlagStatus
-                0x08000a60       0x70 D:\Projects\stm32/stm32f10x_rcc.o
-                0x08000a60                RCC_GetFlagStatus
+                0x08000984       0x70 D:\Projects\stm32/stm32f10x_rcc.o
+                0x08000984                RCC_GetFlagStatus
  .text.GPIO_Init
-                0x08000ad0      0x178 D:\Projects\stm32/stm32f10x_gpio.o
-                0x08000ad0                GPIO_Init
- .text.GPIO_ReadInputDataBit
-                0x08000c48       0x3c D:\Projects\stm32/stm32f10x_gpio.o
-                0x08000c48                GPIO_ReadInputDataBit
+                0x080009f4      0x178 D:\Projects\stm32/stm32f10x_gpio.o
+                0x080009f4                GPIO_Init
  .text.GPIO_SetBits
-                0x08000c84       0x1c D:\Projects\stm32/stm32f10x_gpio.o
-                0x08000c84                GPIO_SetBits
+                0x08000b6c       0x1c D:\Projects\stm32/stm32f10x_gpio.o
+                0x08000b6c                GPIO_SetBits
  .text.GPIO_ResetBits
-                0x08000ca0       0x1c D:\Projects\stm32/stm32f10x_gpio.o
-                0x08000ca0                GPIO_ResetBits
+                0x08000b88       0x1c D:\Projects\stm32/stm32f10x_gpio.o
+                0x08000b88                GPIO_ResetBits
  .text.USART_Init
-                0x08000cbc      0x180 D:\Projects\stm32/stm32f10x_usart.o
-                0x08000cbc                USART_Init
+                0x08000ba4      0x180 D:\Projects\stm32/stm32f10x_usart.o
+                0x08000ba4                USART_Init
  .text.USART_Cmd
-                0x08000e3c       0x3e D:\Projects\stm32/stm32f10x_usart.o
-                0x08000e3c                USART_Cmd
+                0x08000d24       0x3e D:\Projects\stm32/stm32f10x_usart.o
+                0x08000d24                USART_Cmd
  .text.USART_ITConfig
-                0x08000e7a       0x8c D:\Projects\stm32/stm32f10x_usart.o
-                0x08000e7a                USART_ITConfig
+                0x08000d62       0x8c D:\Projects\stm32/stm32f10x_usart.o
+                0x08000d62                USART_ITConfig
  .text.USART_DMACmd
-                0x08000f06       0x46 D:\Projects\stm32/stm32f10x_usart.o
-                0x08000f06                USART_DMACmd
+                0x08000dee       0x46 D:\Projects\stm32/stm32f10x_usart.o
+                0x08000dee                USART_DMACmd
  .text.USART_ReceiveData
-                0x08000f4c       0x1e D:\Projects\stm32/stm32f10x_usart.o
-                0x08000f4c                USART_ReceiveData
- *fill*         0x08000f6a        0x2 
+                0x08000e34       0x1e D:\Projects\stm32/stm32f10x_usart.o
+                0x08000e34                USART_ReceiveData
+ *fill*         0x08000e52        0x2 
  .text.I2C_Init
-                0x08000f6c      0x184 D:\Projects\stm32/stm32f10x_i2c.o
-                0x08000f6c                I2C_Init
- .text.I2C_Cmd  0x080010f0       0x3e D:\Projects\stm32/stm32f10x_i2c.o
-                0x080010f0                I2C_Cmd
+                0x08000e54      0x184 D:\Projects\stm32/stm32f10x_i2c.o
+                0x08000e54                I2C_Init
+ .text.I2C_Cmd  0x08000fd8       0x3e D:\Projects\stm32/stm32f10x_i2c.o
+                0x08000fd8                I2C_Cmd
  .text.I2C_GenerateSTART
-                0x0800112e       0x3e D:\Projects\stm32/stm32f10x_i2c.o
-                0x0800112e                I2C_GenerateSTART
+                0x08001016       0x3e D:\Projects\stm32/stm32f10x_i2c.o
+                0x08001016                I2C_GenerateSTART
  .text.I2C_GenerateSTOP
-                0x0800116c       0x3e D:\Projects\stm32/stm32f10x_i2c.o
-                0x0800116c                I2C_GenerateSTOP
+                0x08001054       0x3e D:\Projects\stm32/stm32f10x_i2c.o
+                0x08001054                I2C_GenerateSTOP
  .text.I2C_SendData
-                0x080011aa       0x1e D:\Projects\stm32/stm32f10x_i2c.o
-                0x080011aa                I2C_SendData
+                0x08001092       0x1e D:\Projects\stm32/stm32f10x_i2c.o
+                0x08001092                I2C_SendData
  .text.I2C_Send7bitAddress
-                0x080011c8       0x3a D:\Projects\stm32/stm32f10x_i2c.o
-                0x080011c8                I2C_Send7bitAddress
+                0x080010b0       0x3a D:\Projects\stm32/stm32f10x_i2c.o
+                0x080010b0                I2C_Send7bitAddress
  .text.I2C_CheckEvent
-                0x08001202       0x5e D:\Projects\stm32/stm32f10x_i2c.o
-                0x08001202                I2C_CheckEvent
+                0x080010ea       0x5e D:\Projects\stm32/stm32f10x_i2c.o
+                0x080010ea                I2C_CheckEvent
  .text.I2C_GetFlagStatus
-                0x08001260       0x78 D:\Projects\stm32/stm32f10x_i2c.o
-                0x08001260                I2C_GetFlagStatus
- .text.RTC_EnterConfigMode
-                0x080012d8       0x20 D:\Projects\stm32/stm32f10x_rtc.o
-                0x080012d8                RTC_EnterConfigMode
- .text.RTC_ExitConfigMode
-                0x080012f8       0x20 D:\Projects\stm32/stm32f10x_rtc.o
-                0x080012f8                RTC_ExitConfigMode
- .text.RTC_SetCounter
-                0x08001318       0x30 D:\Projects\stm32/stm32f10x_rtc.o
-                0x08001318                RTC_SetCounter
- .text.RTC_SetPrescaler
-                0x08001348       0x34 D:\Projects\stm32/stm32f10x_rtc.o
-                0x08001348                RTC_SetPrescaler
- .text.RTC_WaitForSynchro
-                0x0800137c       0x3c D:\Projects\stm32/stm32f10x_rtc.o
-                0x0800137c                RTC_WaitForSynchro
- .text.PWR_BackupAccessCmd
-                0x080013b8       0x20 D:\Projects\stm32/stm32f10x_pwr.o
-                0x080013b8                PWR_BackupAccessCmd
+                0x08001148       0x78 D:\Projects\stm32/stm32f10x_i2c.o
+                0x08001148                I2C_GetFlagStatus
  .text.DMA_Init
-                0x080013d8       0x7c D:\Projects\stm32/stm32f10x_dma.o
-                0x080013d8                DMA_Init
- .text.DMA_Cmd  0x08001454       0x38 D:\Projects\stm32/stm32f10x_dma.o
-                0x08001454                DMA_Cmd
+                0x080011c0       0x7c D:\Projects\stm32/stm32f10x_dma.o
+                0x080011c0                DMA_Init
+ .text.DMA_Cmd  0x0800123c       0x38 D:\Projects\stm32/stm32f10x_dma.o
+                0x0800123c                DMA_Cmd
  .text.DMA_ITConfig
-                0x0800148c       0x3a D:\Projects\stm32/stm32f10x_dma.o
-                0x0800148c                DMA_ITConfig
- *fill*         0x080014c6        0x2 
+                0x08001274       0x3a D:\Projects\stm32/stm32f10x_dma.o
+                0x08001274                DMA_ITConfig
+ *fill*         0x080012ae        0x2 
  .text.DMA_ClearITPendingBit
-                0x080014c8       0x34 D:\Projects\stm32/stm32f10x_dma.o
-                0x080014c8                DMA_ClearITPendingBit
- .text.ADC_Init
-                0x080014fc       0xa4 D:\Projects\stm32/stm32f10x_adc.o
-                0x080014fc                ADC_Init
- .text.ADC_Cmd  0x080015a0       0x36 D:\Projects\stm32/stm32f10x_adc.o
-                0x080015a0                ADC_Cmd
- .text.ADC_DMACmd
-                0x080015d6       0x36 D:\Projects\stm32/stm32f10x_adc.o
-                0x080015d6                ADC_DMACmd
- .text.ADC_ResetCalibration
-                0x0800160c       0x1e D:\Projects\stm32/stm32f10x_adc.o
-                0x0800160c                ADC_ResetCalibration
- .text.ADC_GetResetCalibrationStatus
-                0x0800162a       0x38 D:\Projects\stm32/stm32f10x_adc.o
-                0x0800162a                ADC_GetResetCalibrationStatus
- .text.ADC_StartCalibration
-                0x08001662       0x1e D:\Projects\stm32/stm32f10x_adc.o
-                0x08001662                ADC_StartCalibration
- .text.ADC_GetCalibrationStatus
-                0x08001680       0x38 D:\Projects\stm32/stm32f10x_adc.o
-                0x08001680                ADC_GetCalibrationStatus
- .text.ADC_SoftwareStartConvCmd
-                0x080016b8       0x36 D:\Projects\stm32/stm32f10x_adc.o
-                0x080016b8                ADC_SoftwareStartConvCmd
- .text.ADC_RegularChannelConfig
-                0x080016ee      0x192 D:\Projects\stm32/stm32f10x_adc.o
-                0x080016ee                ADC_RegularChannelConfig
- .text.ADC_GetConversionValue
-                0x08001880       0x18 D:\Projects\stm32/stm32f10x_adc.o
-                0x08001880                ADC_GetConversionValue
- .text.ADC_AutoInjectedConvCmd
-                0x08001898       0x36 D:\Projects\stm32/stm32f10x_adc.o
-                0x08001898                ADC_AutoInjectedConvCmd
- .text.ADC_ExternalTrigInjectedConvConfig
-                0x080018ce       0x34 D:\Projects\stm32/stm32f10x_adc.o
-                0x080018ce                ADC_ExternalTrigInjectedConvConfig
- .text.ADC_InjectedChannelConfig
-                0x08001902      0x120 D:\Projects\stm32/stm32f10x_adc.o
-                0x08001902                ADC_InjectedChannelConfig
- .text.ADC_InjectedSequencerLengthConfig
-                0x08001a22       0x42 D:\Projects\stm32/stm32f10x_adc.o
-                0x08001a22                ADC_InjectedSequencerLengthConfig
- .text.ADC_GetInjectedConversionValue
-                0x08001a64       0x2e D:\Projects\stm32/stm32f10x_adc.o
-                0x08001a64                ADC_GetInjectedConversionValue
- *fill*         0x08001a92        0x2 
- .text.ADC_TempSensorVrefintCmd
-                0x08001a94       0x38 D:\Projects\stm32/stm32f10x_adc.o
-                0x08001a94                ADC_TempSensorVrefintCmd
+                0x080012b0       0x34 D:\Projects\stm32/stm32f10x_dma.o
+                0x080012b0                DMA_ClearITPendingBit
  .text.TIM_GetCapture2
-                0x08001acc       0x18 D:\Projects\stm32/stm32f10x_tim.o
-                0x08001acc                TIM_GetCapture2
+                0x080012e4       0x18 D:\Projects\stm32/stm32f10x_tim.o
+                0x080012e4                TIM_GetCapture2
  .text.TIM_GetFlagStatus
-                0x08001ae4       0x40 D:\Projects\stm32/stm32f10x_tim.o
-                0x08001ae4                TIM_GetFlagStatus
+                0x080012fc       0x40 D:\Projects\stm32/stm32f10x_tim.o
+                0x080012fc                TIM_GetFlagStatus
  .text.TIM_ClearFlag
-                0x08001b24       0x20 D:\Projects\stm32/stm32f10x_tim.o
-                0x08001b24                TIM_ClearFlag
+                0x0800133c       0x20 D:\Projects\stm32/stm32f10x_tim.o
+                0x0800133c                TIM_ClearFlag
  .text.TIM_GetITStatus
-                0x08001b44       0x52 D:\Projects\stm32/stm32f10x_tim.o
-                0x08001b44                TIM_GetITStatus
+                0x0800135c       0x52 D:\Projects\stm32/stm32f10x_tim.o
+                0x0800135c                TIM_GetITStatus
  .text.TIM_ClearITPendingBit
-                0x08001b96       0x20 D:\Projects\stm32/stm32f10x_tim.o
-                0x08001b96                TIM_ClearITPendingBit
- *fill*         0x08001bb6        0x2 
+                0x080013ae       0x20 D:\Projects\stm32/stm32f10x_tim.o
+                0x080013ae                TIM_ClearITPendingBit
+ *fill*         0x080013ce        0x2 
  .text.FLASH_SetLatency
-                0x08001bb8       0x38 D:\Projects\stm32/stm32f10x_flash.o
-                0x08001bb8                FLASH_SetLatency
+                0x080013d0       0x38 D:\Projects\stm32/stm32f10x_flash.o
+                0x080013d0                FLASH_SetLatency
  .text.FLASH_PrefetchBufferCmd
-                0x08001bf0       0x30 D:\Projects\stm32/stm32f10x_flash.o
-                0x08001bf0                FLASH_PrefetchBufferCmd
- .text.FLASH_Unlock
-                0x08001c20       0x24 D:\Projects\stm32/stm32f10x_flash.o
-                0x08001c20                FLASH_Unlock
- .text.FLASH_Lock
-                0x08001c44       0x1c D:\Projects\stm32/stm32f10x_flash.o
-                0x08001c44                FLASH_Lock
- .text.FLASH_ErasePage
-                0x08001c60       0x64 D:\Projects\stm32/stm32f10x_flash.o
-                0x08001c60                FLASH_ErasePage
- .text.FLASH_ProgramWord
-                0x08001cc4       0x94 D:\Projects\stm32/stm32f10x_flash.o
-                0x08001cc4                FLASH_ProgramWord
- .text.FLASH_GetBank1Status
-                0x08001d58       0x74 D:\Projects\stm32/stm32f10x_flash.o
-                0x08001d58                FLASH_GetBank1Status
- .text.FLASH_WaitForLastOperation
-                0x08001dcc       0x44 D:\Projects\stm32/stm32f10x_flash.o
-                0x08001dcc                FLASH_WaitForLastOperation
+                0x08001408       0x30 D:\Projects\stm32/stm32f10x_flash.o
+                0x08001408                FLASH_PrefetchBufferCmd
  .text.__NVIC_SetPriority
-                0x08001e10       0x5c D:\Projects\stm32/delay.o
+                0x08001438       0x5c D:\Projects\stm32/delay.o
  .text.SysTick_Config
-                0x08001e6c       0x44 D:\Projects\stm32/delay.o
+                0x08001494       0x44 D:\Projects\stm32/delay.o
  .text.SysTick_Handler
-                0x08001eb0       0x24 D:\Projects\stm32/delay.o
-                0x08001eb0                SysTick_Handler
+                0x080014d8       0x24 D:\Projects\stm32/delay.o
+                0x080014d8                SysTick_Handler
  .text._ZN5DelayC2Ev
-                0x08001ed4       0x74 D:\Projects\stm32/delay.o
-                0x08001ed4                Delay::Delay()
-                0x08001ed4                Delay::Delay()
+                0x080014fc       0x74 D:\Projects\stm32/delay.o
+                0x080014fc                Delay::Delay()
+                0x080014fc                Delay::Delay()
  .text._ZNK5Delay2msEm
-                0x08001f48       0x28 D:\Projects\stm32/delay.o
-                0x08001f48                Delay::ms(unsigned long) const
+                0x08001570       0x28 D:\Projects\stm32/delay.o
+                0x08001570                Delay::ms(unsigned long) const
  .text._ZNK5Delay2usEm
-                0x08001f70       0x4c D:\Projects\stm32/delay.o
-                0x08001f70                Delay::us(unsigned long) const
+                0x08001598       0x4c D:\Projects\stm32/delay.o
+                0x08001598                Delay::us(unsigned long) const
  .text._ZNK5Delay15getSysTickValueEv
-                0x08001fbc       0x1c D:\Projects\stm32/delay.o
-                0x08001fbc                Delay::getSysTickValue() const
+                0x080015e4       0x1c D:\Projects\stm32/delay.o
+                0x080015e4                Delay::getSysTickValue() const
  .text._Z41__static_initialization_and_destruction_0ii
-                0x08001fd8       0x40 D:\Projects\stm32/delay.o
+                0x08001600       0x40 D:\Projects\stm32/delay.o
  .text._GLOBAL__sub_I_SysTick_Handler
-                0x08002018       0x10 D:\Projects\stm32/delay.o
+                0x08001640       0x10 D:\Projects\stm32/delay.o
  .text._Z15SetSysClockTo72v
-                0x08002028       0x90 D:\Projects\stm32/SysClock.o
-                0x08002028                SetSysClockTo72()
+                0x08001650       0x90 D:\Projects\stm32/SysClock.o
+                0x08001650                SetSysClockTo72()
  .text._Z12GPIO_Init_MyP12GPIO_TypeDeft16GPIOMode_TypeDef17GPIOSpeed_TypeDef
-                0x080020b8       0xc4 D:\Projects\stm32/gpio.o
-                0x080020b8                GPIO_Init_My(GPIO_TypeDef*, unsigned short, GPIOMode_TypeDef, GPIOSpeed_TypeDef)
+                0x080016e0       0xc4 D:\Projects\stm32/gpio.o
+                0x080016e0                GPIO_Init_My(GPIO_TypeDef*, unsigned short, GPIOMode_TypeDef, GPIOSpeed_TypeDef)
  .text._ZN3LEDC2EP12GPIO_TypeDeft
-                0x0800217c       0x36 D:\Projects\stm32/led.o
-                0x0800217c                LED::LED(GPIO_TypeDef*, unsigned short)
-                0x0800217c                LED::LED(GPIO_TypeDef*, unsigned short)
+                0x080017a4       0x36 D:\Projects\stm32/led.o
+                0x080017a4                LED::LED(GPIO_TypeDef*, unsigned short)
+                0x080017a4                LED::LED(GPIO_TypeDef*, unsigned short)
  .text._ZN3LED2onEv
-                0x080021b2       0x26 D:\Projects\stm32/led.o
-                0x080021b2                LED::on()
+                0x080017da       0x26 D:\Projects\stm32/led.o
+                0x080017da                LED::on()
  .text._ZN3LED3offEv
-                0x080021d8       0x26 D:\Projects\stm32/led.o
-                0x080021d8                LED::off()
+                0x08001800       0x26 D:\Projects\stm32/led.o
+                0x08001800                LED::off()
  .text._ZN3LED6invertEv
-                0x080021fe       0x26 D:\Projects\stm32/led.o
-                0x080021fe                LED::invert()
+                0x08001826       0x26 D:\Projects\stm32/led.o
+                0x08001826                LED::invert()
  .text.__NVIC_EnableIRQ
-                0x08002224       0x3c D:\Projects\stm32/usart.o
+                0x0800184c       0x3c D:\Projects\stm32/usart.o
  .text.USART1_IRQHandler
-                0x08002260       0x58 D:\Projects\stm32/usart.o
-                0x08002260                USART1_IRQHandler
+                0x08001888       0x58 D:\Projects\stm32/usart.o
+                0x08001888                USART1_IRQHandler
  .text.USART2_IRQHandler
-                0x080022b8       0x58 D:\Projects\stm32/usart.o
-                0x080022b8                USART2_IRQHandler
+                0x080018e0       0x58 D:\Projects\stm32/usart.o
+                0x080018e0                USART2_IRQHandler
  .text.DMA1_Channel4_IRQHandler
-                0x08002310       0x1c D:\Projects\stm32/usart.o
-                0x08002310                DMA1_Channel4_IRQHandler
+                0x08001938       0x1c D:\Projects\stm32/usart.o
+                0x08001938                DMA1_Channel4_IRQHandler
  .text.DMA1_Channel7_IRQHandler
-                0x0800232c       0x1c D:\Projects\stm32/usart.o
-                0x0800232c                DMA1_Channel7_IRQHandler
+                0x08001954       0x1c D:\Projects\stm32/usart.o
+                0x08001954                DMA1_Channel7_IRQHandler
  .text._ZN5USARTC2Eimttt
-                0x08002348      0x160 D:\Projects\stm32/usart.o
-                0x08002348                USART::USART(int, unsigned long, unsigned short, unsigned short, unsigned short)
-                0x08002348                USART::USART(int, unsigned long, unsigned short, unsigned short, unsigned short)
+                0x08001970      0x160 D:\Projects\stm32/usart.o
+                0x08001970                USART::USART(int, unsigned long, unsigned short, unsigned short, unsigned short)
+                0x08001970                USART::USART(int, unsigned long, unsigned short, unsigned short, unsigned short)
  .text._ZN5USART7setUartEmttt
-                0x080024a8       0x46 D:\Projects\stm32/usart.o
-                0x080024a8                USART::setUart(unsigned long, unsigned short, unsigned short, unsigned short)
+                0x08001ad0       0x46 D:\Projects\stm32/usart.o
+                0x08001ad0                USART::setUart(unsigned long, unsigned short, unsigned short, unsigned short)
  .text._ZN5USART6setDMAEv
-                0x080024ee       0x52 D:\Projects\stm32/usart.o
-                0x080024ee                USART::setDMA()
+                0x08001b16       0x52 D:\Projects\stm32/usart.o
+                0x08001b16                USART::setDMA()
  .text._ZN5USART7setNvicEh
-                0x08002540       0x2e D:\Projects\stm32/usart.o
-                0x08002540                USART::setNvic(unsigned char)
+                0x08001b68       0x2e D:\Projects\stm32/usart.o
+                0x08001b68                USART::setNvic(unsigned char)
  .text._ZN5USART4sendEPKh
-                0x0800256e       0x5e D:\Projects\stm32/usart.o
-                0x0800256e                USART::send(unsigned char const*)
- .text._ZN5USART8getCountEv
-                0x080025cc       0x18 D:\Projects\stm32/usart.o
-                0x080025cc                USART::getCount()
- .text._ZN5USART7getDataEv
-                0x080025e4       0x16 D:\Projects\stm32/usart.o
-                0x080025e4                USART::getData()
- .text._ZN7OneWireC2ER5DelayP12GPIO_TypeDeftPhS4_S4_
-                0x080025fa       0x7e D:\Projects\stm32/oneWire.o
-                0x080025fa                OneWire::OneWire(Delay&, GPIO_TypeDef*, unsigned short, unsigned char*, unsigned char*, unsigned char*)
-                0x080025fa                OneWire::OneWire(Delay&, GPIO_TypeDef*, unsigned short, unsigned char*, unsigned char*, unsigned char*)
- .text._ZN7OneWire13WriteTimeslotEh
-                0x08002678       0x7a D:\Projects\stm32/oneWire.o
-                0x08002678                OneWire::WriteTimeslot(unsigned char)
- .text._ZN7OneWire12ReadTimeslotEv
-                0x080026f2       0x76 D:\Projects\stm32/oneWire.o
-                0x080026f2                OneWire::ReadTimeslot()
- .text._ZN7OneWire14InitializationEv
-                0x08002768       0x8e D:\Projects\stm32/oneWire.o
-                0x08002768                OneWire::Initialization()
- .text._ZN7OneWire9WriteByteEh
-                0x080027f6       0x3c D:\Projects\stm32/oneWire.o
-                0x080027f6                OneWire::WriteByte(unsigned char)
- .text._ZN7OneWire8ReadByteEv
-                0x08002832       0x3e D:\Projects\stm32/oneWire.o
-                0x08002832                OneWire::ReadByte()
- .text._ZN7OneWire7ReadROMEPh
-                0x08002870       0x58 D:\Projects\stm32/oneWire.o
-                0x08002870                OneWire::ReadROM(unsigned char*)
- .text._ZN13OneWireSearchC2ER7OneWire
-                0x080028c8       0x34 D:\Projects\stm32/oneWireSearch.o
-                0x080028c8                OneWireSearch::OneWireSearch(OneWire&)
-                0x080028c8                OneWireSearch::OneWireSearch(OneWire&)
- .text._ZN13OneWireSearch5firstEv
-                0x080028fc       0x2a D:\Projects\stm32/oneWireSearch.o
-                0x080028fc                OneWireSearch::first()
- .text._ZN13OneWireSearch4nextEv
-                0x08002926       0x18 D:\Projects\stm32/oneWireSearch.o
-                0x08002926                OneWireSearch::next()
- .text._ZN13OneWireSearch6searchEv
-                0x0800293e      0x1dc D:\Projects\stm32/oneWireSearch.o
-                0x0800293e                OneWireSearch::search()
- .text._ZN13OneWireSearch16searchAllDevicesEv
-                0x08002b1a       0x7e D:\Projects\stm32/oneWireSearch.o
-                0x08002b1a                OneWireSearch::searchAllDevices()
+                0x08001b96       0x5e D:\Projects\stm32/usart.o
+                0x08001b96                USART::send(unsigned char const*)
  .text._ZN3I2cC2Ehh
-                0x08002b98       0xc8 D:\Projects\stm32/i2c.o
-                0x08002b98                I2c::I2c(unsigned char, unsigned char)
-                0x08002b98                I2c::I2c(unsigned char, unsigned char)
+                0x08001bf4       0xc8 D:\Projects\stm32/i2c.o
+                0x08001bf4                I2c::I2c(unsigned char, unsigned char)
+                0x08001bf4                I2c::I2c(unsigned char, unsigned char)
  .text._ZNK3I2c13startTransmitEh
-                0x08002c60       0xc8 D:\Projects\stm32/i2c.o
-                0x08002c60                I2c::startTransmit(unsigned char) const
+                0x08001cbc       0xc8 D:\Projects\stm32/i2c.o
+                0x08001cbc                I2c::startTransmit(unsigned char) const
  .text._ZNK3I2c5writeEh
-                0x08002d28       0x44 D:\Projects\stm32/i2c.o
-                0x08002d28                I2c::write(unsigned char) const
+                0x08001d84       0x44 D:\Projects\stm32/i2c.o
+                0x08001d84                I2c::write(unsigned char) const
  .text._ZNK3I2c12stopTransmitEv
-                0x08002d6c       0x40 D:\Projects\stm32/i2c.o
-                0x08002d6c                I2c::stopTransmit() const
+                0x08001dc8       0x40 D:\Projects\stm32/i2c.o
+                0x08001dc8                I2c::stopTransmit() const
  .text._ZN3LcdC2ER3I2cR5Delayh
-                0x08002dac      0x12e D:\Projects\stm32/lcd.o
-                0x08002dac                Lcd::Lcd(I2c&, Delay&, unsigned char)
-                0x08002dac                Lcd::Lcd(I2c&, Delay&, unsigned char)
+                0x08001e08      0x12e D:\Projects\stm32/lcd.o
+                0x08001e08                Lcd::Lcd(I2c&, Delay&, unsigned char)
+                0x08001e08                Lcd::Lcd(I2c&, Delay&, unsigned char)
  .text._ZN3Lcd10write4bitsEh
-                0x08002eda       0x82 D:\Projects\stm32/lcd.o
-                0x08002eda                Lcd::write4bits(unsigned char)
+                0x08001f36       0x88 D:\Projects\stm32/lcd.o
+                0x08001f36                Lcd::write4bits(unsigned char)
  .text._ZN3Lcd9writeDataEhh
-                0x08002f5c       0x46 D:\Projects\stm32/lcd.o
-                0x08002f5c                Lcd::writeData(unsigned char, unsigned char)
+                0x08001fbe       0x46 D:\Projects\stm32/lcd.o
+                0x08001fbe                Lcd::writeData(unsigned char, unsigned char)
  .text._ZN3Lcd15sendInstructionEh
-                0x08002fa2       0x20 D:\Projects\stm32/lcd.o
-                0x08002fa2                Lcd::sendInstruction(unsigned char)
+                0x08002004       0x20 D:\Projects\stm32/lcd.o
+                0x08002004                Lcd::sendInstruction(unsigned char)
  .text._ZN3Lcd8sendDataEh
-                0x08002fc2       0x20 D:\Projects\stm32/lcd.o
-                0x08002fc2                Lcd::sendData(unsigned char)
+                0x08002024       0x20 D:\Projects\stm32/lcd.o
+                0x08002024                Lcd::sendData(unsigned char)
  .text._ZN3Lcd5clearEv
-                0x08002fe2       0x24 D:\Projects\stm32/lcd.o
-                0x08002fe2                Lcd::clear()
+                0x08002044       0x24 D:\Projects\stm32/lcd.o
+                0x08002044                Lcd::clear()
  .text._ZN3Lcd4homeEv
-                0x08003006       0x24 D:\Projects\stm32/lcd.o
-                0x08003006                Lcd::home()
+                0x08002068       0x24 D:\Projects\stm32/lcd.o
+                0x08002068                Lcd::home()
+ .text._ZN3Lcd10cursorGoToEhh
+                0x0800208c       0x3c D:\Projects\stm32/lcd.o
+                0x0800208c                Lcd::cursorGoTo(unsigned char, unsigned char)
  .text._ZN3Lcd12backlightSetEh
-                0x0800302a       0x30 D:\Projects\stm32/lcd.o
-                0x0800302a                Lcd::backlightSet(unsigned char)
+                0x080020c8       0x58 D:\Projects\stm32/lcd.o
+                0x080020c8                Lcd::backlightSet(unsigned char)
  .text._ZN3Lcd4putsEPKc
-                0x0800305a       0x2c D:\Projects\stm32/lcd.o
-                0x0800305a                Lcd::puts(char const*)
- *fill*         0x08003086        0x2 
- .text._ZN13RealTimeClockC2ER5Delay
-                0x08003088       0x54 D:\Projects\stm32/rtc.o
-                0x08003088                RealTimeClock::RealTimeClock(Delay&)
-                0x08003088                RealTimeClock::RealTimeClock(Delay&)
- .text._ZN13RealTimeClock4initEv
-                0x080030dc       0x88 D:\Projects\stm32/rtc.o
-                0x080030dc                RealTimeClock::init()
- .text._ZN13RealTimeClock7setTimeERK8DateTime
-                0x08003164       0x20 D:\Projects\stm32/rtc.o
-                0x08003164                RealTimeClock::setTime(DateTime const&)
- .text._ZN3ADCC2EmmNS_15ResultStoreModeEmPKh
-                0x08003184       0xd8 D:\Projects\stm32/adc.o
-                0x08003184                ADC::ADC(unsigned long, unsigned long, ADC::ResultStoreMode, unsigned long, unsigned char const*)
-                0x08003184                ADC::ADC(unsigned long, unsigned long, ADC::ResultStoreMode, unsigned long, unsigned char const*)
- .text._ZN3ADC4initEv
-                0x0800325c      0x2d0 D:\Projects\stm32/adc.o
-                0x0800325c                ADC::init()
- .text._ZN3ADC8getValueEm
-                0x0800352c       0x52 D:\Projects\stm32/adc.o
-                0x0800352c                ADC::getValue(unsigned long)
- *fill*         0x0800357e        0x2 
+                0x08002120       0x2c D:\Projects\stm32/lcd.o
+                0x08002120                Lcd::puts(char const*)
  .text.TIM2_IRQHandler
-                0x08003580       0xac D:\Projects\stm32/tacho.o
-                0x08003580                TIM2_IRQHandler
- .text._ZN7StorageC2Ev
-                0x0800362c       0x28 D:\Projects\stm32/storage.o
-                0x0800362c                Storage::Storage()
-                0x0800362c                Storage::Storage()
- .text._ZN7Storage9readToRamEv
-                0x08003654       0x46 D:\Projects\stm32/storage.o
-                0x08003654                Storage::readToRam()
- .text._ZN7Storage12writeToFlashEv
-                0x0800369a       0x5c D:\Projects\stm32/storage.o
-                0x0800369a                Storage::writeToFlash()
- *fill*         0x080036f6        0x2 
- .text._Z4itoaji
-                0x080036f8       0x90 D:\Projects\stm32/convertation.o
-                0x080036f8                itoa(unsigned int, int)
- .text._Z13dateTime2UnixRK8DateTime
-                0x08003788      0x130 D:\Projects\stm32/convertation.o
-                0x08003788                dateTime2Unix(DateTime const&)
- .text._Z18calcCRC_1wireQuickhh
-                0x080038b8       0x2c D:\Projects\stm32/crc.o
-                0x080038b8                calcCRC_1wireQuick(unsigned char, unsigned char)
+                0x0800214c       0xac D:\Projects\stm32/tacho.o
+                0x0800214c                TIM2_IRQHandler
  .text._ZN5USARTlsEPKc
-                0x080038e4       0x1c D:\Projects\stm32/main.o
-                0x080038e4                USART::operator<<(char const*)
- .text._Z12TakeTimeoutsR5USARTR5DelayPh
-                0x08003900       0xa0 D:\Projects\stm32/main.o
-                0x08003900                TakeTimeouts(USART&, Delay&, unsigned char*)
- .text.main     0x080039a0      0x508 D:\Projects\stm32/main.o
-                0x080039a0                main
+                0x080021f8       0x1c D:\Projects\stm32/main.o
+                0x080021f8                USART::operator<<(char const*)
+ .text.main     0x08002214       0xbc D:\Projects\stm32/main.o
+                0x08002214                main
  *(.init)
  *(.fini)
  *crtbegin.o(.ctors)
@@ -1173,41 +1219,37 @@ Linker script and memory map
  *(SORT_BY_NAME(.dtors.*))
  *(.dtors)
  *(.rodata*)
- .rodata        0x08003ea8        0xc D:\Projects\stm32/rtc.o
- .rodata        0x08003eb4        0x4 D:\Projects\stm32/adc.o
- .rodata        0x08003eb8       0x15 D:\Projects\stm32/convertation.o
- *fill*         0x08003ecd        0x3 
- .rodata        0x08003ed0      0x109 D:\Projects\stm32/main.o
+ .rodata        0x080022d0       0x74 D:\Projects\stm32/main.o
  *(.eh_frame*)
 
-.glue_7         0x08003fdc        0x0
- .glue_7        0x08003fdc        0x0 linker stubs
+.glue_7         0x08002344        0x0
+ .glue_7        0x08002344        0x0 linker stubs
 
-.glue_7t        0x08003fdc        0x0
- .glue_7t       0x08003fdc        0x0 linker stubs
+.glue_7t        0x08002344        0x0
+ .glue_7t       0x08002344        0x0 linker stubs
 
-.vfp11_veneer   0x08003fdc        0x0
- .vfp11_veneer  0x08003fdc        0x0 linker stubs
+.vfp11_veneer   0x08002344        0x0
+ .vfp11_veneer  0x08002344        0x0 linker stubs
 
-.v4_bx          0x08003fdc        0x0
- .v4_bx         0x08003fdc        0x0 linker stubs
+.v4_bx          0x08002344        0x0
+ .v4_bx         0x08002344        0x0 linker stubs
 
-.iplt           0x08003fdc        0x0
- .iplt          0x08003fdc        0x0 D:\Projects\stm32/misc.o
+.iplt           0x08002344        0x0
+ .iplt          0x08002344        0x0 D:\Projects\stm32/misc.o
 
-.rel.dyn        0x08003fdc        0x0
- .rel.iplt      0x08003fdc        0x0 D:\Projects\stm32/misc.o
+.rel.dyn        0x08002344        0x0
+ .rel.iplt      0x08002344        0x0 D:\Projects\stm32/misc.o
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x08003fdc                __exidx_start = .
+                0x08002344                __exidx_start = .
 
 .ARM.exidx
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-                0x08003fdc                __exidx_end = .
-                0x08003fdc                __etext = .
+                0x08002344                __exidx_end = .
+                0x08002344                __etext = .
 
-.data           0x20000000      0x12c load address 0x08003fd9
+.data           0x20000000       0x2c load address 0x08002344
                 0x20000000                __data_start__ = .
  *(vtable)
  *(.data*)
@@ -1215,52 +1257,49 @@ Linker script and memory map
                 0x20000000                SystemCoreClock
                 0x20000004                AHBPrescTable
  .data          0x20000014       0x14 D:\Projects\stm32/stm32f10x_rcc.o
- .data          0x20000028      0x100 D:\Projects\stm32/crc.o
-                0x20000028                crc8tableDallas
-                0x20000128                . = ALIGN (0x4)
+                0x20000028                . = ALIGN (0x4)
                 [!provide]                PROVIDE (__preinit_array_start, .)
  *(.preinit_array)
                 [!provide]                PROVIDE (__preinit_array_end, .)
-                0x20000128                . = ALIGN (0x4)
+                0x20000028                . = ALIGN (0x4)
                 [!provide]                PROVIDE (__init_array_start, .)
  *(SORT_BY_NAME(.init_array.*))
  *(.init_array)
- .init_array    0x20000128        0x4 D:\Projects\stm32/delay.o
+ .init_array    0x20000028        0x4 D:\Projects\stm32/delay.o
                 [!provide]                PROVIDE (__init_array_end, .)
-                0x2000012c                . = ALIGN (0x4)
+                0x2000002c                . = ALIGN (0x4)
                 [!provide]                PROVIDE (__fini_array_start, .)
  *(SORT_BY_NAME(.fini_array.*))
  *(.fini_array)
                 [!provide]                PROVIDE (__fini_array_end, .)
-                0x2000012c                . = ALIGN (0x4)
-                0x2000012c                __data_end__ = .
+                0x2000002c                . = ALIGN (0x4)
+                0x2000002c                __data_end__ = .
 
-.igot.plt       0x2000012c        0x0 load address 0x08004108
- .igot.plt      0x2000012c        0x0 D:\Projects\stm32/misc.o
+.igot.plt       0x2000002c        0x0 load address 0x08002370
+ .igot.plt      0x2000002c        0x0 D:\Projects\stm32/misc.o
 
-.bss            0x2000012c       0x2b load address 0x08004108
-                0x2000012c                __bss_start__ = .
+.bss            0x2000002c       0x20 load address 0x08002370
+                0x2000002c                __bss_start__ = .
  *(.bss*)
- .bss           0x2000012c        0x8 D:\Projects\stm32/delay.o
-                0x2000012c                Delay::msCount
-                0x20000130                Delay::sysTicksPerUs
- .bss           0x20000134       0x10 D:\Projects\stm32/usart.o
- .bss           0x20000144        0x8 D:\Projects\stm32/tacho.o
- .bss           0x2000014c        0xb D:\Projects\stm32/convertation.o
+ .bss           0x2000002c        0x8 D:\Projects\stm32/delay.o
+                0x2000002c                Delay::msCount
+                0x20000030                Delay::sysTicksPerUs
+ .bss           0x20000034       0x10 D:\Projects\stm32/usart.o
+ .bss           0x20000044        0x8 D:\Projects\stm32/tacho.o
  *(COMMON)
-                0x20000157                __bss_end__ = .
+                0x2000004c                __bss_end__ = .
 
-.heap           0x20000158      0xc00
-                0x20000158                __end__ = .
-                0x20000158                end = __end__
+.heap           0x20000050      0xc00
+                0x20000050                __end__ = .
+                0x20000050                end = __end__
  *(.heap*)
- .heap          0x20000158      0xc00 D:\Projects\stm32/startup_stm32f10x_md.o
-                0x20000158                __HeapBase
-                0x20000d58                __HeapLimit = .
+ .heap          0x20000050      0xc00 D:\Projects\stm32/startup_stm32f10x_md.o
+                0x20000050                __HeapBase
+                0x20000c50                __HeapLimit = .
 
-.stack_dummy    0x20000158      0x400
+.stack_dummy    0x20000050      0x400
  *(.stack)
- .stack         0x20000158      0x400 D:\Projects\stm32/startup_stm32f10x_md.o
+ .stack         0x20000050      0x400 D:\Projects\stm32/startup_stm32f10x_md.o
                 0x20005000                __StackTop = (ORIGIN (RAM) + LENGTH (RAM))
                 0x20004c00                __StackLimit = (__StackTop - SIZEOF (.stack_dummy))
                 [!provide]                PROVIDE (__stack, __StackTop)
@@ -1304,7 +1343,7 @@ LOAD c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gc
 END GROUP
 OUTPUT(D:\Projects\stm32/out/app.elf elf32-littlearm)
 
-.debug_info     0x00000000     0xe6b3
+.debug_info     0x00000000     0xa0fb
  .debug_info    0x00000000      0x55b D:\Projects\stm32/misc.o
  .debug_info    0x0000055b       0x26 D:\Projects\stm32/startup_stm32f10x_md.o
  .debug_info    0x00000581      0x504 D:\Projects\stm32/system_stm32f10x.o
@@ -1312,30 +1351,20 @@ OUTPUT(D:\Projects\stm32/out/app.elf elf32-littlearm)
  .debug_info    0x00001338      0x71a D:\Projects\stm32/stm32f10x_gpio.o
  .debug_info    0x00001a52      0xa13 D:\Projects\stm32/stm32f10x_usart.o
  .debug_info    0x00002465      0xb2b D:\Projects\stm32/stm32f10x_i2c.o
- .debug_info    0x00002f90      0x44e D:\Projects\stm32/stm32f10x_rtc.o
- .debug_info    0x000033de      0x475 D:\Projects\stm32/stm32f10x_pwr.o
- .debug_info    0x00003853      0x495 D:\Projects\stm32/stm32f10x_dma.o
- .debug_info    0x00003ce8      0xb92 D:\Projects\stm32/stm32f10x_adc.o
- .debug_info    0x0000487a     0x1c87 D:\Projects\stm32/stm32f10x_tim.o
- .debug_info    0x00006501      0x7d8 D:\Projects\stm32/stm32f10x_flash.o
- .debug_info    0x00006cd9      0xa35 D:\Projects\stm32/delay.o
- .debug_info    0x0000770e      0x16f D:\Projects\stm32/SysClock.o
- .debug_info    0x0000787d      0x29b D:\Projects\stm32/gpio.o
- .debug_info    0x00007b18      0x32f D:\Projects\stm32/led.o
- .debug_info    0x00007e47      0xe1c D:\Projects\stm32/usart.o
- .debug_info    0x00008c63      0x787 D:\Projects\stm32/oneWire.o
- .debug_info    0x000093ea      0xa52 D:\Projects\stm32/oneWireSearch.o
- .debug_info    0x00009e3c      0x5ae D:\Projects\stm32/i2c.o
- .debug_info    0x0000a3ea      0xc71 D:\Projects\stm32/lcd.o
- .debug_info    0x0000b05b      0x638 D:\Projects\stm32/rtc.o
- .debug_info    0x0000b693      0x814 D:\Projects\stm32/adc.o
- .debug_info    0x0000bea7      0x91d D:\Projects\stm32/tacho.o
- .debug_info    0x0000c7c4      0x2f4 D:\Projects\stm32/storage.o
- .debug_info    0x0000cab8      0x2cb D:\Projects\stm32/convertation.o
- .debug_info    0x0000cd83       0xf3 D:\Projects\stm32/crc.o
- .debug_info    0x0000ce76     0x183d D:\Projects\stm32/main.o
+ .debug_info    0x00002f90      0x495 D:\Projects\stm32/stm32f10x_dma.o
+ .debug_info    0x00003425     0x1c87 D:\Projects\stm32/stm32f10x_tim.o
+ .debug_info    0x000050ac      0x7d8 D:\Projects\stm32/stm32f10x_flash.o
+ .debug_info    0x00005884      0xa35 D:\Projects\stm32/delay.o
+ .debug_info    0x000062b9      0x16f D:\Projects\stm32/SysClock.o
+ .debug_info    0x00006428      0x29b D:\Projects\stm32/gpio.o
+ .debug_info    0x000066c3      0x32f D:\Projects\stm32/led.o
+ .debug_info    0x000069f2      0xe1c D:\Projects\stm32/usart.o
+ .debug_info    0x0000780e      0x5ae D:\Projects\stm32/i2c.o
+ .debug_info    0x00007dbc      0xc71 D:\Projects\stm32/lcd.o
+ .debug_info    0x00008a2d      0x91d D:\Projects\stm32/tacho.o
+ .debug_info    0x0000934a      0xdb1 D:\Projects\stm32/main.o
 
-.debug_abbrev   0x00000000     0x374a
+.debug_abbrev   0x00000000     0x23dd
  .debug_abbrev  0x00000000      0x178 D:\Projects\stm32/misc.o
  .debug_abbrev  0x00000178       0x14 D:\Projects\stm32/startup_stm32f10x_md.o
  .debug_abbrev  0x0000018c      0x16c D:\Projects\stm32/system_stm32f10x.o
@@ -1343,30 +1372,20 @@ OUTPUT(D:\Projects\stm32/out/app.elf elf32-littlearm)
  .debug_abbrev  0x000004bc      0x1df D:\Projects\stm32/stm32f10x_gpio.o
  .debug_abbrev  0x0000069b      0x18f D:\Projects\stm32/stm32f10x_usart.o
  .debug_abbrev  0x0000082a      0x191 D:\Projects\stm32/stm32f10x_i2c.o
- .debug_abbrev  0x000009bb      0x19a D:\Projects\stm32/stm32f10x_rtc.o
- .debug_abbrev  0x00000b55      0x18a D:\Projects\stm32/stm32f10x_pwr.o
- .debug_abbrev  0x00000cdf      0x182 D:\Projects\stm32/stm32f10x_dma.o
- .debug_abbrev  0x00000e61      0x1a9 D:\Projects\stm32/stm32f10x_adc.o
- .debug_abbrev  0x0000100a      0x1bf D:\Projects\stm32/stm32f10x_tim.o
- .debug_abbrev  0x000011c9      0x19e D:\Projects\stm32/stm32f10x_flash.o
- .debug_abbrev  0x00001367      0x352 D:\Projects\stm32/delay.o
- .debug_abbrev  0x000016b9       0xb9 D:\Projects\stm32/SysClock.o
- .debug_abbrev  0x00001772      0x128 D:\Projects\stm32/gpio.o
- .debug_abbrev  0x0000189a      0x1e7 D:\Projects\stm32/led.o
- .debug_abbrev  0x00001a81      0x350 D:\Projects\stm32/usart.o
- .debug_abbrev  0x00001dd1      0x286 D:\Projects\stm32/oneWire.o
- .debug_abbrev  0x00002057      0x306 D:\Projects\stm32/oneWireSearch.o
- .debug_abbrev  0x0000235d      0x24a D:\Projects\stm32/i2c.o
- .debug_abbrev  0x000025a7      0x301 D:\Projects\stm32/lcd.o
- .debug_abbrev  0x000028a8      0x286 D:\Projects\stm32/rtc.o
- .debug_abbrev  0x00002b2e      0x2a7 D:\Projects\stm32/adc.o
- .debug_abbrev  0x00002dd5      0x2cb D:\Projects\stm32/tacho.o
- .debug_abbrev  0x000030a0      0x1b4 D:\Projects\stm32/storage.o
- .debug_abbrev  0x00003254       0xf0 D:\Projects\stm32/convertation.o
- .debug_abbrev  0x00003344       0xbd D:\Projects\stm32/crc.o
- .debug_abbrev  0x00003401      0x349 D:\Projects\stm32/main.o
+ .debug_abbrev  0x000009bb      0x182 D:\Projects\stm32/stm32f10x_dma.o
+ .debug_abbrev  0x00000b3d      0x1bf D:\Projects\stm32/stm32f10x_tim.o
+ .debug_abbrev  0x00000cfc      0x19e D:\Projects\stm32/stm32f10x_flash.o
+ .debug_abbrev  0x00000e9a      0x352 D:\Projects\stm32/delay.o
+ .debug_abbrev  0x000011ec       0xb9 D:\Projects\stm32/SysClock.o
+ .debug_abbrev  0x000012a5      0x128 D:\Projects\stm32/gpio.o
+ .debug_abbrev  0x000013cd      0x1e7 D:\Projects\stm32/led.o
+ .debug_abbrev  0x000015b4      0x350 D:\Projects\stm32/usart.o
+ .debug_abbrev  0x00001904      0x24a D:\Projects\stm32/i2c.o
+ .debug_abbrev  0x00001b4e      0x301 D:\Projects\stm32/lcd.o
+ .debug_abbrev  0x00001e4f      0x2cb D:\Projects\stm32/tacho.o
+ .debug_abbrev  0x0000211a      0x2c3 D:\Projects\stm32/main.o
 
-.debug_aranges  0x00000000      0xf88
+.debug_aranges  0x00000000      0xba0
  .debug_aranges
                 0x00000000       0x40 D:\Projects\stm32/misc.o
  .debug_aranges
@@ -1382,81 +1401,51 @@ OUTPUT(D:\Projects\stm32/out/app.elf elf32-littlearm)
  .debug_aranges
                 0x00000358      0x120 D:\Projects\stm32/stm32f10x_i2c.o
  .debug_aranges
-                0x00000478       0x88 D:\Projects\stm32/stm32f10x_rtc.o
+                0x00000478       0x70 D:\Projects\stm32/stm32f10x_dma.o
  .debug_aranges
-                0x00000500       0x60 D:\Projects\stm32/stm32f10x_pwr.o
+                0x000004e8      0x2f0 D:\Projects\stm32/stm32f10x_tim.o
  .debug_aranges
-                0x00000560       0x70 D:\Projects\stm32/stm32f10x_dma.o
+                0x000007d8       0xf8 D:\Projects\stm32/stm32f10x_flash.o
  .debug_aranges
-                0x000005d0      0x138 D:\Projects\stm32/stm32f10x_adc.o
+                0x000008d0       0x60 D:\Projects\stm32/delay.o
  .debug_aranges
-                0x00000708      0x2f0 D:\Projects\stm32/stm32f10x_tim.o
+                0x00000930       0x20 D:\Projects\stm32/SysClock.o
  .debug_aranges
-                0x000009f8       0xf8 D:\Projects\stm32/stm32f10x_flash.o
+                0x00000950       0x20 D:\Projects\stm32/gpio.o
  .debug_aranges
-                0x00000af0       0x60 D:\Projects\stm32/delay.o
+                0x00000970       0x38 D:\Projects\stm32/led.o
  .debug_aranges
-                0x00000b50       0x20 D:\Projects\stm32/SysClock.o
+                0x000009a8       0xa0 D:\Projects\stm32/usart.o
  .debug_aranges
-                0x00000b70       0x20 D:\Projects\stm32/gpio.o
+                0x00000a48       0x40 D:\Projects\stm32/i2c.o
  .debug_aranges
-                0x00000b90       0x38 D:\Projects\stm32/led.o
+                0x00000a88       0xa0 D:\Projects\stm32/lcd.o
  .debug_aranges
-                0x00000bc8       0xa0 D:\Projects\stm32/usart.o
+                0x00000b28       0x48 D:\Projects\stm32/tacho.o
  .debug_aranges
-                0x00000c68       0x60 D:\Projects\stm32/oneWire.o
- .debug_aranges
-                0x00000cc8       0x68 D:\Projects\stm32/oneWireSearch.o
- .debug_aranges
-                0x00000d30       0x40 D:\Projects\stm32/i2c.o
- .debug_aranges
-                0x00000d70       0xa0 D:\Projects\stm32/lcd.o
- .debug_aranges
-                0x00000e10       0x48 D:\Projects\stm32/rtc.o
- .debug_aranges
-                0x00000e58       0x30 D:\Projects\stm32/adc.o
- .debug_aranges
-                0x00000e88       0x48 D:\Projects\stm32/tacho.o
- .debug_aranges
-                0x00000ed0       0x30 D:\Projects\stm32/storage.o
- .debug_aranges
-                0x00000f00       0x30 D:\Projects\stm32/convertation.o
- .debug_aranges
-                0x00000f30       0x28 D:\Projects\stm32/crc.o
- .debug_aranges
-                0x00000f58       0x30 D:\Projects\stm32/main.o
+                0x00000b70       0x30 D:\Projects\stm32/main.o
 
-.debug_ranges   0x00000000      0xda8
+.debug_ranges   0x00000000      0xa60
  .debug_ranges  0x00000000       0x30 D:\Projects\stm32/misc.o
  .debug_ranges  0x00000030       0x28 D:\Projects\stm32/system_stm32f10x.o
  .debug_ranges  0x00000058      0x108 D:\Projects\stm32/stm32f10x_rcc.o
  .debug_ranges  0x00000160       0x98 D:\Projects\stm32/stm32f10x_gpio.o
  .debug_ranges  0x000001f8       0xf0 D:\Projects\stm32/stm32f10x_usart.o
  .debug_ranges  0x000002e8      0x110 D:\Projects\stm32/stm32f10x_i2c.o
- .debug_ranges  0x000003f8       0x78 D:\Projects\stm32/stm32f10x_rtc.o
- .debug_ranges  0x00000470       0x50 D:\Projects\stm32/stm32f10x_pwr.o
- .debug_ranges  0x000004c0       0x60 D:\Projects\stm32/stm32f10x_dma.o
- .debug_ranges  0x00000520      0x128 D:\Projects\stm32/stm32f10x_adc.o
- .debug_ranges  0x00000648      0x2e0 D:\Projects\stm32/stm32f10x_tim.o
- .debug_ranges  0x00000928       0xe8 D:\Projects\stm32/stm32f10x_flash.o
- .debug_ranges  0x00000a10       0x50 D:\Projects\stm32/delay.o
- .debug_ranges  0x00000a60       0x10 D:\Projects\stm32/SysClock.o
- .debug_ranges  0x00000a70       0x10 D:\Projects\stm32/gpio.o
- .debug_ranges  0x00000a80       0x28 D:\Projects\stm32/led.o
- .debug_ranges  0x00000aa8       0x90 D:\Projects\stm32/usart.o
- .debug_ranges  0x00000b38       0x50 D:\Projects\stm32/oneWire.o
- .debug_ranges  0x00000b88       0x58 D:\Projects\stm32/oneWireSearch.o
- .debug_ranges  0x00000be0       0x30 D:\Projects\stm32/i2c.o
- .debug_ranges  0x00000c10       0x90 D:\Projects\stm32/lcd.o
- .debug_ranges  0x00000ca0       0x38 D:\Projects\stm32/rtc.o
- .debug_ranges  0x00000cd8       0x20 D:\Projects\stm32/adc.o
- .debug_ranges  0x00000cf8       0x38 D:\Projects\stm32/tacho.o
- .debug_ranges  0x00000d30       0x20 D:\Projects\stm32/storage.o
- .debug_ranges  0x00000d50       0x20 D:\Projects\stm32/convertation.o
- .debug_ranges  0x00000d70       0x18 D:\Projects\stm32/crc.o
- .debug_ranges  0x00000d88       0x20 D:\Projects\stm32/main.o
+ .debug_ranges  0x000003f8       0x60 D:\Projects\stm32/stm32f10x_dma.o
+ .debug_ranges  0x00000458      0x2e0 D:\Projects\stm32/stm32f10x_tim.o
+ .debug_ranges  0x00000738       0xe8 D:\Projects\stm32/stm32f10x_flash.o
+ .debug_ranges  0x00000820       0x50 D:\Projects\stm32/delay.o
+ .debug_ranges  0x00000870       0x10 D:\Projects\stm32/SysClock.o
+ .debug_ranges  0x00000880       0x10 D:\Projects\stm32/gpio.o
+ .debug_ranges  0x00000890       0x28 D:\Projects\stm32/led.o
+ .debug_ranges  0x000008b8       0x90 D:\Projects\stm32/usart.o
+ .debug_ranges  0x00000948       0x30 D:\Projects\stm32/i2c.o
+ .debug_ranges  0x00000978       0x90 D:\Projects\stm32/lcd.o
+ .debug_ranges  0x00000a08       0x38 D:\Projects\stm32/tacho.o
+ .debug_ranges  0x00000a40       0x20 D:\Projects\stm32/main.o
 
-.debug_line     0x00000000     0x62a0
+.debug_line     0x00000000     0x459d
  .debug_line    0x00000000      0x281 D:\Projects\stm32/misc.o
  .debug_line    0x00000281       0xc2 D:\Projects\stm32/startup_stm32f10x_md.o
  .debug_line    0x00000343      0x248 D:\Projects\stm32/system_stm32f10x.o
@@ -1464,88 +1453,58 @@ OUTPUT(D:\Projects\stm32/out/app.elf elf32-littlearm)
  .debug_line    0x00000a96      0x40b D:\Projects\stm32/stm32f10x_gpio.o
  .debug_line    0x00000ea1      0x4f0 D:\Projects\stm32/stm32f10x_usart.o
  .debug_line    0x00001391      0x530 D:\Projects\stm32/stm32f10x_i2c.o
- .debug_line    0x000018c1      0x304 D:\Projects\stm32/stm32f10x_rtc.o
- .debug_line    0x00001bc5      0x28e D:\Projects\stm32/stm32f10x_pwr.o
- .debug_line    0x00001e53      0x374 D:\Projects\stm32/stm32f10x_dma.o
- .debug_line    0x000021c7      0x585 D:\Projects\stm32/stm32f10x_adc.o
- .debug_line    0x0000274c      0xb8b D:\Projects\stm32/stm32f10x_tim.o
- .debug_line    0x000032d7      0x508 D:\Projects\stm32/stm32f10x_flash.o
- .debug_line    0x000037df      0x2b1 D:\Projects\stm32/delay.o
- .debug_line    0x00003a90      0x1db D:\Projects\stm32/SysClock.o
- .debug_line    0x00003c6b      0x250 D:\Projects\stm32/gpio.o
- .debug_line    0x00003ebb      0x235 D:\Projects\stm32/led.o
- .debug_line    0x000040f0      0x406 D:\Projects\stm32/usart.o
- .debug_line    0x000044f6      0x303 D:\Projects\stm32/oneWire.o
- .debug_line    0x000047f9      0x3b9 D:\Projects\stm32/oneWireSearch.o
- .debug_line    0x00004bb2      0x29c D:\Projects\stm32/i2c.o
- .debug_line    0x00004e4e      0x397 D:\Projects\stm32/lcd.o
- .debug_line    0x000051e5      0x28e D:\Projects\stm32/rtc.o
- .debug_line    0x00005473      0x372 D:\Projects\stm32/adc.o
- .debug_line    0x000057e5      0x2c7 D:\Projects\stm32/tacho.o
- .debug_line    0x00005aac      0x244 D:\Projects\stm32/storage.o
- .debug_line    0x00005cf0      0x1d6 D:\Projects\stm32/convertation.o
- .debug_line    0x00005ec6       0x80 D:\Projects\stm32/crc.o
- .debug_line    0x00005f46      0x35a D:\Projects\stm32/main.o
+ .debug_line    0x000018c1      0x374 D:\Projects\stm32/stm32f10x_dma.o
+ .debug_line    0x00001c35      0xb8b D:\Projects\stm32/stm32f10x_tim.o
+ .debug_line    0x000027c0      0x508 D:\Projects\stm32/stm32f10x_flash.o
+ .debug_line    0x00002cc8      0x2b1 D:\Projects\stm32/delay.o
+ .debug_line    0x00002f79      0x1db D:\Projects\stm32/SysClock.o
+ .debug_line    0x00003154      0x250 D:\Projects\stm32/gpio.o
+ .debug_line    0x000033a4      0x235 D:\Projects\stm32/led.o
+ .debug_line    0x000035d9      0x406 D:\Projects\stm32/usart.o
+ .debug_line    0x000039df      0x29c D:\Projects\stm32/i2c.o
+ .debug_line    0x00003c7b      0x3b3 D:\Projects\stm32/lcd.o
+ .debug_line    0x0000402e      0x2c7 D:\Projects\stm32/tacho.o
+ .debug_line    0x000042f5      0x2a8 D:\Projects\stm32/main.o
 
-.debug_str      0x00000000     0x4abf
- .debug_str     0x00000000      0x3aa D:\Projects\stm32/misc.o
+.debug_str      0x00000000     0x37e3
+ .debug_str     0x00000000      0x3b1 D:\Projects\stm32/misc.o
                                 0x43f (size before relaxing)
- .debug_str     0x000003aa       0x44 D:\Projects\stm32/startup_stm32f10x_md.o
+ .debug_str     0x000003b1       0x44 D:\Projects\stm32/startup_stm32f10x_md.o
                                  0x56 (size before relaxing)
- .debug_str     0x000003ee      0x152 D:\Projects\stm32/system_stm32f10x.o
+ .debug_str     0x000003f5      0x152 D:\Projects\stm32/system_stm32f10x.o
                                 0x3b7 (size before relaxing)
- .debug_str     0x00000540      0x3e6 D:\Projects\stm32/stm32f10x_rcc.o
+ .debug_str     0x00000547      0x3e6 D:\Projects\stm32/stm32f10x_rcc.o
                                 0x6a1 (size before relaxing)
- .debug_str     0x00000926      0x372 D:\Projects\stm32/stm32f10x_gpio.o
+ .debug_str     0x0000092d      0x372 D:\Projects\stm32/stm32f10x_gpio.o
                                 0x5c6 (size before relaxing)
- .debug_str     0x00000c98      0x44e D:\Projects\stm32/stm32f10x_usart.o
+ .debug_str     0x00000c9f      0x44e D:\Projects\stm32/stm32f10x_usart.o
                                 0x738 (size before relaxing)
- .debug_str     0x000010e6      0x3e4 D:\Projects\stm32/stm32f10x_i2c.o
+ .debug_str     0x000010ed      0x3eb D:\Projects\stm32/stm32f10x_i2c.o
                                 0x6ff (size before relaxing)
- .debug_str     0x000014ca      0x1a9 D:\Projects\stm32/stm32f10x_rtc.o
-                                0x407 (size before relaxing)
- .debug_str     0x00001673      0x11b D:\Projects\stm32/stm32f10x_pwr.o
-                                0x385 (size before relaxing)
- .debug_str     0x0000178e      0x227 D:\Projects\stm32/stm32f10x_dma.o
+ .debug_str     0x000014d8      0x227 D:\Projects\stm32/stm32f10x_dma.o
                                 0x444 (size before relaxing)
- .debug_str     0x000019b5      0x52e D:\Projects\stm32/stm32f10x_adc.o
-                                0x772 (size before relaxing)
- .debug_str     0x00001ee3      0xb8a D:\Projects\stm32/stm32f10x_tim.o
+ .debug_str     0x000016ff      0xb94 D:\Projects\stm32/stm32f10x_tim.o
                                 0xe9a (size before relaxing)
- .debug_str     0x00002a6d      0x410 D:\Projects\stm32/stm32f10x_flash.o
+ .debug_str     0x00002293      0x410 D:\Projects\stm32/stm32f10x_flash.o
                                 0x66b (size before relaxing)
- .debug_str     0x00002e7d      0x59e D:\Projects\stm32/delay.o
+ .debug_str     0x000026a3      0x5a4 D:\Projects\stm32/delay.o
                                 0x8bd (size before relaxing)
- .debug_str     0x0000341b       0x4f D:\Projects\stm32/SysClock.o
+ .debug_str     0x00002c47       0x4f D:\Projects\stm32/SysClock.o
                                 0x24f (size before relaxing)
- .debug_str     0x0000346a       0xb0 D:\Projects\stm32/gpio.o
+ .debug_str     0x00002c96       0xb0 D:\Projects\stm32/gpio.o
                                 0x3c7 (size before relaxing)
- .debug_str     0x0000351a       0xb3 D:\Projects\stm32/led.o
+ .debug_str     0x00002d46       0xb3 D:\Projects\stm32/led.o
                                 0x268 (size before relaxing)
- .debug_str     0x000035cd      0x303 D:\Projects\stm32/usart.o
+ .debug_str     0x00002df9      0x303 D:\Projects\stm32/usart.o
                                 0xade (size before relaxing)
- .debug_str     0x000038d0      0x204 D:\Projects\stm32/oneWire.o
-                                0x512 (size before relaxing)
- .debug_str     0x00003ad4      0x354 D:\Projects\stm32/oneWireSearch.o
-                                0x7f1 (size before relaxing)
- .debug_str     0x00003e28      0x122 D:\Projects\stm32/i2c.o
+ .debug_str     0x000030fc      0x122 D:\Projects\stm32/i2c.o
                                 0x41b (size before relaxing)
- .debug_str     0x00003f4a      0x416 D:\Projects\stm32/lcd.o
+ .debug_str     0x0000321e      0x41b D:\Projects\stm32/lcd.o
                                 0x835 (size before relaxing)
- .debug_str     0x00004360      0x1b9 D:\Projects\stm32/rtc.o
-                                0x50f (size before relaxing)
- .debug_str     0x00004519      0x193 D:\Projects\stm32/adc.o
-                                0x684 (size before relaxing)
- .debug_str     0x000046ac      0x11d D:\Projects\stm32/tacho.o
+ .debug_str     0x00003639      0x11d D:\Projects\stm32/tacho.o
                                 0x86d (size before relaxing)
- .debug_str     0x000047c9      0x114 D:\Projects\stm32/storage.o
-                                0x2ab (size before relaxing)
- .debug_str     0x000048dd       0xa6 D:\Projects\stm32/convertation.o
-                                0x26a (size before relaxing)
- .debug_str     0x00004983       0x8b D:\Projects\stm32/crc.o
-                                0x14b (size before relaxing)
- .debug_str     0x00004a0e       0xb1 D:\Projects\stm32/main.o
-                               0x1193 (size before relaxing)
+ .debug_str     0x00003756       0x8d D:\Projects\stm32/main.o
+                                0x9d3 (size before relaxing)
 
 .comment        0x00000000       0x7e
  .comment       0x00000000       0x7e D:\Projects\stm32/misc.o
@@ -1555,10 +1514,7 @@ OUTPUT(D:\Projects\stm32/out/app.elf elf32-littlearm)
  .comment       0x0000007e       0x7f D:\Projects\stm32/stm32f10x_gpio.o
  .comment       0x0000007e       0x7f D:\Projects\stm32/stm32f10x_usart.o
  .comment       0x0000007e       0x7f D:\Projects\stm32/stm32f10x_i2c.o
- .comment       0x0000007e       0x7f D:\Projects\stm32/stm32f10x_rtc.o
- .comment       0x0000007e       0x7f D:\Projects\stm32/stm32f10x_pwr.o
  .comment       0x0000007e       0x7f D:\Projects\stm32/stm32f10x_dma.o
- .comment       0x0000007e       0x7f D:\Projects\stm32/stm32f10x_adc.o
  .comment       0x0000007e       0x7f D:\Projects\stm32/stm32f10x_tim.o
  .comment       0x0000007e       0x7f D:\Projects\stm32/stm32f10x_flash.o
  .comment       0x0000007e       0x7f D:\Projects\stm32/delay.o
@@ -1566,16 +1522,9 @@ OUTPUT(D:\Projects\stm32/out/app.elf elf32-littlearm)
  .comment       0x0000007e       0x7f D:\Projects\stm32/gpio.o
  .comment       0x0000007e       0x7f D:\Projects\stm32/led.o
  .comment       0x0000007e       0x7f D:\Projects\stm32/usart.o
- .comment       0x0000007e       0x7f D:\Projects\stm32/oneWire.o
- .comment       0x0000007e       0x7f D:\Projects\stm32/oneWireSearch.o
  .comment       0x0000007e       0x7f D:\Projects\stm32/i2c.o
  .comment       0x0000007e       0x7f D:\Projects\stm32/lcd.o
- .comment       0x0000007e       0x7f D:\Projects\stm32/rtc.o
- .comment       0x0000007e       0x7f D:\Projects\stm32/adc.o
  .comment       0x0000007e       0x7f D:\Projects\stm32/tacho.o
- .comment       0x0000007e       0x7f D:\Projects\stm32/storage.o
- .comment       0x0000007e       0x7f D:\Projects\stm32/convertation.o
- .comment       0x0000007e       0x7f D:\Projects\stm32/crc.o
  .comment       0x0000007e       0x7f D:\Projects\stm32/main.o
 
 .ARM.attributes
@@ -1595,76 +1544,46 @@ OUTPUT(D:\Projects\stm32/out/app.elf elf32-littlearm)
  .ARM.attributes
                 0x0000011a       0x33 D:\Projects\stm32/stm32f10x_i2c.o
  .ARM.attributes
-                0x0000014d       0x33 D:\Projects\stm32/stm32f10x_rtc.o
+                0x0000014d       0x33 D:\Projects\stm32/stm32f10x_dma.o
  .ARM.attributes
-                0x00000180       0x33 D:\Projects\stm32/stm32f10x_pwr.o
+                0x00000180       0x33 D:\Projects\stm32/stm32f10x_tim.o
  .ARM.attributes
-                0x000001b3       0x33 D:\Projects\stm32/stm32f10x_dma.o
+                0x000001b3       0x33 D:\Projects\stm32/stm32f10x_flash.o
  .ARM.attributes
-                0x000001e6       0x33 D:\Projects\stm32/stm32f10x_adc.o
+                0x000001e6       0x33 D:\Projects\stm32/delay.o
  .ARM.attributes
-                0x00000219       0x33 D:\Projects\stm32/stm32f10x_tim.o
+                0x00000219       0x33 D:\Projects\stm32/SysClock.o
  .ARM.attributes
-                0x0000024c       0x33 D:\Projects\stm32/stm32f10x_flash.o
+                0x0000024c       0x33 D:\Projects\stm32/gpio.o
  .ARM.attributes
-                0x0000027f       0x33 D:\Projects\stm32/delay.o
+                0x0000027f       0x33 D:\Projects\stm32/led.o
  .ARM.attributes
-                0x000002b2       0x33 D:\Projects\stm32/SysClock.o
+                0x000002b2       0x33 D:\Projects\stm32/usart.o
  .ARM.attributes
-                0x000002e5       0x33 D:\Projects\stm32/gpio.o
+                0x000002e5       0x33 D:\Projects\stm32/i2c.o
  .ARM.attributes
-                0x00000318       0x33 D:\Projects\stm32/led.o
+                0x00000318       0x33 D:\Projects\stm32/lcd.o
  .ARM.attributes
-                0x0000034b       0x33 D:\Projects\stm32/usart.o
+                0x0000034b       0x33 D:\Projects\stm32/tacho.o
  .ARM.attributes
-                0x0000037e       0x33 D:\Projects\stm32/oneWire.o
- .ARM.attributes
-                0x000003b1       0x33 D:\Projects\stm32/oneWireSearch.o
- .ARM.attributes
-                0x000003e4       0x33 D:\Projects\stm32/i2c.o
- .ARM.attributes
-                0x00000417       0x33 D:\Projects\stm32/lcd.o
- .ARM.attributes
-                0x0000044a       0x33 D:\Projects\stm32/rtc.o
- .ARM.attributes
-                0x0000047d       0x33 D:\Projects\stm32/adc.o
- .ARM.attributes
-                0x000004b0       0x33 D:\Projects\stm32/tacho.o
- .ARM.attributes
-                0x000004e3       0x33 D:\Projects\stm32/storage.o
- .ARM.attributes
-                0x00000516       0x33 D:\Projects\stm32/convertation.o
- .ARM.attributes
-                0x00000549       0x33 D:\Projects\stm32/crc.o
- .ARM.attributes
-                0x0000057c       0x33 D:\Projects\stm32/main.o
+                0x0000037e       0x33 D:\Projects\stm32/main.o
 
-.debug_frame    0x00000000     0x3f30
+.debug_frame    0x00000000     0x3068
  .debug_frame   0x00000000       0xd8 D:\Projects\stm32/misc.o
  .debug_frame   0x000000d8       0x98 D:\Projects\stm32/system_stm32f10x.o
  .debug_frame   0x00000170      0x4f4 D:\Projects\stm32/stm32f10x_rcc.o
  .debug_frame   0x00000664      0x2d0 D:\Projects\stm32/stm32f10x_gpio.o
  .debug_frame   0x00000934      0x490 D:\Projects\stm32/stm32f10x_usart.o
  .debug_frame   0x00000dc4      0x530 D:\Projects\stm32/stm32f10x_i2c.o
- .debug_frame   0x000012f4      0x214 D:\Projects\stm32/stm32f10x_rtc.o
- .debug_frame   0x00001508      0x164 D:\Projects\stm32/stm32f10x_pwr.o
- .debug_frame   0x0000166c      0x1c8 D:\Projects\stm32/stm32f10x_dma.o
- .debug_frame   0x00001834      0x5a4 D:\Projects\stm32/stm32f10x_adc.o
- .debug_frame   0x00001dd8      0xe2c D:\Projects\stm32/stm32f10x_tim.o
- .debug_frame   0x00002c04      0x410 D:\Projects\stm32/stm32f10x_flash.o
- .debug_frame   0x00003014      0x158 D:\Projects\stm32/delay.o
- .debug_frame   0x0000316c       0x34 D:\Projects\stm32/SysClock.o
- .debug_frame   0x000031a0       0x34 D:\Projects\stm32/gpio.o
- .debug_frame   0x000031d4       0xa0 D:\Projects\stm32/led.o
- .debug_frame   0x00003274      0x270 D:\Projects\stm32/usart.o
- .debug_frame   0x000034e4      0x158 D:\Projects\stm32/oneWire.o
- .debug_frame   0x0000363c      0x184 D:\Projects\stm32/oneWireSearch.o
- .debug_frame   0x000037c0       0xc4 D:\Projects\stm32/i2c.o
- .debug_frame   0x00003884      0x274 D:\Projects\stm32/lcd.o
- .debug_frame   0x00003af8       0xe8 D:\Projects\stm32/rtc.o
- .debug_frame   0x00003be0       0x80 D:\Projects\stm32/adc.o
- .debug_frame   0x00003c60       0xf0 D:\Projects\stm32/tacho.o
- .debug_frame   0x00003d50       0x80 D:\Projects\stm32/storage.o
- .debug_frame   0x00003dd0       0x88 D:\Projects\stm32/convertation.o
- .debug_frame   0x00003e58       0x60 D:\Projects\stm32/crc.o
- .debug_frame   0x00003eb8       0x78 D:\Projects\stm32/main.o
+ .debug_frame   0x000012f4      0x1c8 D:\Projects\stm32/stm32f10x_dma.o
+ .debug_frame   0x000014bc      0xe2c D:\Projects\stm32/stm32f10x_tim.o
+ .debug_frame   0x000022e8      0x410 D:\Projects\stm32/stm32f10x_flash.o
+ .debug_frame   0x000026f8      0x158 D:\Projects\stm32/delay.o
+ .debug_frame   0x00002850       0x34 D:\Projects\stm32/SysClock.o
+ .debug_frame   0x00002884       0x34 D:\Projects\stm32/gpio.o
+ .debug_frame   0x000028b8       0xa0 D:\Projects\stm32/led.o
+ .debug_frame   0x00002958      0x270 D:\Projects\stm32/usart.o
+ .debug_frame   0x00002bc8       0xc4 D:\Projects\stm32/i2c.o
+ .debug_frame   0x00002c8c      0x274 D:\Projects\stm32/lcd.o
+ .debug_frame   0x00002f00       0xf0 D:\Projects\stm32/tacho.o
+ .debug_frame   0x00002ff0       0x78 D:\Projects\stm32/main.o

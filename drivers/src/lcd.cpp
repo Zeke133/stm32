@@ -75,11 +75,16 @@ Lcd::Lcd(I2c& interfaceHw, Delay& delay, uint8_t lines)
 
 void Lcd::write4bits(uint8_t data) {
 
-    data |= backlightPin;
+    if (backlightPin) {
+        data |= static_cast<uint8_t>(CmdBusBits::BackLight);    // Baclight enable
+    }
 
     i2c.startTransmit();
+
+    // set port data
 	i2c.write(data);
 
+    // pulse EN signal
 	i2c.write(data | static_cast<uint8_t>(CmdBusBits::En));     // En high
 	wait.us(1);                     // enable pulse must be >450ns
 
@@ -205,7 +210,10 @@ void Lcd::loadCustomSymbol(uint8_t adr, uint8_t * matrix /*5x8*/) {
 void Lcd::backlightSet(uint8_t mode /*1 - on, 0 - off*/) {
 
     mode ? backlightPin = 1 : backlightPin = 0;
-	write4bits(0);
+	
+    i2c.startTransmit();
+	i2c.write(backlightPin ? static_cast<uint8_t>(CmdBusBits::BackLight) : 0);
+    i2c.stopTransmit();
 }
 
 void Lcd::puts(const char* str) {
