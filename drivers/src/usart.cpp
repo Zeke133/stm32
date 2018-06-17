@@ -1,19 +1,22 @@
 #include <usart.h>
 
 
-static uint8_t * uart1buf;
-static uint8_t * uart2buf;
-static uint8_t * uart1bufCnt;
-static uint8_t * uart2bufCnt;
+static uint8_t * uart1bufPtr;
+static uint8_t * uart2bufPtr;
+static uint8_t * uart1bufCntPtr;
+static uint8_t * uart2bufCntPtr;
 
 // Interrypt handler
 void USART1_IRQHandler(void) {
 
     if ((USART1->SR & USART_FLAG_RXNE) != (u16)RESET) {
 
-        if (*uart1bufCnt < 100) {
+        if (*uart1bufCntPtr < 100) {
 
-            uart1buf[(*uart1bufCnt)++] = USART_ReceiveData(USART1);
+            uart1bufPtr[(*uart1bufCntPtr)++] = USART_ReceiveData(USART1);
+        }
+        else {
+            USART_ReceiveData(USART1);
         }
     }
 }
@@ -21,9 +24,12 @@ void USART2_IRQHandler(void) {
     
     if ((USART2->SR & USART_FLAG_RXNE) != (u16)RESET) {
 
-        if (*uart2bufCnt < 100) {
+        if (*uart2bufCntPtr < 100) {
 
-            uart2buf[(*uart2bufCnt)++] = USART_ReceiveData(USART2);
+            uart2bufPtr[(*uart2bufCntPtr)++] = USART_ReceiveData(USART2);
+        }
+        else {
+            USART_ReceiveData(USART2);
         }
     }
 }
@@ -48,8 +54,8 @@ USART::USART(int usartN, uint32_t bauld, uint16_t dataBits, uint16_t stopBits, u
 
     if (usartN == 1) {
         
-        uart1buf = inputBuffer;
-        uart1bufCnt = &inputBufferCnt;
+        uart1bufPtr = inputBuffer;
+        uart1bufCntPtr = &inputBufferCnt;
 
         /* Enable USART1 and GPIOA clock */
         RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1 | RCC_APB2Periph_GPIOA, ENABLE);
@@ -66,8 +72,8 @@ USART::USART(int usartN, uint32_t bauld, uint16_t dataBits, uint16_t stopBits, u
     }
     else if (usartN == 2) {
         
-        uart2buf = inputBuffer;
-        uart2bufCnt = &inputBufferCnt;
+        uart2bufPtr = inputBuffer;
+        uart2bufCntPtr = &inputBufferCnt;
 
         /* Enable USART1 and GPIOA clock */
         RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
@@ -180,7 +186,7 @@ void USART::sendBlocking(const char *str) {
     }
 }
 
-void USART::send(uint8_t byte) {
+void USART::send(char byte) {
 
     outputBuffer[0] = byte;
     /* Restart DMA Channel*/
@@ -189,7 +195,7 @@ void USART::send(uint8_t byte) {
     DMA_Cmd(dmaChannel, ENABLE);
 }
 
-void USART::send(const uint8_t * str) {
+void USART::send(const char * str) {
 
     uint32_t i = 0;
     for( ; str[i] != 0; i++) {
@@ -202,7 +208,7 @@ void USART::send(const uint8_t * str) {
     DMA_Cmd(dmaChannel, ENABLE);
 }
 
-void USART::send(const uint8_t * data, uint32_t len) {
+void USART::send(const char * data, uint32_t len) {
 
     for(uint32_t i = 0; i < len; i++) {
 
@@ -224,7 +230,7 @@ uint32_t USART::getCount() {
     return inputBufferCnt;
 }
 
-uint8_t* USART::getData() {
+uint8_t * USART::getData() {
 
     return inputBuffer;
 }

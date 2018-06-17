@@ -121,7 +121,7 @@ inline void Lcd::home() {
 	wait.ms(2); // 1.52 ms
 }
 
-void Lcd::cursorGoTo(uint8_t col, uint8_t row) {
+void Lcd::cursorGoTo(uint8_t row, uint8_t col) {
 
     sendInstruction(static_cast<uint8_t>(InstructionsBits::SetDDRAMADDR) | (col + (row ? 0x40 : 0x00)));
 }
@@ -220,10 +220,6 @@ void Lcd::puts(const char* str) {
     while(*str) {
         sendData(*str++);
     }
-}
-
-inline void Lcd::putc(char symb) {
-    sendData(symb);
 }
 
 

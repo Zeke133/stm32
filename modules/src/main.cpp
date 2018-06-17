@@ -12,6 +12,15 @@
 
 #include <convertation.h>
 
+unsigned int compare(const char * str1, const uint8_t * str2) {
+
+    while (*str1 && *str2) {
+        if (*str1 != *str2) return 0;
+        str1++;
+        str2++;
+    }
+    return 1;
+}
 
 void TakeTimeouts(USART& usart, Delay& wait, uint8_t* timeoutsPtr) {
     
@@ -60,7 +69,7 @@ int main(void) {
     // lcd test
     lcd.backlightSet(1);
     lcd.puts("Hello Katerina =)");
-    lcd.cursorGoTo(0,1);
+    lcd.cursorGoTo(1, 0);
     lcd.puts("Good night!");
 
     // 1-wire test
@@ -120,7 +129,47 @@ int main(void) {
 
         // Delay metering check
         wait.ms(1000);
-        led.invert();
+
+        //led.invert();
+
+        take this TEST to a module
+        change all uint8_t to char ?
+
+        usart1.sendBlocking("\xd\xaWait for receive cmd...");
+        
+        if (usart1.getCount() > 0) {
+
+            uint8_t bell[8]  = {0x4,0xe,0xe,0xe,0x1f,0x0,0x4};
+            
+            usart1.sendBlocking(" Received: ");
+            usart1.send((const char *)usart1.getData(), usart1.getCount());
+            
+            if (compare("led.on", usart1.getData())) led.on();
+            else if (compare("led.off", usart1.getData())) led.off();
+            else if (compare("led.invert", usart1.getData())) led.invert();
+            
+            else if (compare("lcd.clear", usart1.getData())) lcd.clear();
+            else if (compare("lcd.home", usart1.getData())) lcd.home();
+            else if (compare("lcd.backlightSet", usart1.getData())) lcd.backlightSet(usart1.getData()[16] - 0x30);
+            else if (compare("lcd.cursorGoTo", usart1.getData())) lcd.cursorGoTo(usart1.getData()[14] - 0x30, usart1.getData()[15] - 0x30);
+            else if (compare("lcd.displaySet", usart1.getData())) lcd.displaySet(usart1.getData()[14] - 0x30);
+            else if (compare("lcd.cursorSet", usart1.getData())) lcd.cursorSet(usart1.getData()[13] - 0x30);
+            else if (compare("lcd.cursorBlinkSet", usart1.getData())) lcd.cursorBlinkSet(usart1.getData()[18] - 0x30);
+            else if (compare("lcd.scroll", usart1.getData())) lcd.scroll(usart1.getData()[10] - 0x30, usart1.getData()[11] - 0x30);
+            else if (compare("lcd.textFlowSet", usart1.getData())) lcd.textFlowSet(usart1.getData()[15] - 0x30);
+            else if (compare("lcd.autoScrollSet", usart1.getData())) lcd.autoScrollSet(usart1.getData()[17] - 0x30);
+            else if (compare("lcd.putc", usart1.getData())) lcd.putc(usart1.getData()[8]);
+            else if (compare("lcd.puts", usart1.getData())) lcd.puts((const char*)&(usart1.getData()[8]));
+            else if (compare("lcd.bellLoad", usart1.getData())) lcd.loadCustomSymbol(1, bell);
+            else if (compare("lcd.bellPrint", usart1.getData())) lcd.putc(1);
+            else usart1.sendBlocking(" unkn cmd!!!");    
+
+            usart1.clear();
+        }
+        else {
+            usart1.sendBlocking(" no cmd");
+        }
+        wait.ms(1000);
 
         // Take user timeouts for one-wire bus
         // TakeTimeouts(usart1, wait, (uint8_t*)timeouts);

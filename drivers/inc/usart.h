@@ -29,25 +29,25 @@ class USART {
 
 public:
 
-    void send(uint8_t byte);
-    void send(const uint8_t * string);
-    void send(const uint8_t * string, uint32_t len);
+    void send(char byte);
+    void send(const char * string);
+    void send(const char * string, uint32_t len);
     void sendBlocking(char byte);
     void sendBlocking(const char *str);
 
     uint32_t getCount(void);
-    uint8_t* getData(void);
+    uint8_t * getData(void);
 
     void clear(void);
 
     void setUart(uint32_t bauld, uint16_t dataBits, uint16_t stopBits, uint16_t parity);
 
     inline USART& operator<<(char byte) {
-        send(static_cast<uint8_t>(byte));
+        send(byte);
         return *this;
     };
     inline USART& operator<<(const char * string) {
-        send((uint8_t*)string);
+        send(string);
         return *this;
     };
 

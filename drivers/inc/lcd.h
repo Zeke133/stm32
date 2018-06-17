@@ -16,20 +16,20 @@ class Lcd {
     public:
         
         void puts(const char* str);
-        void putc(char symb);
+        void putc(char symb) {  sendData(symb); }
 
         void clear(void);
         void home(void);
-        void cursorGoTo(uint8_t col, uint8_t row);
+        void cursorGoTo(uint8_t row, uint8_t col);
 
-        void loadCustomSymbol(uint8_t adr, uint8_t * matrix /*5x8*/);
+        void loadCustomSymbol(uint8_t adr, uint8_t * matrix /*5x8*/);   // imedeatly replace image on a screen, all accurancies replaced
 
-        void displaySet(uint8_t mode /*1 - on, 0 - off*/);
-        void cursorSet(uint8_t mode /*1 - on, 0 - off*/);
-        void cursorBlinkSet(uint8_t mode /*1 - on, 0 - off*/);
+        void displaySet(uint8_t mode /*1 - on, 0 - off*/);              // just turn LCD, DRAM is not erased
+        void cursorSet(uint8_t mode /*1 - on, 0 - off*/);               // cursor indication by low slash
+        void cursorBlinkSet(uint8_t mode /*1 - on, 0 - off*/);          // cursor indication by blinking
         void scroll(uint8_t screenShift /*0 cursor or 1 screen*/, uint8_t rightLeft /* R - 1 or L - 0*/);
-        void textFlowSet(uint8_t modeLR /*Left - 0, Right - 1*/);
-        void autoScrollSet(uint8_t mode /*1 - on, 0 - off*/);
+        void textFlowSet(uint8_t modeLR /*Left - 0, Right - 1*/);       // 0 - from Left to Right text flow; 1 - normal
+        void autoScrollSet(uint8_t mode /*1 - on, 0 - off*/);           // 1 - cursor stay on it's position, but whole display scrolls         
 
         // hardware dependent feature!
         void backlightSet(uint8_t mode /*1 - on, 0 - off*/);

@@ -106,8 +106,6 @@ Discarded input sections
                 0x00000000       0x36 D:\Projects\stm32/stm32f10x_usart.o
  .text.USART_LINCmd
                 0x00000000       0x3e D:\Projects\stm32/stm32f10x_usart.o
- .text.USART_SendData
-                0x00000000       0x22 D:\Projects\stm32/stm32f10x_usart.o
  .text.USART_SendBreak
                 0x00000000       0x22 D:\Projects\stm32/stm32f10x_usart.o
  .text.USART_SetGuardTime
@@ -128,8 +126,6 @@ Discarded input sections
                 0x00000000       0x36 D:\Projects\stm32/stm32f10x_usart.o
  .text.USART_IrDACmd
                 0x00000000       0x3e D:\Projects\stm32/stm32f10x_usart.o
- .text.USART_GetFlagStatus
-                0x00000000       0x40 D:\Projects\stm32/stm32f10x_usart.o
  .text.USART_ClearFlag
                 0x00000000       0x20 D:\Projects\stm32/stm32f10x_usart.o
  .text.USART_GetITStatus
@@ -610,18 +606,8 @@ Discarded input sections
  .data          0x00000000        0x0 D:\Projects\stm32/usart.o
  .text._ZN5USART12sendBlockingEc
                 0x00000000       0x42 D:\Projects\stm32/usart.o
- .text._ZN5USART12sendBlockingEPKc
-                0x00000000       0x4c D:\Projects\stm32/usart.o
- .text._ZN5USART4sendEh
+ .text._ZN5USART4sendEc
                 0x00000000       0x3a D:\Projects\stm32/usart.o
- .text._ZN5USART4sendEPKhm
-                0x00000000       0x5c D:\Projects\stm32/usart.o
- .text._ZN5USART5clearEv
-                0x00000000       0x1a D:\Projects\stm32/usart.o
- .text._ZN5USART8getCountEv
-                0x00000000       0x18 D:\Projects\stm32/usart.o
- .text._ZN5USART7getDataEv
-                0x00000000       0x16 D:\Projects\stm32/usart.o
  .text          0x00000000        0x0 D:\Projects\stm32/oneWire.o
  .data          0x00000000        0x0 D:\Projects\stm32/oneWire.o
  .bss           0x00000000        0x0 D:\Projects\stm32/oneWire.o
@@ -734,20 +720,6 @@ Discarded input sections
  .text          0x00000000        0x0 D:\Projects\stm32/lcd.o
  .data          0x00000000        0x0 D:\Projects\stm32/lcd.o
  .bss           0x00000000        0x0 D:\Projects\stm32/lcd.o
- .text._ZN3Lcd10displaySetEh
-                0x00000000       0x4a D:\Projects\stm32/lcd.o
- .text._ZN3Lcd9cursorSetEh
-                0x00000000       0x4a D:\Projects\stm32/lcd.o
- .text._ZN3Lcd14cursorBlinkSetEh
-                0x00000000       0x4a D:\Projects\stm32/lcd.o
- .text._ZN3Lcd6scrollEhh
-                0x00000000       0x48 D:\Projects\stm32/lcd.o
- .text._ZN3Lcd11textFlowSetEh
-                0x00000000       0x4a D:\Projects\stm32/lcd.o
- .text._ZN3Lcd13autoScrollSetEh
-                0x00000000       0x4a D:\Projects\stm32/lcd.o
- .text._ZN3Lcd16loadCustomSymbolEhPh
-                0x00000000       0x56 D:\Projects\stm32/lcd.o
  .group         0x00000000        0xc D:\Projects\stm32/rtc.o
  .text          0x00000000        0x0 D:\Projects\stm32/rtc.o
  .data          0x00000000        0x0 D:\Projects\stm32/rtc.o
@@ -869,6 +841,7 @@ Discarded input sections
  .ARM.attributes
                 0x00000000       0x33 D:\Projects\stm32/crc.o
  .group         0x00000000        0xc D:\Projects\stm32/main.o
+ .group         0x00000000        0xc D:\Projects\stm32/main.o
  .text          0x00000000        0x0 D:\Projects\stm32/main.o
  .data          0x00000000        0x0 D:\Projects\stm32/main.o
  .bss           0x00000000        0x0 D:\Projects\stm32/main.o
@@ -885,7 +858,7 @@ RAM              0x20000000         0x00005000         xrw
 Linker script and memory map
 
 
-.text           0x08000000     0x2344
+.text           0x08000000     0x2d8c
  *(.isr_vector)
  .isr_vector    0x08000000       0xec D:\Projects\stm32/startup_stm32f10x_md.o
                 0x08000000                __isr_vector
@@ -1020,192 +993,240 @@ Linker script and memory map
  .text.USART_DMACmd
                 0x08000dee       0x46 D:\Projects\stm32/stm32f10x_usart.o
                 0x08000dee                USART_DMACmd
+ .text.USART_SendData
+                0x08000e34       0x22 D:\Projects\stm32/stm32f10x_usart.o
+                0x08000e34                USART_SendData
  .text.USART_ReceiveData
-                0x08000e34       0x1e D:\Projects\stm32/stm32f10x_usart.o
-                0x08000e34                USART_ReceiveData
- *fill*         0x08000e52        0x2 
+                0x08000e56       0x1e D:\Projects\stm32/stm32f10x_usart.o
+                0x08000e56                USART_ReceiveData
+ .text.USART_GetFlagStatus
+                0x08000e74       0x40 D:\Projects\stm32/stm32f10x_usart.o
+                0x08000e74                USART_GetFlagStatus
  .text.I2C_Init
-                0x08000e54      0x184 D:\Projects\stm32/stm32f10x_i2c.o
-                0x08000e54                I2C_Init
- .text.I2C_Cmd  0x08000fd8       0x3e D:\Projects\stm32/stm32f10x_i2c.o
-                0x08000fd8                I2C_Cmd
+                0x08000eb4      0x184 D:\Projects\stm32/stm32f10x_i2c.o
+                0x08000eb4                I2C_Init
+ .text.I2C_Cmd  0x08001038       0x3e D:\Projects\stm32/stm32f10x_i2c.o
+                0x08001038                I2C_Cmd
  .text.I2C_GenerateSTART
-                0x08001016       0x3e D:\Projects\stm32/stm32f10x_i2c.o
-                0x08001016                I2C_GenerateSTART
+                0x08001076       0x3e D:\Projects\stm32/stm32f10x_i2c.o
+                0x08001076                I2C_GenerateSTART
  .text.I2C_GenerateSTOP
-                0x08001054       0x3e D:\Projects\stm32/stm32f10x_i2c.o
-                0x08001054                I2C_GenerateSTOP
+                0x080010b4       0x3e D:\Projects\stm32/stm32f10x_i2c.o
+                0x080010b4                I2C_GenerateSTOP
  .text.I2C_SendData
-                0x08001092       0x1e D:\Projects\stm32/stm32f10x_i2c.o
-                0x08001092                I2C_SendData
+                0x080010f2       0x1e D:\Projects\stm32/stm32f10x_i2c.o
+                0x080010f2                I2C_SendData
  .text.I2C_Send7bitAddress
-                0x080010b0       0x3a D:\Projects\stm32/stm32f10x_i2c.o
-                0x080010b0                I2C_Send7bitAddress
+                0x08001110       0x3a D:\Projects\stm32/stm32f10x_i2c.o
+                0x08001110                I2C_Send7bitAddress
  .text.I2C_CheckEvent
-                0x080010ea       0x5e D:\Projects\stm32/stm32f10x_i2c.o
-                0x080010ea                I2C_CheckEvent
+                0x0800114a       0x5e D:\Projects\stm32/stm32f10x_i2c.o
+                0x0800114a                I2C_CheckEvent
  .text.I2C_GetFlagStatus
-                0x08001148       0x78 D:\Projects\stm32/stm32f10x_i2c.o
-                0x08001148                I2C_GetFlagStatus
+                0x080011a8       0x78 D:\Projects\stm32/stm32f10x_i2c.o
+                0x080011a8                I2C_GetFlagStatus
  .text.DMA_Init
-                0x080011c0       0x7c D:\Projects\stm32/stm32f10x_dma.o
-                0x080011c0                DMA_Init
- .text.DMA_Cmd  0x0800123c       0x38 D:\Projects\stm32/stm32f10x_dma.o
-                0x0800123c                DMA_Cmd
+                0x08001220       0x7c D:\Projects\stm32/stm32f10x_dma.o
+                0x08001220                DMA_Init
+ .text.DMA_Cmd  0x0800129c       0x38 D:\Projects\stm32/stm32f10x_dma.o
+                0x0800129c                DMA_Cmd
  .text.DMA_ITConfig
-                0x08001274       0x3a D:\Projects\stm32/stm32f10x_dma.o
-                0x08001274                DMA_ITConfig
- *fill*         0x080012ae        0x2 
+                0x080012d4       0x3a D:\Projects\stm32/stm32f10x_dma.o
+                0x080012d4                DMA_ITConfig
+ *fill*         0x0800130e        0x2 
  .text.DMA_ClearITPendingBit
-                0x080012b0       0x34 D:\Projects\stm32/stm32f10x_dma.o
-                0x080012b0                DMA_ClearITPendingBit
+                0x08001310       0x34 D:\Projects\stm32/stm32f10x_dma.o
+                0x08001310                DMA_ClearITPendingBit
  .text.TIM_GetCapture2
-                0x080012e4       0x18 D:\Projects\stm32/stm32f10x_tim.o
-                0x080012e4                TIM_GetCapture2
+                0x08001344       0x18 D:\Projects\stm32/stm32f10x_tim.o
+                0x08001344                TIM_GetCapture2
  .text.TIM_GetFlagStatus
-                0x080012fc       0x40 D:\Projects\stm32/stm32f10x_tim.o
-                0x080012fc                TIM_GetFlagStatus
+                0x0800135c       0x40 D:\Projects\stm32/stm32f10x_tim.o
+                0x0800135c                TIM_GetFlagStatus
  .text.TIM_ClearFlag
-                0x0800133c       0x20 D:\Projects\stm32/stm32f10x_tim.o
-                0x0800133c                TIM_ClearFlag
+                0x0800139c       0x20 D:\Projects\stm32/stm32f10x_tim.o
+                0x0800139c                TIM_ClearFlag
  .text.TIM_GetITStatus
-                0x0800135c       0x52 D:\Projects\stm32/stm32f10x_tim.o
-                0x0800135c                TIM_GetITStatus
+                0x080013bc       0x52 D:\Projects\stm32/stm32f10x_tim.o
+                0x080013bc                TIM_GetITStatus
  .text.TIM_ClearITPendingBit
-                0x080013ae       0x20 D:\Projects\stm32/stm32f10x_tim.o
-                0x080013ae                TIM_ClearITPendingBit
- *fill*         0x080013ce        0x2 
+                0x0800140e       0x20 D:\Projects\stm32/stm32f10x_tim.o
+                0x0800140e                TIM_ClearITPendingBit
+ *fill*         0x0800142e        0x2 
  .text.FLASH_SetLatency
-                0x080013d0       0x38 D:\Projects\stm32/stm32f10x_flash.o
-                0x080013d0                FLASH_SetLatency
+                0x08001430       0x38 D:\Projects\stm32/stm32f10x_flash.o
+                0x08001430                FLASH_SetLatency
  .text.FLASH_PrefetchBufferCmd
-                0x08001408       0x30 D:\Projects\stm32/stm32f10x_flash.o
-                0x08001408                FLASH_PrefetchBufferCmd
+                0x08001468       0x30 D:\Projects\stm32/stm32f10x_flash.o
+                0x08001468                FLASH_PrefetchBufferCmd
  .text.__NVIC_SetPriority
-                0x08001438       0x5c D:\Projects\stm32/delay.o
+                0x08001498       0x5c D:\Projects\stm32/delay.o
  .text.SysTick_Config
-                0x08001494       0x44 D:\Projects\stm32/delay.o
+                0x080014f4       0x44 D:\Projects\stm32/delay.o
  .text.SysTick_Handler
-                0x080014d8       0x24 D:\Projects\stm32/delay.o
-                0x080014d8                SysTick_Handler
+                0x08001538       0x24 D:\Projects\stm32/delay.o
+                0x08001538                SysTick_Handler
  .text._ZN5DelayC2Ev
-                0x080014fc       0x74 D:\Projects\stm32/delay.o
-                0x080014fc                Delay::Delay()
-                0x080014fc                Delay::Delay()
+                0x0800155c       0x74 D:\Projects\stm32/delay.o
+                0x0800155c                Delay::Delay()
+                0x0800155c                Delay::Delay()
  .text._ZNK5Delay2msEm
-                0x08001570       0x28 D:\Projects\stm32/delay.o
-                0x08001570                Delay::ms(unsigned long) const
+                0x080015d0       0x28 D:\Projects\stm32/delay.o
+                0x080015d0                Delay::ms(unsigned long) const
  .text._ZNK5Delay2usEm
-                0x08001598       0x4c D:\Projects\stm32/delay.o
-                0x08001598                Delay::us(unsigned long) const
+                0x080015f8       0x4c D:\Projects\stm32/delay.o
+                0x080015f8                Delay::us(unsigned long) const
  .text._ZNK5Delay15getSysTickValueEv
-                0x080015e4       0x1c D:\Projects\stm32/delay.o
-                0x080015e4                Delay::getSysTickValue() const
+                0x08001644       0x1c D:\Projects\stm32/delay.o
+                0x08001644                Delay::getSysTickValue() const
  .text._Z41__static_initialization_and_destruction_0ii
-                0x08001600       0x40 D:\Projects\stm32/delay.o
+                0x08001660       0x40 D:\Projects\stm32/delay.o
  .text._GLOBAL__sub_I_SysTick_Handler
-                0x08001640       0x10 D:\Projects\stm32/delay.o
+                0x080016a0       0x10 D:\Projects\stm32/delay.o
  .text._Z15SetSysClockTo72v
-                0x08001650       0x90 D:\Projects\stm32/SysClock.o
-                0x08001650                SetSysClockTo72()
+                0x080016b0       0x90 D:\Projects\stm32/SysClock.o
+                0x080016b0                SetSysClockTo72()
  .text._Z12GPIO_Init_MyP12GPIO_TypeDeft16GPIOMode_TypeDef17GPIOSpeed_TypeDef
-                0x080016e0       0xc4 D:\Projects\stm32/gpio.o
-                0x080016e0                GPIO_Init_My(GPIO_TypeDef*, unsigned short, GPIOMode_TypeDef, GPIOSpeed_TypeDef)
+                0x08001740       0xc4 D:\Projects\stm32/gpio.o
+                0x08001740                GPIO_Init_My(GPIO_TypeDef*, unsigned short, GPIOMode_TypeDef, GPIOSpeed_TypeDef)
  .text._ZN3LEDC2EP12GPIO_TypeDeft
-                0x080017a4       0x36 D:\Projects\stm32/led.o
-                0x080017a4                LED::LED(GPIO_TypeDef*, unsigned short)
-                0x080017a4                LED::LED(GPIO_TypeDef*, unsigned short)
+                0x08001804       0x36 D:\Projects\stm32/led.o
+                0x08001804                LED::LED(GPIO_TypeDef*, unsigned short)
+                0x08001804                LED::LED(GPIO_TypeDef*, unsigned short)
  .text._ZN3LED2onEv
-                0x080017da       0x26 D:\Projects\stm32/led.o
-                0x080017da                LED::on()
+                0x0800183a       0x26 D:\Projects\stm32/led.o
+                0x0800183a                LED::on()
  .text._ZN3LED3offEv
-                0x08001800       0x26 D:\Projects\stm32/led.o
-                0x08001800                LED::off()
+                0x08001860       0x26 D:\Projects\stm32/led.o
+                0x08001860                LED::off()
  .text._ZN3LED6invertEv
-                0x08001826       0x26 D:\Projects\stm32/led.o
-                0x08001826                LED::invert()
+                0x08001886       0x26 D:\Projects\stm32/led.o
+                0x08001886                LED::invert()
  .text.__NVIC_EnableIRQ
-                0x0800184c       0x3c D:\Projects\stm32/usart.o
+                0x080018ac       0x3c D:\Projects\stm32/usart.o
  .text.USART1_IRQHandler
-                0x08001888       0x58 D:\Projects\stm32/usart.o
-                0x08001888                USART1_IRQHandler
+                0x080018e8       0x60 D:\Projects\stm32/usart.o
+                0x080018e8                USART1_IRQHandler
  .text.USART2_IRQHandler
-                0x080018e0       0x58 D:\Projects\stm32/usart.o
-                0x080018e0                USART2_IRQHandler
+                0x08001948       0x60 D:\Projects\stm32/usart.o
+                0x08001948                USART2_IRQHandler
  .text.DMA1_Channel4_IRQHandler
-                0x08001938       0x1c D:\Projects\stm32/usart.o
-                0x08001938                DMA1_Channel4_IRQHandler
+                0x080019a8       0x1c D:\Projects\stm32/usart.o
+                0x080019a8                DMA1_Channel4_IRQHandler
  .text.DMA1_Channel7_IRQHandler
-                0x08001954       0x1c D:\Projects\stm32/usart.o
-                0x08001954                DMA1_Channel7_IRQHandler
+                0x080019c4       0x1c D:\Projects\stm32/usart.o
+                0x080019c4                DMA1_Channel7_IRQHandler
  .text._ZN5USARTC2Eimttt
-                0x08001970      0x160 D:\Projects\stm32/usart.o
-                0x08001970                USART::USART(int, unsigned long, unsigned short, unsigned short, unsigned short)
-                0x08001970                USART::USART(int, unsigned long, unsigned short, unsigned short, unsigned short)
+                0x080019e0      0x160 D:\Projects\stm32/usart.o
+                0x080019e0                USART::USART(int, unsigned long, unsigned short, unsigned short, unsigned short)
+                0x080019e0                USART::USART(int, unsigned long, unsigned short, unsigned short, unsigned short)
  .text._ZN5USART7setUartEmttt
-                0x08001ad0       0x46 D:\Projects\stm32/usart.o
-                0x08001ad0                USART::setUart(unsigned long, unsigned short, unsigned short, unsigned short)
+                0x08001b40       0x46 D:\Projects\stm32/usart.o
+                0x08001b40                USART::setUart(unsigned long, unsigned short, unsigned short, unsigned short)
  .text._ZN5USART6setDMAEv
-                0x08001b16       0x52 D:\Projects\stm32/usart.o
-                0x08001b16                USART::setDMA()
+                0x08001b86       0x52 D:\Projects\stm32/usart.o
+                0x08001b86                USART::setDMA()
  .text._ZN5USART7setNvicEh
-                0x08001b68       0x2e D:\Projects\stm32/usart.o
-                0x08001b68                USART::setNvic(unsigned char)
- .text._ZN5USART4sendEPKh
-                0x08001b96       0x5e D:\Projects\stm32/usart.o
-                0x08001b96                USART::send(unsigned char const*)
+                0x08001bd8       0x2e D:\Projects\stm32/usart.o
+                0x08001bd8                USART::setNvic(unsigned char)
+ .text._ZN5USART12sendBlockingEPKc
+                0x08001c06       0x4c D:\Projects\stm32/usart.o
+                0x08001c06                USART::sendBlocking(char const*)
+ .text._ZN5USART4sendEPKc
+                0x08001c52       0x5e D:\Projects\stm32/usart.o
+                0x08001c52                USART::send(char const*)
+ .text._ZN5USART4sendEPKcm
+                0x08001cb0       0x5c D:\Projects\stm32/usart.o
+                0x08001cb0                USART::send(char const*, unsigned long)
+ .text._ZN5USART5clearEv
+                0x08001d0c       0x1a D:\Projects\stm32/usart.o
+                0x08001d0c                USART::clear()
+ .text._ZN5USART8getCountEv
+                0x08001d26       0x18 D:\Projects\stm32/usart.o
+                0x08001d26                USART::getCount()
+ .text._ZN5USART7getDataEv
+                0x08001d3e       0x16 D:\Projects\stm32/usart.o
+                0x08001d3e                USART::getData()
  .text._ZN3I2cC2Ehh
-                0x08001bf4       0xc8 D:\Projects\stm32/i2c.o
-                0x08001bf4                I2c::I2c(unsigned char, unsigned char)
-                0x08001bf4                I2c::I2c(unsigned char, unsigned char)
+                0x08001d54       0xc8 D:\Projects\stm32/i2c.o
+                0x08001d54                I2c::I2c(unsigned char, unsigned char)
+                0x08001d54                I2c::I2c(unsigned char, unsigned char)
  .text._ZNK3I2c13startTransmitEh
-                0x08001cbc       0xc8 D:\Projects\stm32/i2c.o
-                0x08001cbc                I2c::startTransmit(unsigned char) const
+                0x08001e1c       0xc8 D:\Projects\stm32/i2c.o
+                0x08001e1c                I2c::startTransmit(unsigned char) const
  .text._ZNK3I2c5writeEh
-                0x08001d84       0x44 D:\Projects\stm32/i2c.o
-                0x08001d84                I2c::write(unsigned char) const
+                0x08001ee4       0x44 D:\Projects\stm32/i2c.o
+                0x08001ee4                I2c::write(unsigned char) const
  .text._ZNK3I2c12stopTransmitEv
-                0x08001dc8       0x40 D:\Projects\stm32/i2c.o
-                0x08001dc8                I2c::stopTransmit() const
+                0x08001f28       0x40 D:\Projects\stm32/i2c.o
+                0x08001f28                I2c::stopTransmit() const
  .text._ZN3LcdC2ER3I2cR5Delayh
-                0x08001e08      0x12e D:\Projects\stm32/lcd.o
-                0x08001e08                Lcd::Lcd(I2c&, Delay&, unsigned char)
-                0x08001e08                Lcd::Lcd(I2c&, Delay&, unsigned char)
+                0x08001f68      0x12e D:\Projects\stm32/lcd.o
+                0x08001f68                Lcd::Lcd(I2c&, Delay&, unsigned char)
+                0x08001f68                Lcd::Lcd(I2c&, Delay&, unsigned char)
  .text._ZN3Lcd10write4bitsEh
-                0x08001f36       0x88 D:\Projects\stm32/lcd.o
-                0x08001f36                Lcd::write4bits(unsigned char)
+                0x08002096       0x88 D:\Projects\stm32/lcd.o
+                0x08002096                Lcd::write4bits(unsigned char)
  .text._ZN3Lcd9writeDataEhh
-                0x08001fbe       0x46 D:\Projects\stm32/lcd.o
-                0x08001fbe                Lcd::writeData(unsigned char, unsigned char)
+                0x0800211e       0x46 D:\Projects\stm32/lcd.o
+                0x0800211e                Lcd::writeData(unsigned char, unsigned char)
  .text._ZN3Lcd15sendInstructionEh
-                0x08002004       0x20 D:\Projects\stm32/lcd.o
-                0x08002004                Lcd::sendInstruction(unsigned char)
+                0x08002164       0x20 D:\Projects\stm32/lcd.o
+                0x08002164                Lcd::sendInstruction(unsigned char)
  .text._ZN3Lcd8sendDataEh
-                0x08002024       0x20 D:\Projects\stm32/lcd.o
-                0x08002024                Lcd::sendData(unsigned char)
+                0x08002184       0x20 D:\Projects\stm32/lcd.o
+                0x08002184                Lcd::sendData(unsigned char)
  .text._ZN3Lcd5clearEv
-                0x08002044       0x24 D:\Projects\stm32/lcd.o
-                0x08002044                Lcd::clear()
+                0x080021a4       0x24 D:\Projects\stm32/lcd.o
+                0x080021a4                Lcd::clear()
  .text._ZN3Lcd4homeEv
-                0x08002068       0x24 D:\Projects\stm32/lcd.o
-                0x08002068                Lcd::home()
+                0x080021c8       0x24 D:\Projects\stm32/lcd.o
+                0x080021c8                Lcd::home()
  .text._ZN3Lcd10cursorGoToEhh
-                0x0800208c       0x3c D:\Projects\stm32/lcd.o
-                0x0800208c                Lcd::cursorGoTo(unsigned char, unsigned char)
+                0x080021ec       0x3c D:\Projects\stm32/lcd.o
+                0x080021ec                Lcd::cursorGoTo(unsigned char, unsigned char)
+ .text._ZN3Lcd10displaySetEh
+                0x08002228       0x4a D:\Projects\stm32/lcd.o
+                0x08002228                Lcd::displaySet(unsigned char)
+ .text._ZN3Lcd9cursorSetEh
+                0x08002272       0x4a D:\Projects\stm32/lcd.o
+                0x08002272                Lcd::cursorSet(unsigned char)
+ .text._ZN3Lcd14cursorBlinkSetEh
+                0x080022bc       0x4a D:\Projects\stm32/lcd.o
+                0x080022bc                Lcd::cursorBlinkSet(unsigned char)
+ .text._ZN3Lcd6scrollEhh
+                0x08002306       0x48 D:\Projects\stm32/lcd.o
+                0x08002306                Lcd::scroll(unsigned char, unsigned char)
+ .text._ZN3Lcd11textFlowSetEh
+                0x0800234e       0x4a D:\Projects\stm32/lcd.o
+                0x0800234e                Lcd::textFlowSet(unsigned char)
+ .text._ZN3Lcd13autoScrollSetEh
+                0x08002398       0x4a D:\Projects\stm32/lcd.o
+                0x08002398                Lcd::autoScrollSet(unsigned char)
+ .text._ZN3Lcd16loadCustomSymbolEhPh
+                0x080023e2       0x56 D:\Projects\stm32/lcd.o
+                0x080023e2                Lcd::loadCustomSymbol(unsigned char, unsigned char*)
  .text._ZN3Lcd12backlightSetEh
-                0x080020c8       0x58 D:\Projects\stm32/lcd.o
-                0x080020c8                Lcd::backlightSet(unsigned char)
+                0x08002438       0x58 D:\Projects\stm32/lcd.o
+                0x08002438                Lcd::backlightSet(unsigned char)
  .text._ZN3Lcd4putsEPKc
-                0x08002120       0x2c D:\Projects\stm32/lcd.o
-                0x08002120                Lcd::puts(char const*)
+                0x08002490       0x2c D:\Projects\stm32/lcd.o
+                0x08002490                Lcd::puts(char const*)
  .text.TIM2_IRQHandler
-                0x0800214c       0xac D:\Projects\stm32/tacho.o
-                0x0800214c                TIM2_IRQHandler
+                0x080024bc       0xac D:\Projects\stm32/tacho.o
+                0x080024bc                TIM2_IRQHandler
  .text._ZN5USARTlsEPKc
-                0x080021f8       0x1c D:\Projects\stm32/main.o
-                0x080021f8                USART::operator<<(char const*)
- .text.main     0x08002214       0xbc D:\Projects\stm32/main.o
-                0x08002214                main
+                0x08002568       0x1c D:\Projects\stm32/main.o
+                0x08002568                USART::operator<<(char const*)
+ .text._ZN3Lcd4putcEc
+                0x08002584       0x1e D:\Projects\stm32/main.o
+                0x08002584                Lcd::putc(char)
+ .text._Z7comparePKcPKh
+                0x080025a2       0x44 D:\Projects\stm32/main.o
+                0x080025a2                compare(char const*, unsigned char const*)
+ *fill*         0x080025e6        0x2 
+ .text.main     0x080025e8      0x5fc D:\Projects\stm32/main.o
+                0x080025e8                main
  *(.init)
  *(.fini)
  *crtbegin.o(.ctors)
@@ -1219,37 +1240,37 @@ Linker script and memory map
  *(SORT_BY_NAME(.dtors.*))
  *(.dtors)
  *(.rodata*)
- .rodata        0x080022d0       0x74 D:\Projects\stm32/main.o
+ .rodata        0x08002be4      0x1a8 D:\Projects\stm32/main.o
  *(.eh_frame*)
 
-.glue_7         0x08002344        0x0
- .glue_7        0x08002344        0x0 linker stubs
+.glue_7         0x08002d8c        0x0
+ .glue_7        0x08002d8c        0x0 linker stubs
 
-.glue_7t        0x08002344        0x0
- .glue_7t       0x08002344        0x0 linker stubs
+.glue_7t        0x08002d8c        0x0
+ .glue_7t       0x08002d8c        0x0 linker stubs
 
-.vfp11_veneer   0x08002344        0x0
- .vfp11_veneer  0x08002344        0x0 linker stubs
+.vfp11_veneer   0x08002d8c        0x0
+ .vfp11_veneer  0x08002d8c        0x0 linker stubs
 
-.v4_bx          0x08002344        0x0
- .v4_bx         0x08002344        0x0 linker stubs
+.v4_bx          0x08002d8c        0x0
+ .v4_bx         0x08002d8c        0x0 linker stubs
 
-.iplt           0x08002344        0x0
- .iplt          0x08002344        0x0 D:\Projects\stm32/misc.o
+.iplt           0x08002d8c        0x0
+ .iplt          0x08002d8c        0x0 D:\Projects\stm32/misc.o
 
-.rel.dyn        0x08002344        0x0
- .rel.iplt      0x08002344        0x0 D:\Projects\stm32/misc.o
+.rel.dyn        0x08002d8c        0x0
+ .rel.iplt      0x08002d8c        0x0 D:\Projects\stm32/misc.o
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x08002344                __exidx_start = .
+                0x08002d8c                __exidx_start = .
 
 .ARM.exidx
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-                0x08002344                __exidx_end = .
-                0x08002344                __etext = .
+                0x08002d8c                __exidx_end = .
+                0x08002d8c                __etext = .
 
-.data           0x20000000       0x2c load address 0x08002344
+.data           0x20000000       0x2c load address 0x08002d8c
                 0x20000000                __data_start__ = .
  *(vtable)
  *(.data*)
@@ -1275,10 +1296,10 @@ Linker script and memory map
                 0x2000002c                . = ALIGN (0x4)
                 0x2000002c                __data_end__ = .
 
-.igot.plt       0x2000002c        0x0 load address 0x08002370
+.igot.plt       0x2000002c        0x0 load address 0x08002db8
  .igot.plt      0x2000002c        0x0 D:\Projects\stm32/misc.o
 
-.bss            0x2000002c       0x20 load address 0x08002370
+.bss            0x2000002c       0x20 load address 0x08002db8
                 0x2000002c                __bss_start__ = .
  *(.bss*)
  .bss           0x2000002c        0x8 D:\Projects\stm32/delay.o
@@ -1343,7 +1364,7 @@ LOAD c:/program files (x86)/gnu tools arm embedded/7 2017-q4-major/bin/../lib/gc
 END GROUP
 OUTPUT(D:\Projects\stm32/out/app.elf elf32-littlearm)
 
-.debug_info     0x00000000     0xa0fb
+.debug_info     0x00000000     0xa18e
  .debug_info    0x00000000      0x55b D:\Projects\stm32/misc.o
  .debug_info    0x0000055b       0x26 D:\Projects\stm32/startup_stm32f10x_md.o
  .debug_info    0x00000581      0x504 D:\Projects\stm32/system_stm32f10x.o
@@ -1358,13 +1379,13 @@ OUTPUT(D:\Projects\stm32/out/app.elf elf32-littlearm)
  .debug_info    0x000062b9      0x16f D:\Projects\stm32/SysClock.o
  .debug_info    0x00006428      0x29b D:\Projects\stm32/gpio.o
  .debug_info    0x000066c3      0x32f D:\Projects\stm32/led.o
- .debug_info    0x000069f2      0xe1c D:\Projects\stm32/usart.o
- .debug_info    0x0000780e      0x5ae D:\Projects\stm32/i2c.o
- .debug_info    0x00007dbc      0xc71 D:\Projects\stm32/lcd.o
- .debug_info    0x00008a2d      0x91d D:\Projects\stm32/tacho.o
- .debug_info    0x0000934a      0xdb1 D:\Projects\stm32/main.o
+ .debug_info    0x000069f2      0xe11 D:\Projects\stm32/usart.o
+ .debug_info    0x00007803      0x5ae D:\Projects\stm32/i2c.o
+ .debug_info    0x00007db1      0xc71 D:\Projects\stm32/lcd.o
+ .debug_info    0x00008a22      0x91d D:\Projects\stm32/tacho.o
+ .debug_info    0x0000933f      0xe4f D:\Projects\stm32/main.o
 
-.debug_abbrev   0x00000000     0x23dd
+.debug_abbrev   0x00000000     0x240f
  .debug_abbrev  0x00000000      0x178 D:\Projects\stm32/misc.o
  .debug_abbrev  0x00000178       0x14 D:\Projects\stm32/startup_stm32f10x_md.o
  .debug_abbrev  0x0000018c      0x16c D:\Projects\stm32/system_stm32f10x.o
@@ -1383,9 +1404,9 @@ OUTPUT(D:\Projects\stm32/out/app.elf elf32-littlearm)
  .debug_abbrev  0x00001904      0x24a D:\Projects\stm32/i2c.o
  .debug_abbrev  0x00001b4e      0x301 D:\Projects\stm32/lcd.o
  .debug_abbrev  0x00001e4f      0x2cb D:\Projects\stm32/tacho.o
- .debug_abbrev  0x0000211a      0x2c3 D:\Projects\stm32/main.o
+ .debug_abbrev  0x0000211a      0x2f5 D:\Projects\stm32/main.o
 
-.debug_aranges  0x00000000      0xba0
+.debug_aranges  0x00000000      0xbb0
  .debug_aranges
                 0x00000000       0x40 D:\Projects\stm32/misc.o
  .debug_aranges
@@ -1423,9 +1444,9 @@ OUTPUT(D:\Projects\stm32/out/app.elf elf32-littlearm)
  .debug_aranges
                 0x00000b28       0x48 D:\Projects\stm32/tacho.o
  .debug_aranges
-                0x00000b70       0x30 D:\Projects\stm32/main.o
+                0x00000b70       0x40 D:\Projects\stm32/main.o
 
-.debug_ranges   0x00000000      0xa60
+.debug_ranges   0x00000000      0xa70
  .debug_ranges  0x00000000       0x30 D:\Projects\stm32/misc.o
  .debug_ranges  0x00000030       0x28 D:\Projects\stm32/system_stm32f10x.o
  .debug_ranges  0x00000058      0x108 D:\Projects\stm32/stm32f10x_rcc.o
@@ -1443,9 +1464,9 @@ OUTPUT(D:\Projects\stm32/out/app.elf elf32-littlearm)
  .debug_ranges  0x00000948       0x30 D:\Projects\stm32/i2c.o
  .debug_ranges  0x00000978       0x90 D:\Projects\stm32/lcd.o
  .debug_ranges  0x00000a08       0x38 D:\Projects\stm32/tacho.o
- .debug_ranges  0x00000a40       0x20 D:\Projects\stm32/main.o
+ .debug_ranges  0x00000a40       0x30 D:\Projects\stm32/main.o
 
-.debug_line     0x00000000     0x459d
+.debug_line     0x00000000     0x467b
  .debug_line    0x00000000      0x281 D:\Projects\stm32/misc.o
  .debug_line    0x00000281       0xc2 D:\Projects\stm32/startup_stm32f10x_md.o
  .debug_line    0x00000343      0x248 D:\Projects\stm32/system_stm32f10x.o
@@ -1460,13 +1481,13 @@ OUTPUT(D:\Projects\stm32/out/app.elf elf32-littlearm)
  .debug_line    0x00002f79      0x1db D:\Projects\stm32/SysClock.o
  .debug_line    0x00003154      0x250 D:\Projects\stm32/gpio.o
  .debug_line    0x000033a4      0x235 D:\Projects\stm32/led.o
- .debug_line    0x000035d9      0x406 D:\Projects\stm32/usart.o
- .debug_line    0x000039df      0x29c D:\Projects\stm32/i2c.o
- .debug_line    0x00003c7b      0x3b3 D:\Projects\stm32/lcd.o
- .debug_line    0x0000402e      0x2c7 D:\Projects\stm32/tacho.o
- .debug_line    0x000042f5      0x2a8 D:\Projects\stm32/main.o
+ .debug_line    0x000035d9      0x40a D:\Projects\stm32/usart.o
+ .debug_line    0x000039e3      0x29c D:\Projects\stm32/i2c.o
+ .debug_line    0x00003c7f      0x3b3 D:\Projects\stm32/lcd.o
+ .debug_line    0x00004032      0x2c7 D:\Projects\stm32/tacho.o
+ .debug_line    0x000042f9      0x382 D:\Projects\stm32/main.o
 
-.debug_str      0x00000000     0x37e3
+.debug_str      0x00000000     0x381c
  .debug_str     0x00000000      0x3b1 D:\Projects\stm32/misc.o
                                 0x43f (size before relaxing)
  .debug_str     0x000003b1       0x44 D:\Projects\stm32/startup_stm32f10x_md.o
@@ -1495,16 +1516,16 @@ OUTPUT(D:\Projects\stm32/out/app.elf elf32-littlearm)
                                 0x3c7 (size before relaxing)
  .debug_str     0x00002d46       0xb3 D:\Projects\stm32/led.o
                                 0x268 (size before relaxing)
- .debug_str     0x00002df9      0x303 D:\Projects\stm32/usart.o
-                                0xade (size before relaxing)
- .debug_str     0x000030fc      0x122 D:\Projects\stm32/i2c.o
+ .debug_str     0x00002df9      0x30f D:\Projects\stm32/usart.o
+                                0xaea (size before relaxing)
+ .debug_str     0x00003108      0x122 D:\Projects\stm32/i2c.o
                                 0x41b (size before relaxing)
- .debug_str     0x0000321e      0x41b D:\Projects\stm32/lcd.o
+ .debug_str     0x0000322a      0x41b D:\Projects\stm32/lcd.o
                                 0x835 (size before relaxing)
- .debug_str     0x00003639      0x11d D:\Projects\stm32/tacho.o
+ .debug_str     0x00003645      0x11d D:\Projects\stm32/tacho.o
                                 0x86d (size before relaxing)
- .debug_str     0x00003756       0x8d D:\Projects\stm32/main.o
-                                0x9d3 (size before relaxing)
+ .debug_str     0x00003762       0xba D:\Projects\stm32/main.o
+                                0xa00 (size before relaxing)
 
 .comment        0x00000000       0x7e
  .comment       0x00000000       0x7e D:\Projects\stm32/misc.o
@@ -1568,7 +1589,7 @@ OUTPUT(D:\Projects\stm32/out/app.elf elf32-littlearm)
  .ARM.attributes
                 0x0000037e       0x33 D:\Projects\stm32/main.o
 
-.debug_frame    0x00000000     0x3068
+.debug_frame    0x00000000     0x30b8
  .debug_frame   0x00000000       0xd8 D:\Projects\stm32/misc.o
  .debug_frame   0x000000d8       0x98 D:\Projects\stm32/system_stm32f10x.o
  .debug_frame   0x00000170      0x4f4 D:\Projects\stm32/stm32f10x_rcc.o
@@ -1586,4 +1607,4 @@ OUTPUT(D:\Projects\stm32/out/app.elf elf32-littlearm)
  .debug_frame   0x00002bc8       0xc4 D:\Projects\stm32/i2c.o
  .debug_frame   0x00002c8c      0x274 D:\Projects\stm32/lcd.o
  .debug_frame   0x00002f00       0xf0 D:\Projects\stm32/tacho.o
- .debug_frame   0x00002ff0       0x78 D:\Projects\stm32/main.o
+ .debug_frame   0x00002ff0       0xc8 D:\Projects\stm32/main.o
