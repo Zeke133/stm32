@@ -9,8 +9,8 @@ void SysTick_Handler() {
 }
 
 // Class implementation
-uint32_t Delay::msCount = 0;
-uint32_t Delay::sysTicksPerUs = SystemCoreClock / 1000000;
+uint32_t Delay::msCount;
+uint32_t Delay::sysTicksPerUs;
 
 Delay::Delay() {
 
@@ -21,8 +21,10 @@ Delay::Delay() {
 
 	// Configure the SysTick timer to overflow every 1 ms
 	SysTick_Config(SystemCoreClock / 1000);
+	msCount = 0;
 
 	/* Configuring DWT timer for implementation of 1us delays by cycle */
+	sysTicksPerUs = SystemCoreClock / 1000000;
 
 	// DWT_Init
 	if (!(CoreDebug->DEMCR & CoreDebug_DEMCR_TRCENA_Msk)) {
@@ -40,31 +42,37 @@ void Delay::ms(uint32_t ms) const {
 
 	// Reload ms value
 	msCount = ms;
-	// Wait until usTick reach zero
-	while (msCount) {}
+	// wait
+	while (msCount) ;
 }
 
 void Delay::us(uint32_t us) const {
 
-	uint32_t ticksToOverflow = 0xFFFFFFFF - getSysTickValue();
-	uint32_t delayTicks = us * sysTicksPerUs;			// Value of delay in sysTicks
+	uint32_t ticksBegin = getDWTTicksValue();
+	uint32_t ticksEnd = ticksBegin + us * sysTicksPerUs;
+	// wait
+	if (ticksEnd < ticksBegin) {
 
-	while ( ticksToOverflow + getSysTickValue() < delayTicks ) {};
+		while (getDWTTicksValue() > ticksBegin || getDWTTicksValue() < ticksEnd) ;
+	} else {
+		
+		while (getDWTTicksValue() < ticksEnd) ;
+	}
 }
 
-uint32_t Delay::getSysTickValue(void) const {
+inline uint32_t Delay::getDWTTicksValue(void) const {
 
 	return DWT->CYCCNT;
 }
 
-void Delay::startProfiling(void) {
+inline void Delay::startProfiling(void) {
 
-	profilingStart = getSysTickValue();
+	profilingStart = getDWTTicksValue();
 }
 
-uint32_t Delay::getExecutionTime(void) const {
+inline uint32_t Delay::getExecutionTime(void) const {
 
-	uint32_t ticksNow = getSysTickValue();
+	uint32_t ticksNow = getDWTTicksValue();
 
 	// overflow happened
 	// no overflow or execution time is more than 59 seconds what is unlikely

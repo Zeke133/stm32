@@ -45,7 +45,7 @@
                 "${workspaceRoot}/libs/STM32F10x_StdPeriph_Driver/src/stm32f10x_flash.c",
                 // ---
                 "${workspaceRoot}/drivers/src/delay.cpp",
-                "${workspaceRoot}/drivers/src/SysClock.c",
+                "${workspaceRoot}/drivers/src/sysClock.c",
                 "${workspaceRoot}/drivers/src/gpio.c",
                 "${workspaceRoot}/drivers/src/led.cpp",
                 "${workspaceRoot}/drivers/src/usart.cpp",
@@ -60,6 +60,8 @@
                 "${workspaceRoot}/drivers/src/storage.cpp",
                 "${workspaceRoot}/utils/src/convertation.cpp",
                 "${workspaceRoot}/utils/src/crc.cpp",
+                "${workspaceRoot}/utils/src/strings.cpp",
+                "${workspaceRoot}/modules/src/driversTest.cpp",
                 "${workspaceRoot}/modules/src/main.cpp"
             ],
             "problemMatcher": [
@@ -99,7 +101,7 @@
                 "${workspaceRoot}/stm32f10x_tim.o",
                 "${workspaceRoot}/stm32f10x_flash.o",
                 "${workspaceRoot}/delay.o",
-                "${workspaceRoot}/SysClock.o",
+                "${workspaceRoot}/sysClock.o",
                 "${workspaceRoot}/gpio.o",
                 "${workspaceRoot}/led.o",
                 "${workspaceRoot}/usart.o",
@@ -114,6 +116,8 @@
                 "${workspaceRoot}/storage.o",
                 "${workspaceRoot}/convertation.o",
                 "${workspaceRoot}/crc.o",
+                "${workspaceRoot}/strings.o",
+                "${workspaceRoot}/driversTest.o",
                 "${workspaceRoot}/main.o"
             ],
             "problemMatcher": [

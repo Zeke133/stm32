@@ -1,53 +1,121 @@
 #include <ds18b20.h>
 
+Ds18b20::Ds18b20(Delay& timer, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, enum Resolution res)
+    : OneWire(timer, GPIOx, GPIO_Pin) {
 
+    useROM = 0;
 
-DS18B20::DS18B20(Delay& timer, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, uint8_t InitTOs[3], uint8_t WriteTOs[3], uint8_t ReadTOs[3], enum Resolution res)
-    : OneWire(timer, GPIOx, GPIO_Pin, InitTOs, WriteTOs, ReadTOs) {
+    initialization(res);
+}
 
-    // trying 2 times to read
-    if (readScratchpad()) {
+Ds18b20::Ds18b20(Delay& timer, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, uint8_t * _ROM, enum Resolution res)
+    : OneWire(timer, GPIOx, GPIO_Pin) {
 
-        readScratchpad();
+    useROM = 1;
+    for (int i = 0; i < 8; i++) {
+        ROM[i] = _ROM[i];
+    }
+    
+    initialization(res);
+}
+
+void Ds18b20::initialization(enum Resolution res) {
+
+    if (readPowerSupply() || readScratchpad()) {
+        errorState = 1;
     }
 
-    if (configRegister != res) {
+    if (getResolution() != res) {
 
-        configRegister = res;
-        writeScratchpad();
-        copyScratchpad();
+        setResolution(res);        
+        saveSettings();
     }
 }
 
-void DS18B20::setResolution(enum Resolution res) {
+uint8_t Ds18b20::isErrorState(void) {
 
-    configRegister = res;
+    return errorState;
 }
 
-enum DS18B20::Resolution DS18B20::getResolution(void) {
+void Ds18b20::setResolution(enum Resolution res) {
 
-    return configRegister;
+    uint8_t conf = static_cast<uint8_t>(res);
+    configRegister &= 0x9F;
+    configRegister |= conf;
+
+    if (writeScratchpad()) {
+        errorState = 1;
+    }
 }
 
-void DS18B20::setAlarmTemp(int8_t Th, int8_t Tl) {
+enum Ds18b20::Resolution Ds18b20::getResolution(void) {
 
-    // To check!
+    return static_cast<enum Resolution>(configRegister & 0x60);
+}
+
+void Ds18b20::setAlarmTemp(int8_t Th, int8_t Tl) {
+
+    // To check !!! 777
     tempTrigerHigh = (Th < 0) ? (0xFF - Th) : Th;
     tempTrigerLow = (Tl < 0) ? (0xFF - Tl) : Tl;
+
+    if (writeScratchpad()) {
+        errorState = 1;
+    }
 }
 
-void DS18B20::writeScratchpad(void) {
+uint16_t Ds18b20::getAlarmTemp(void) {
 
+    uint16_t alarm = tempTrigerHigh;
+    alarm <<= 8;
+    alarm += tempTrigerLow;
+    return alarm;
+}
+
+int32_t Ds18b20::getTemperature(void) {
+
+    if (convertT() || readScratchpad()) errorState = 1;
+
+    return ds18b20Temp2decimal(temperature);
+}
+
+enum Ds18b20::PowerMode Ds18b20::getPowerMode(void) {
+    
+    if (readPowerSupply()) errorState = 1;
+
+    return powerMode;
+}
+
+void Ds18b20::saveSettings(void) {
+
+    if (copyScratchpad()) errorState = 1;
+}
+
+void Ds18b20::restoreSettings(void) {
+
+    if (recallEE() || readScratchpad()) errorState = 1;
+}
+
+uint8_t Ds18b20::selectDevice(void) {
+
+    return useROM ? MatchROM(ROM) : SkipROM();
+}
+
+uint8_t Ds18b20::writeScratchpad(void) {
+
+    if (selectDevice()) return 1;
     // Data must be transmitted least significant bit first.
     // All  three bytes MUST be written before the master issues a reset, or the data may be corrupted.
     WriteByte(0x4E);
     WriteByte(tempTrigerHigh);
     WriteByte(tempTrigerLow);
-    WriteByte(static_cast<uint8_t>(configRegister));
+    WriteByte(configRegister);
+    return 0;
 }
 
-uint8_t DS18B20::readScratchpad(void) {
+uint8_t Ds18b20::readScratchpad(void) {
 
+    if (selectDevice()) return 1;
     // The data transfer starts with the least significant bit of byte 0
     // and continues through the scratchpad until the 9th byte (byte 8 – CRC) is read.
     // The master may issue a reset to terminate reading at any time if only part of the scratchpad data is needed.
@@ -58,11 +126,11 @@ uint8_t DS18B20::readScratchpad(void) {
     for (uint8_t i = 0; i < 9; i++) {
 
         scratchpad[i] = ReadByte();
-        calcCRC_1wireQuick(crc, scratchpad[i]);
+        crc = calcCRC_1wireQuick(crc, scratchpad[i]);
     }
 
     // check CRC8
-    if (crc != scratchpad[8]) {
+    if (crc != 0) {
 
         return 1;
     } else {
@@ -72,7 +140,7 @@ uint8_t DS18B20::readScratchpad(void) {
         temperature += scratchpad[0];
         tempTrigerHigh = scratchpad[2];
         tempTrigerLow = scratchpad[3];
-        configRegister = static_cast<enum DS18B20::Resolution>(scratchpad[4]);
+        configRegister = scratchpad[4];
         // BYTE 5 RESERVED (FFh)
         // BYTE 6 RESERVED
         // BYTE 7 RESERVED (10h)
@@ -82,8 +150,9 @@ uint8_t DS18B20::readScratchpad(void) {
 
 }
 
-void DS18B20::copyScratchpad(void) {
+uint8_t Ds18b20::copyScratchpad(void) {
 
+    if (selectDevice()) return 1;
     // If  the  device  is  being  used  in  parasite  power mode,
     // within 10μs (max) after this command is issued the 
     // master must enable a strong pullup on the 1-Wire bus for at least 10ms
@@ -94,18 +163,21 @@ void DS18B20::copyScratchpad(void) {
 
         wait.ms(10);
     } else {
-        // If the DS18B20 is powered by an external supply,
-        // the master can issue read time slots after the command and the DS18B20 
+        // If the Ds18b20 is powered by an external supply,
+        // the master can issue read time slots after the command and the Ds18b20 
         // will respond by transmitting a 0 while in progress and a 1 when done.
         for (uint16_t i = 10; i > 0; i--) {
 
-        wait.ms(1);
-        if (ReadTimeslot()) break;
+            wait.ms(1);
+            if (ReadTimeslot()) break;
+        }
     }
-    }
+    return 0;
 }
 
-void DS18B20::recallEE(void) {
+uint8_t Ds18b20::recallEE(void) {
+
+    if (selectDevice()) return 1;
 
     WriteByte(0xB8);
 
@@ -114,19 +186,23 @@ void DS18B20::recallEE(void) {
         wait.ms(1);
         if (ReadTimeslot()) break;
     }
-
+    return 0;
 }
 
-enum DS18B20::PowerMode DS18B20::readPowerSupply(void) {
+uint8_t Ds18b20::readPowerSupply(void) {
+
+    if (selectDevice()) return 1;
 
     WriteByte(0xB4);
 
-    powerMode = static_cast<enum DS18B20::PowerMode>(ReadTimeslot());
+    powerMode = static_cast<enum Ds18b20::PowerMode>(ReadTimeslot());
 
-    return powerMode;
+    return 0;
 }
 
-void DS18B20::convertT(void) {
+uint8_t Ds18b20::convertT(void) {
+
+    if (selectDevice()) return 1;
 
     // Time to Strong Pullup On t SPON Start convert T command issued 10μs
     WriteByte(0x44);
@@ -136,7 +212,7 @@ void DS18B20::convertT(void) {
 
         // Bus is pulled to Vsup by every Read/Write command
         // Wait max convertion time
-        switch (configRegister) {
+        switch (getResolution()) {
 
             case Resolution::_9bit: wait.ms(94);
                 break;
@@ -154,8 +230,8 @@ void DS18B20::convertT(void) {
                 break;
         }
     } else {
-        // If the DS18B20 is powered by an external supply,
-        // the master can issue read time slots after the Convert T command and the DS18B20 
+        // If the Ds18b20 is powered by an external supply,
+        // the master can issue read time slots after the Convert T command and the Ds18b20 
         // will respond by transmitting a 0 while the temperature conversion is in progress
         // and a 1 when the conversion is done.
         for (uint16_t i = 1000; i > 0; i -= 10) {
@@ -164,7 +240,7 @@ void DS18B20::convertT(void) {
             if (ReadTimeslot()) break;
         }
     }
-
+    return 0;
 }
 
 

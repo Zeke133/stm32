@@ -19,13 +19,13 @@ class Delay {
 
 public:
 
-    void ms(uint32_t ms) const;
-    void us(uint32_t us) const;
+    void ms(uint32_t ms) const;             // acurancy of measurment is 1 ms. because of period of timer in 1 ms.
+    void us(uint32_t us) const;             // error may acure because of overflow every 59.65232354166667 sec.
 
-    inline void startProfiling(void);
-    inline uint32_t getExecutionTime(void) const;
+    void startProfiling(void);
+    uint32_t getExecutionTime(void) const;
 
-    inline static uint32_t sysTicks2us(uint32_t ticks);
+    static uint32_t sysTicks2us(uint32_t ticks);
 
     // delete copy constructor and assignment operator
     Delay(const Delay&) = delete;
@@ -35,10 +35,10 @@ private:
     
     Delay();
 
-    inline uint32_t getSysTickValue(void) const;
+    uint32_t getDWTTicksValue(void) const;
 
     static uint32_t sysTicksPerUs;
-    static uint32_t msCount;            // For store tick counts in ms
+    static uint32_t msCount;                // For store tick counts in ms
     uint32_t profilingStart;
     
 };

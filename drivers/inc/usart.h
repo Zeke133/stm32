@@ -43,11 +43,11 @@ public:
     void setUart(uint32_t bauld, uint16_t dataBits, uint16_t stopBits, uint16_t parity);
 
     inline USART& operator<<(char byte) {
-        send(byte);
+        sendBlocking(byte);
         return *this;
     };
     inline USART& operator<<(const char * string) {
-        send(string);
+        sendBlocking(string);
         return *this;
     };
 

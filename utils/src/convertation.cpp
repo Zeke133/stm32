@@ -1,7 +1,7 @@
 #include <convertation.h>
 
 
-const char * itoa(unsigned int val, int base) {
+const char * itoa(unsigned int val, int base, uint8_t width) {
 
 	const char * symbols = "0123456789ABCDEF";
 	static char buf[11];
@@ -20,10 +20,49 @@ const char * itoa(unsigned int val, int base) {
 		buf[i] = symbols[val % base];
 		val /= base;
 
-		if(val == 0) return &buf[i];
+		if(val == 0) return width ? &buf[10-width] : &buf[i];
 		i--;
 	}
 	return "ERROR!";
+}
+
+int32_t atoi(const uint8_t * mas, uint8_t base, uint8_t signs) {
+
+    int32_t res = 0;
+    int8_t sign = 1;
+    const uint8_t * symbols = (const uint8_t *)"0123456789ABCDEF";
+
+    if (base > 16) return 0;
+
+    uint32_t i = 0;
+
+    if (mas[0] == '-') {
+        sign = -1;
+        i = 1;
+    }
+
+    for( ; i < signs; i++) {
+        
+        // check for end of string
+        if (mas[i] == 0) {
+            break;
+        }
+        // search of symbol
+        uint8_t s = 0;
+        for ( ; s < base; s++) {
+            
+            if (mas[i] == symbols[s]) break;
+        }
+        // no such symbol
+        if (s == base) {
+            break;
+        }
+        // add to number
+        res *= base;
+        res += s;        
+    }
+
+    return res * sign;        
 }
 
 void unix2DateTime(DateTime& dateTimeRef, uint32_t unixTime) {
@@ -98,3 +137,30 @@ uint32_t dateTime2Unix(const DateTime& dateTime) {
  
     return JDN;
 }
+
+int32_t ds18b20Temp2decimal(uint16_t tempDs18b20) {
+
+    int32_t result = 0;
+
+    if (tempDs18b20 & 0xF800) {     // sign is "-"
+
+        result = (~tempDs18b20 >> 4) & 0x7F;
+        result *= 10000;
+        result += 10000;
+        if (tempDs18b20 & 0x08) result -= 5000;
+        if (tempDs18b20 & 0x04) result -= 2500;
+        if (tempDs18b20 & 0x02) result -= 1250;
+        if (tempDs18b20 & 0x01) result -= 625;
+        result *= -1;
+    } else {                        // sign is "+"
+
+        result = (tempDs18b20 >> 4) & 0x7F;
+        result *= 10000;        
+        if (tempDs18b20 & 0x08) result += 5000;
+        if (tempDs18b20 & 0x04) result += 2500;
+        if (tempDs18b20 & 0x02) result += 1250;
+        if (tempDs18b20 & 0x01) result += 625;
+    }
+    return result;
+}
+

@@ -9,75 +9,133 @@ namespace {
 
 using std::vector;
 
-struct ValuePair {
+struct ItoaValues {
+	int base;
 	int val;
 	const char * text;
 };
 
-class ItoaTestBase2 : public ::testing::TestWithParam<struct ValuePair> {};
-class ItoaTestBase8 : public ::testing::TestWithParam<struct ValuePair> {};
-class ItoaTestBase10 : public ::testing::TestWithParam<struct ValuePair> {};
-class ItoaTestBase16 : public ::testing::TestWithParam<struct ValuePair> {};
+class ItoaTest : public ::testing::TestWithParam<struct ItoaValues> {};
 
-TEST_P(ItoaTestBase2, Base_2) {
+TEST_P(ItoaTest, CheckConvertation) {
 
 	auto val = GetParam();
-	EXPECT_STREQ(val.text, itoa(val.val, 2));
+	EXPECT_STREQ(val.text, itoa(val.val, val.base));
 }
 
-TEST_P(ItoaTestBase8, Base_8) {
+vector<struct ItoaValues> itoaValues {
+
+	{2, 0, "0"},
+	{2, 1, "1"},
+	{2, 3, "11"},
+
+	{8, 0, "0"},
+	{8, 1, "1"},
+	{8, (int)0xffffffff, "7777777777"},		// out of range, so it's shrinked
+	{8, 4821881, "22311571"},
+
+	{10, 0, "0"},
+	{10, 1, "1"},
+	{10, (int)4294967295, "4294967295"},
+	{10, 4821881, "4821881"},
+
+	{16, 0, "0"},
+	{16, 1, "1"},
+	{16, (int)0xffffffff, "FFFFFFFF"},
+	{16, 4821881, "499379"}
+};
+
+INSTANTIATE_TEST_CASE_P(ItoaTestName, ItoaTest,
+                        ::testing::ValuesIn(itoaValues));
+
+// ---
+
+struct ItoaValuesWithWidth {
+	int base;
+	int val;
+	int width;
+	const char * text;
+};
+
+class ItoaTestWidth : public ::testing::TestWithParam<struct ItoaValuesWithWidth> {};
+
+TEST_P(ItoaTestWidth, CheckWidth) {
 
 	auto val = GetParam();
-	EXPECT_STREQ(val.text, itoa(val.val, 8));
+	EXPECT_STREQ(val.text, itoa(val.val, val.base, val.width));
 }
 
-TEST_P(ItoaTestBase10, Base_10) {
+vector<struct ItoaValuesWithWidth> itoaValuesWithWidth {
+
+	{10, (int)4294967295, 7, "4967295"},
+	{10, 4821881, 9, "004821881"}
+};
+
+INSTANTIATE_TEST_CASE_P(ItoaTestOfWidthParam, ItoaTestWidth,
+                        ::testing::ValuesIn(itoaValuesWithWidth));
+
+// ---
+
+struct AtoiValues {
+	int result;
+	const char * text;
+	int base;
+	int signs;
+};
+
+class AtoiTest : public ::testing::TestWithParam<struct AtoiValues> {};
+
+TEST_P(AtoiTest, CheckConvertation) {
 
 	auto val = GetParam();
-	EXPECT_STREQ(val.text, itoa(val.val, 10));
+	EXPECT_EQ(val.result, atoi((const uint8_t *)(val.text), val.base, val.signs));
 }
 
-TEST_P(ItoaTestBase16, Base_16) {
+vector<struct AtoiValues> atoiValues {
+
+	{155, "155", 10, 10},
+	{0xFF, "FF", 16, 10},
+	{-62, "-62", 10, 10},
+	{0, "0", 10, 10},
+	{123, "123456", 10, 3},
+	{0xA24B81, "A24B81", 16, 6}
+
+};
+
+INSTANTIATE_TEST_CASE_P(AtoiTestName, AtoiTest,
+                        ::testing::ValuesIn(atoiValues));
+
+// ---
+
+struct TemperatureValues {
+	int32_t decimalValue;
+	uint16_t dallasValue;
+};
+
+class TemperatureConvertation : public ::testing::TestWithParam<struct TemperatureValues> {};
+
+TEST_P(TemperatureConvertation, CheckDS18B20Format) {
 
 	auto val = GetParam();
-	EXPECT_STREQ(val.text, itoa(val.val, 16));
+	EXPECT_EQ(val.decimalValue, ds18b20Temp2decimal(val.dallasValue));
 }
 
-vector<struct ValuePair> ValuesBase2 {
-	{0, "0"},
-	{1, "1"},
-	{3, "11"}
+vector<struct TemperatureValues> dallasValues {
+
+	{1250000,	0x07D0},
+	{850000,	0x0550},
+	{250625,	0x0191},
+	{101250,	0x00A2},
+	{ 5000,		0x0008},
+	{0,			0x0000},
+	{- 5000,	0xFFF8},
+	{-101250,	0xFF5E},
+	{-250625,	0xFE6F},
+	{-550000,	0xFC90}
 };
 
-vector<struct ValuePair> ValuesBase8 {
-	{0, "0"},
-	{1, "1"},
-	{(int)0xffffffff, "7777777777"},		// out of range, so it's shrinked
-	{4821881, "22311571"}
-};
-
-vector<struct ValuePair> ValuesBase10 {
-	{0, "0"},
-	{1, "1"},
-	{(int)4294967295, "4294967295"},
-	{4821881, "4821881"}
-};
-
-vector<struct ValuePair> ValuesBase16 {
-	{0, "0"},
-	{1, "1"},
-	{(int)0xffffffff, "FFFFFFFF"},
-	{4821881, "499379"}
-};
-
-INSTANTIATE_TEST_CASE_P(ItoaTestBase2Name, ItoaTestBase2,
-                        ::testing::ValuesIn(ValuesBase2));
-INSTANTIATE_TEST_CASE_P(ItoaTestBase8Name, ItoaTestBase8,
-					::testing::ValuesIn(ValuesBase8));
-INSTANTIATE_TEST_CASE_P(ItoaTestBase10Name, ItoaTestBase10,
-					::testing::ValuesIn(ValuesBase10));
-INSTANTIATE_TEST_CASE_P(ItoaTestBase16Name, ItoaTestBase16,
-					::testing::ValuesIn(ValuesBase16));
+INSTANTIATE_TEST_CASE_P(DallasTest, TemperatureConvertation,
+                        ::testing::ValuesIn(dallasValues));
 
 // ---
 TEST(DateTimeConvertation, unixStartToDate) {

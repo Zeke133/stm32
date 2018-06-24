@@ -7,7 +7,11 @@
 // Convertation of Integers to String representation
 // val - input value
 // base - 10 for decimal or 16 for HEX view
-const char * itoa(unsigned int val, int base);
+// signs - fixed length of number, 0 - auto
+const char * itoa(unsigned int val, int base, uint8_t width = 0);
+
+// Convertation of Strings to Int
+int32_t atoi(const uint8_t * mas, uint8_t base = 10, uint8_t signs = 10);
 
 // Convertation of Date Time to UNIX format
 struct DateTime {
@@ -26,5 +30,8 @@ const uint32_t JULIAN_DATE_BASE = 2440588;
 
 uint32_t dateTime2Unix(const DateTime& dateTime);
 void unix2DateTime(DateTime& dateTimeRef, uint32_t unixTime);
+
+// Dallas DS18B20 temperature sensor format to Decimal in form 125.0000 format
+int32_t ds18b20Temp2decimal(uint16_t tempDs18b20);
 
 #endif

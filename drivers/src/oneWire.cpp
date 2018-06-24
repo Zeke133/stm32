@@ -2,19 +2,10 @@
 
 
 
-OneWire::OneWire(	Delay& timer,
-													GPIO_TypeDef* GPIOx,
-													uint16_t GPIO_Pin,
-													uint8_t InitTOs[3],
-													uint8_t WriteTOs[3],
-													uint8_t ReadTOs[3]
-												)
+OneWire::OneWire( Delay& timer, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin )
 	: wait(timer),
 		GPIOx(GPIOx),
-		GPIO_Pin(GPIO_Pin),
-		InitTOs {InitTOs[0], InitTOs[1], InitTOs[2]},
-		WriteTOs {WriteTOs[0], WriteTOs[1], WriteTOs[2]},
-		ReadTOs {ReadTOs[0], ReadTOs[1], ReadTOs[2]} {
+		GPIO_Pin(GPIO_Pin) {
 
 	GPIO_Init_My(GPIOx, GPIO_Pin, GPIO_Mode_Out_OD, GPIO_Speed_50MHz);
 
@@ -52,10 +43,10 @@ uint8_t OneWire::ReadTimeslot(void) {
 	//1-Wire bus low for a minimum of 1us and then releasing the  bus
 	GPIO_ResetBits(GPIOx, GPIO_Pin);
 	wait.us(ReadTOs[0]);
-	//After  the  master  initiates  the  read  time  slot,  the  DS18B20  will  begin  transmitting  a  1
+	//After  the  master  initiates  the  read  time  slot,  the  Ds18b20  will  begin  transmitting  a  1
 	//or  0  on  bus
 	GPIO_SetBits(GPIOx, GPIO_Pin);
-	//Output data from the  DS18B20  is  valid  for  15us  after  the  falling  edge  that
+	//Output data from the  Ds18b20  is  valid  for  15us  after  the  falling  edge  that
 	//initiated  the  read  time  slot.  Therefore,  the  master  must
 	//release  the  bus  and  then  sample  the  bus  state  within
 	//15us from the start of the slot.
@@ -73,7 +64,7 @@ uint8_t OneWire::Initialization(void) {
 	GPIO_ResetBits(GPIOx, GPIO_Pin);
 	wait.us(InitTOs[0]*10);
 
-	// When the DS18B20 detects this rising edge, it waits 15us to 60us and then transmits a presence pulse by pulling the 1-Wire bus low for 60us to 240us.
+	// When the Ds18b20 detects this rising edge, it waits 15us to 60us and then transmits a presence pulse by pulling the 1-Wire bus low for 60us to 240us.
 	GPIO_SetBits(GPIOx, GPIO_Pin);
 	wait.us(InitTOs[1]*10);
 
@@ -95,13 +86,15 @@ uint8_t OneWire::ReadByte(void) {
 
 	uint8_t result = 0;
 	for(int i = 0; i < 8; i++) {
-		result += ReadTimeslot();
-		result <<= 1;
+		result >>= 1;
+		result |= (ReadTimeslot() << 7);
 	}
 	return result;
 }
 
 uint8_t OneWire::ReadROM(uint8_t * resp) {
+
+	uint8_t crc = 0;
 
 	if (Initialization())
 		return 1;
@@ -109,8 +102,9 @@ uint8_t OneWire::ReadROM(uint8_t * resp) {
 	WriteByte(0x33);
 	for(int i = 0; i < 8; i++) {
 		resp[i] = ReadByte();
+		crc = calcCRC_1wireQuick(crc, resp[i]);
 	}
-	return 0;
+	return (crc == 0 ? 0 : 1);
 }
 
 uint8_t OneWire::MatchROM(const uint8_t * romCode /*64 bit RomCode*/) {
@@ -119,7 +113,7 @@ uint8_t OneWire::MatchROM(const uint8_t * romCode /*64 bit RomCode*/) {
 		return 1;
 	
 	WriteByte(0x55);
-	for(int i = 7; i >= 0; i--) {
+	for(int i = 0; i < 8; i++) {
 		WriteByte(romCode[i]);
 	}
 	return 0;

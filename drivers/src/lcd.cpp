@@ -6,7 +6,7 @@ Lcd::Lcd(I2c& interfaceHw, Delay& delay, uint8_t lines)
     :   i2c(interfaceHw),
         wait(delay) {
 
-    backlightPin = 0;
+    backlightPin = 1;
 
     functionSetReg = 0;
     if (lines > 1) functionSetReg |= static_cast<uint8_t>(FunctionSetBits::DoubleLines);

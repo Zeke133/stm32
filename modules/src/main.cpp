@@ -3,6 +3,7 @@
 #include <usart.h>
 #include <oneWire.h>
 #include <oneWireSearch.h>
+#include <ds18b20.h>
 #include <i2c.h>
 #include <lcd.h>
 #include <rtc.h>
@@ -11,34 +12,14 @@
 #include <storage.h>
 
 #include <convertation.h>
+#include <strings.h>
 
-unsigned int compare(const char * str1, const uint8_t * str2) {
 
-    while (*str1 && *str2) {
-        if (*str1 != *str2) return 0;
-        str1++;
-        str2++;
-    }
-    return 1;
-}
+void LedTestInterfaceToUsart(USART& usart, LED& led);
+void LcdTestInterfaceToUsart(USART& usart, Lcd& lcd);
+void RTCTestInterfaceToUsart(USART& usart, RealTimeClock& rtc);
+void Ds18b20TestInterfaceToUsart(USART& usart, Ds18b20& sensor);
 
-void TakeTimeouts(USART& usart, Delay& wait, uint8_t* timeoutsPtr) {
-    
-    usart << "\xd\xaWait for receive of timeouts...";
-
-    if (usart.getCount() < 9) {
-        wait.ms(100);
-    }
-
-    usart << "\xd\xaReceived:";
-    for (uint32_t i = 0; i < 9; i++) {
-        usart << "\xd\xa-";
-        usart << itoa((usart.getData())[i], 10);
-
-        timeoutsPtr[i] = (usart.getData())[i];
-    }
-
-}
 
 int main(void) {
 
@@ -48,49 +29,40 @@ int main(void) {
     Delay wait;                     // Delay based on SysTickTimer
     USART usart1(1);                // USART1
     LED led(GPIOC, GPIO_Pin_13);    // LED on gpio
-    I2c i2cPort(1, 0x27);           // I2C parallel converter
 
+    I2c i2cPort(1, 0x27);           // I2C parallel converter
     Lcd lcd(i2cPort, wait, 2);      // LCD on I2C adaptor
 
-    // RealTimeClock rtc(wait);        // RealTime Clock
+    RealTimeClock rtc(wait);        // RealTime Clock
 
-    // uint8_t channels[12] = {16, 17};
-    // ADC adc1(1, 
-    //             RCC_PCLK2_Div6, 
-    //             ADC::ResultStoreMode::Regular, 
-    //             2, 
-    //             channels);          // ADC setup
+    // 1-Wire DS18B20 temperature sensor
+    uint8_t rom[8] = {0x28, 0x82, 0x65, 0x5B, 0x05, 0x00, 0x00, 0x20};
+    Ds18b20 tempSensor(wait, GPIOA, GPIO_Pin_8, rom);
+    // OneWire oneWire(wait, GPIOA, GPIO_Pin_8);
+
+    uint8_t channels[12] = {16, 17};
+    ADC adc1(1, 
+                RCC_PCLK2_Div6, 
+                ADC::ResultStoreMode::Regular, 
+                2, 
+                channels);          // ADC setup
 
     // Storage flash;
 
     // usart test
-    usart1 << "Hello.\r\nUSART1 is ready.\r\n";
+    usart1 << "\r\nHello, I'm STM32F103.\r\nUSART1 is ready.";
 
     // lcd test
-    lcd.backlightSet(1);
-    lcd.puts("Hello Katerina =)");
+    lcd.puts("Hello =)");
     lcd.cursorGoTo(1, 0);
-    lcd.puts("Good night!");
+    lcd.puts("Temp:");    
 
-    // 1-wire test
-    // uint8_t timeouts[3][3] = { {60, 10, 50}, {3, 90, 5}, {1, 7, 90} };
-    // OneWire one_wire(wait, GPIOA, GPIO_Pin_8, timeouts[0], timeouts[1], timeouts[2]);
-
-    // uint8_t buf[8];
-    // usart1 << "\r\none_wire send: 0x33, ";
-    // if (one_wire.ReadROM(buf)) {
-    //     usart1 << "Succ";
-    // } else {
-    //     usart1 << "Err";
-    // }
-    // usart1 << "\r\none_wire resp: ";
-    // for(uint32_t i = 0; i < 8; i++) {
-    //     usart1 << itoa(buf[i],16);
-    //     usart1 << ",";
-    // }
+    // Ds18b20 test
+    usart1 << "\r\nDs18b20 stateIs " << (tempSensor.isErrorState() ? "err" : "ok");
+    usart1 << "\r\ntemp = " << itoa(tempSensor.getTemperature(), 10) << "\r\n";
 
     // Search test
-    // OneWireSearch oneWireDevices(one_wire);
+    // OneWireSearch oneWireDevices(oneWire);
 
     // usart1 << "\r\nSearch start: ";
     // if (oneWireDevices.searchAllDevices()) {
@@ -109,9 +81,9 @@ int main(void) {
     // }
 
     // ADC test
-    // usart1 << "\r\nADC test: ";
-    // usart1 << itoa(adc1.getValue(16), 16) << ", ";  // temp
-    // usart1 << itoa(adc1.getValue(17), 16);  // Vref
+    usart1 << "\r\nADC test: ";
+    usart1 << itoa(adc1.getValue(16), 16) << ", ";  // temp
+    usart1 << itoa(adc1.getValue(17), 16);  // Vref
 
     // Flash test
     // usart1 << "\r\nFlash test: ";
@@ -128,65 +100,38 @@ int main(void) {
     while (1) {
 
         // Delay metering check
-        wait.ms(1000);
-
-        //led.invert();
-
-        take this TEST to a module
-        change all uint8_t to char ?
-
-        usart1.sendBlocking("\xd\xaWait for receive cmd...");
+        wait.us(1000000);
+        led.invert();
         
-        if (usart1.getCount() > 0) {
-
-            uint8_t bell[8]  = {0x4,0xe,0xe,0xe,0x1f,0x0,0x4};
-            
-            usart1.sendBlocking(" Received: ");
-            usart1.send((const char *)usart1.getData(), usart1.getCount());
-            
-            if (compare("led.on", usart1.getData())) led.on();
-            else if (compare("led.off", usart1.getData())) led.off();
-            else if (compare("led.invert", usart1.getData())) led.invert();
-            
-            else if (compare("lcd.clear", usart1.getData())) lcd.clear();
-            else if (compare("lcd.home", usart1.getData())) lcd.home();
-            else if (compare("lcd.backlightSet", usart1.getData())) lcd.backlightSet(usart1.getData()[16] - 0x30);
-            else if (compare("lcd.cursorGoTo", usart1.getData())) lcd.cursorGoTo(usart1.getData()[14] - 0x30, usart1.getData()[15] - 0x30);
-            else if (compare("lcd.displaySet", usart1.getData())) lcd.displaySet(usart1.getData()[14] - 0x30);
-            else if (compare("lcd.cursorSet", usart1.getData())) lcd.cursorSet(usart1.getData()[13] - 0x30);
-            else if (compare("lcd.cursorBlinkSet", usart1.getData())) lcd.cursorBlinkSet(usart1.getData()[18] - 0x30);
-            else if (compare("lcd.scroll", usart1.getData())) lcd.scroll(usart1.getData()[10] - 0x30, usart1.getData()[11] - 0x30);
-            else if (compare("lcd.textFlowSet", usart1.getData())) lcd.textFlowSet(usart1.getData()[15] - 0x30);
-            else if (compare("lcd.autoScrollSet", usart1.getData())) lcd.autoScrollSet(usart1.getData()[17] - 0x30);
-            else if (compare("lcd.putc", usart1.getData())) lcd.putc(usart1.getData()[8]);
-            else if (compare("lcd.puts", usart1.getData())) lcd.puts((const char*)&(usart1.getData()[8]));
-            else if (compare("lcd.bellLoad", usart1.getData())) lcd.loadCustomSymbol(1, bell);
-            else if (compare("lcd.bellPrint", usart1.getData())) lcd.putc(1);
-            else usart1.sendBlocking(" unkn cmd!!!");    
-
-            usart1.clear();
+        // Temp measuring to LCD
+        int32_t temp = tempSensor.getTemperature();
+        lcd.cursorGoTo(1, 5);
+        usart1 << "\r\n";
+        if (temp < 0) {
+            lcd.putc('-');
+            usart1 << "-";
         }
-        else {
-            usart1.sendBlocking(" no cmd");
-        }
-        wait.ms(1000);
+        const char * text1 = itoa(temp/10000, 10, 4);
+        lcd.puts(text1);
+        usart1 << text1;
+        lcd.putc('.');
+        usart1 << '.';
+        const char * text2 = itoa(temp%10000, 10, 4);
+        lcd.puts(text2);
+        usart1 << text2;
 
-        // Take user timeouts for one-wire bus
-        // TakeTimeouts(usart1, wait, (uint8_t*)timeouts);
+        //---change all uint8_t to char ?
 
-        // Run and print results
-        // OneWire OneWire(wait, GPIOA, GPIO_Pin_8, timeouts[0], timeouts[1], timeouts[2]);
-        // usart1 << "\r\none_wire send: 0x33, ";
-        // if (one_wire.ReadROM(buf)) {
-        //     usart1 << "Succ";
-        // } else {
-        //     usart1 << "Err";
-        // }
-        // usart1 << "\r\none_wire resp: ";
-        // for(uint32_t i = 0; i < 8; i++) {
-        //     usart1 << itoa(buf[i],16);
-        //     usart1 << ",";
-        // }
+        // usart1.sendBlocking(" Rcv: ");
+        // usart1.send((const char *)usart1.getData(), usart1.getCount());
+
+        // LedTestInterfaceToUsart(usart1, led);
+        // LcdTestInterfaceToUsart(usart1, lcd);
+        // RTCTestInterfaceToUsart(usart1, rtc);
+        // Ds18b20TestInterfaceToUsart(usart1, tempSensor);
+
+        // usart1.clear();
+
     }
 
 }

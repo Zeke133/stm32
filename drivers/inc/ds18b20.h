@@ -2,10 +2,12 @@
 #define _DS18B20_H
 
 #include <oneWire.h>
+
 #include <crc.h>
+#include <convertation.h>
 
 
-class DS18B20 : private OneWire {
+class Ds18b20 : private OneWire {
 
 friend int main(void);
 
@@ -25,33 +27,52 @@ public:
         external = 1
     };
     
-    void convertT(void);
-
     // configuration
     void setAlarmTemp(int8_t Th, int8_t Tl);
+    uint16_t getAlarmTemp(void);
     void setResolution(enum Resolution res);
     enum Resolution getResolution(void);
 
-    void writeScratchpad(void);
-    uint8_t readScratchpad(void);        
-    void copyScratchpad(void);
-    void recallEE(void);
+    // info
+    enum PowerMode getPowerMode(void);
+    int32_t getTemperature(void);
+    uint8_t isErrorState(void);
 
-    enum PowerMode readPowerSupply(void);
+    // config storage in EEPROM
+    void saveSettings(void);
+    void restoreSettings(void);
 
     // delete copy constructor and assignment operator
-    DS18B20(const DS18B20&) = delete;
-    DS18B20& operator=(const DS18B20&) = delete;
+    Ds18b20(const Ds18b20&) = delete;
+    Ds18b20& operator=(const Ds18b20&) = delete;
 
 private:
 
-    DS18B20(Delay& timer, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, uint8_t InitTOs[3], uint8_t WriteTOs[3], uint8_t ReadTOs[3], enum Resolution res = Resolution::_12bit);
+    Ds18b20(Delay& timer, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, enum Resolution res = Resolution::_12bit);
+    Ds18b20(Delay& timer, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, uint8_t * ROM, enum Resolution res = Resolution::_12bit);
 
+    // procedures
+    void initialization(enum Resolution res);
+    uint8_t selectDevice(void);
+    
+    // hardware commands
+    uint8_t writeScratchpad(void);
+    uint8_t readScratchpad(void);        
+    uint8_t copyScratchpad(void);
+    uint8_t recallEE(void);
+    uint8_t readPowerSupply(void);
+    uint8_t convertT(void);
+
+    // 
+    uint8_t errorState = 0;
+    uint8_t useROM = 0;
+    uint8_t ROM[8];
     enum PowerMode powerMode;
 
+    // scratchpad data
     uint8_t tempTrigerHigh;
     uint8_t tempTrigerLow;
-    enum Resolution configRegister;     // 0 R1 R0 1  1 1 1 1
+    uint8_t configRegister;     // 0 R1 R0 1  1 1 1 1
     uint16_t temperature;
     
 };

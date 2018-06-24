@@ -7,13 +7,14 @@
 #include <gpio.h>
 #include <delay.h>
 
+#include <crc.h>
+
 
 class OneWire {
 
 friend int main(void);
 
 public:
-
 
 	uint8_t ReadROM(uint8_t * resp);
 	uint8_t MatchROM(const uint8_t * romCode /*64 bit RomCode*/);
@@ -33,15 +34,7 @@ public:
 
 protected:
 
-	OneWire(Delay& timer, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, uint8_t InitTOs[3], uint8_t WriteTOs[3], uint8_t ReadTOs[3]);
-	// 60, 10, 50
-	// 3, 90, 5
-	// 1, 7, 90
-
-	// Timings from other libs
-	// 48, 7, 41
-	// 10, 55, x
-	// 3, 10, 53
+	OneWire(Delay& timer, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
 
 	const Delay& wait;					// timer
 
@@ -50,9 +43,14 @@ private:
 	GPIO_TypeDef* GPIOx;				// Port to run
 	const uint16_t GPIO_Pin;			// Pin of port for communication
 
-	const uint8_t InitTOs[3];			// Timeouts in initialization - us
-	const uint8_t WriteTOs[3];			// Timeouts in write timeslot - us
-	const uint8_t ReadTOs[3];			// Timeouts in read timeslot - us
+	const uint8_t InitTOs[3] = {60, 10, 50};		// Timeouts in initialization - us
+	const uint8_t WriteTOs[3] = {3, 90, 5};			// Timeouts in write timeslot - us
+	const uint8_t ReadTOs[3] = {1, 7, 90};			// Timeouts in read timeslot - us
+
+	// Timings from other libs
+	// 48, 7, 41
+	// 10, 55, x
+	// 3, 10, 53
 
 };
 
