@@ -119,10 +119,7 @@ int main(void) {
 
     // analog sensor
     uint32_t t = tempInternal.getTemperatureC();
-    usart1 << "\nInternal sensor: " << t << " v25 = " << tempInternal.getV25();
-    tempInternal.calibrate(tempSensor.getTemperature());
-    t = tempInternal.getTemperatureC();
-    usart1 << "\ncalibrated: " << t << " v25 = " << tempInternal.getV25();
+    usart1 << "\nInternal sensor: " << t << " v25 = " << tempInternal.getV22();
 
     // Search test
     // OneWireSearch oneWireDevices(oneWire);

@@ -12,14 +12,14 @@ int32_t InternalTemp::getTemperatureC(void) {
 
     uint32_t val = adcRef.getValue(channelTemp);
     
-    return ((V25 - val) * 10 / AvgSlope + 25);
+    return ((V22 - val) / AvgSlope + 22);
 }
 
 void InternalTemp::calibrate(int32_t temp) {
 
     uint32_t val = adcRef.getValue(channelTemp);
 
-    V25 = (temp - 25) * AvgSlope / 10 + val;
+    V22 = temp * (AvgSlope + 22) + val;
 }
 
 

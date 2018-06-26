@@ -266,4 +266,3 @@ USART& USART::operator<<(uint32_t num) {
     return *this;
 };
 
-

@@ -30,6 +30,11 @@ class USART {
     friend int main(void);
 
 public:
+    
+    enum class OutSet {
+        hex,
+        dec
+    };   
 
     void send(char byte);
     void send(const char * string);
@@ -44,10 +49,6 @@ public:
 
     void setUart(uint32_t bauld, uint16_t dataBits, uint16_t stopBits, uint16_t parity);
 
-    enum class OutSet {
-        hex,
-        dec
-    };
     USART& operator<<(char byte);                       // for single character
     USART& operator<<(const char * string);             // for C-string
     USART& operator<<(enum OutSet manipulator);         // for output manipulators
@@ -60,6 +61,8 @@ public:
     USART& operator=(const USART&) = delete;
 
 private:
+
+    uint8_t outputNumbersBase = 10;
 
     USART(  int usartN,
                 uint32_t bauld = 115200,
@@ -78,7 +81,6 @@ private:
     uint8_t inputBuffer[100];
     uint8_t inputBufferCnt = 0;
     
-    uint8_t outputNumbersBase = 10;
 };
 
 #endif

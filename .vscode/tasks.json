@@ -7,6 +7,7 @@
             "type": "shell",
             "command": "arm-none-eabi-g++",
             "args": [
+                // --- FLAGS
                 "-mcpu=cortex-m3",
                 "-mthumb",
                 "-Wall",
@@ -15,22 +16,26 @@
                 "-g",
                 "-O0",
                 "-c",
-                // defines
+                // --- DEFINES
                 "-DSTM32F103C8",
                 "-DSTM32F10X_MD",
                 "-DUSE_STDPERIPH_DRIVER",
                 "-D__ASSEMBLY__",
                 "-DSUPPORT_CPLUSPLUS",
-                // includes
+                // --- INCLUDES
+                // Libs
                 "-I${workspaceRoot}/libs/cmsis/CM3/CoreSupport",
                 "-I${workspaceRoot}/libs/cmsis/CM3/DeviceSupport/ST/STM32F10x",
                 "-I${workspaceRoot}/libs/STM32F10x_StdPeriph_Driver/inc",
-                // ---
-                "-I${workspaceRoot}/drivers/inc",
-                "-I${workspaceRoot}/utils/inc",
-                // sources
-                "${workspaceRoot}/modules/src/startup_stm32f10x_md.S",              // ASM startup init
-                //"${workspaceRoot}/modules/src/startup_stm32f10x_md.c",            // ANSI C startup init
+                // User
+                "-I${workspaceRoot}/source/main/headers",
+                "-I${workspaceRoot}/source/drivers/headers",
+                "-I${workspaceRoot}/source/utils/headers",
+                "-I${workspaceRoot}/source/tests/realHardware/headers",
+                // --- SOURCES
+                // Libs
+                "${workspaceRoot}/source/main/modules/startup_stm32f10x_md.S",      // ASM startup init
+                //"${workspaceRoot}/source/main/modules/startup_stm32f10x_md.c",    // ANSI C startup init
                 "${workspaceRoot}/libs/cmsis/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c",
                 "${workspaceRoot}/libs/STM32F10x_StdPeriph_Driver/src/misc.c",
                 "${workspaceRoot}/libs/STM32F10x_StdPeriph_Driver/src/stm32f10x_rcc.c",
@@ -43,27 +48,27 @@
                 "${workspaceRoot}/libs/STM32F10x_StdPeriph_Driver/src/stm32f10x_adc.c",
                 "${workspaceRoot}/libs/STM32F10x_StdPeriph_Driver/src/stm32f10x_tim.c",
                 "${workspaceRoot}/libs/STM32F10x_StdPeriph_Driver/src/stm32f10x_flash.c",
-                // ---
-                "${workspaceRoot}/drivers/src/delay.cpp",
-                "${workspaceRoot}/drivers/src/sysClock.c",
-                "${workspaceRoot}/drivers/src/gpio.c",
-                "${workspaceRoot}/drivers/src/led.cpp",
-                "${workspaceRoot}/drivers/src/usart.cpp",
-                "${workspaceRoot}/drivers/src/oneWire.cpp",
-                "${workspaceRoot}/drivers/src/oneWireSearch.cpp",
-                "${workspaceRoot}/drivers/src/ds18b20.cpp",
-                "${workspaceRoot}/drivers/src/i2c.cpp",
-                "${workspaceRoot}/drivers/src/lcd.cpp",
-                "${workspaceRoot}/drivers/src/rtc.cpp",
-                "${workspaceRoot}/drivers/src/adc.cpp",
-                "${workspaceRoot}/drivers/src/tacho.cpp",
-                "${workspaceRoot}/drivers/src/storage.cpp",
-                "${workspaceRoot}/drivers/src/analogSensors.cpp",
-                "${workspaceRoot}/utils/src/convertation.cpp",
-                "${workspaceRoot}/utils/src/crc.cpp",
-                "${workspaceRoot}/utils/src/strings.cpp",
-                "${workspaceRoot}/modules/src/driversTest.cpp",
-                "${workspaceRoot}/modules/src/main.cpp"
+                // User
+                "${workspaceRoot}/source/drivers/modules/delay.cpp",
+                "${workspaceRoot}/source/drivers/modules/sysClock.c",
+                "${workspaceRoot}/source/drivers/modules/gpio.c",
+                "${workspaceRoot}/source/drivers/modules/led.cpp",
+                "${workspaceRoot}/source/drivers/modules/usart.cpp",
+                "${workspaceRoot}/source/drivers/modules/oneWire.cpp",
+                "${workspaceRoot}/source/drivers/modules/oneWireSearch.cpp",
+                "${workspaceRoot}/source/drivers/modules/ds18b20.cpp",
+                "${workspaceRoot}/source/drivers/modules/i2c.cpp",
+                "${workspaceRoot}/source/drivers/modules/lcd.cpp",
+                "${workspaceRoot}/source/drivers/modules/rtc.cpp",
+                "${workspaceRoot}/source/drivers/modules/adc.cpp",
+                "${workspaceRoot}/source/drivers/modules/tacho.cpp",
+                "${workspaceRoot}/source/drivers/modules/storage.cpp",
+                "${workspaceRoot}/source/drivers/modules/analogSensors.cpp",
+                "${workspaceRoot}/source/utils/modules/convertation.cpp",
+                "${workspaceRoot}/source/utils/modules/crc.cpp",
+                "${workspaceRoot}/source/utils/modules/strings.cpp",
+                "${workspaceRoot}/source/tests/realHardware/testsApi.cpp",
+                "${workspaceRoot}/source/main/modules/main.cpp"
             ],
             "problemMatcher": [
                 "$msCompile"
@@ -81,13 +86,13 @@
                 "-g",
                 //"--specs=nosys.specs",  // no semi-hosting which produses - libg.a(lib_a-exit.o): In function `exit': exit.c:(.text.exit+0x16): undefined reference to `_exit'
                 "-nostartfiles",  // no standart libs! kills last error - libg.a(lib_a-exit.o): In function `exit': exit.c:(.text.exit+0x16): undefined reference to `_exit'
-                "-Wl,-Map=${workspaceRoot}/out/app.map",
+                "-Wl,-Map=${workspaceRoot}/bin/app.map",
                 "-O0",
                 "-Wl,--gc-sections",
-                "-Wl,-T${workspaceRoot}/link/link.ld",
+                "-Wl,-T${workspaceRoot}/linkScripts/link.ld",
                 "-g",
                 "-o",
-                "${workspaceRoot}/out/app.elf",
+                "${workspaceRoot}/bin/app.elf",
                 "${workspaceRoot}/misc.o",
                 "${workspaceRoot}/startup_stm32f10x_md.o",
                 "${workspaceRoot}/system_stm32f10x.o",
@@ -119,7 +124,7 @@
                 "${workspaceRoot}/convertation.o",
                 "${workspaceRoot}/crc.o",
                 "${workspaceRoot}/strings.o",
-                "${workspaceRoot}/driversTest.o",
+                "${workspaceRoot}/testsApi.o",
                 "${workspaceRoot}/main.o"
             ],
             "problemMatcher": [
@@ -146,8 +151,8 @@
             "args": [
                 "-O",
                 "binary",
-                "${workspaceRoot}/out/app.elf",
-                "${workspaceRoot}/out/app.bin"
+                "${workspaceRoot}/bin/app.elf",
+                "${workspaceRoot}/bin/app.bin"
             ],
             "problemMatcher": []
         },
@@ -160,8 +165,8 @@
             "args": [
                 "-O",
                 "ihex",
-                "${workspaceRoot}/out/app.elf",
-                "${workspaceRoot}/out/app.hex"
+                "${workspaceRoot}/bin/app.elf",
+                "${workspaceRoot}/bin/app.hex"
             ],
             "problemMatcher": []
         },
@@ -173,9 +178,9 @@
             "command": "arm-none-eabi-nm",
             "args": [
                 "-n",
-                "${workspaceRoot}/out/app.elf",
+                "${workspaceRoot}/bin/app.elf",
                 ">",
-                "${workspaceRoot}/out/app.sym"
+                "${workspaceRoot}/bin/app.sym"
             ],
             "problemMatcher": []
         },
@@ -186,7 +191,7 @@
             "type": "shell",
             "command": "arm-none-eabi-size",
             "args": [
-                "${workspaceRoot}/out/app.elf"
+                "${workspaceRoot}/bin/app.elf"
             ],
             "problemMatcher": [],
             "group": {
@@ -200,10 +205,11 @@
             "type": "shell",
             "command": "DEL",
             "args": [
-                "${workspaceRoot}\\out\\ /q *.*"
+                "${workspaceRoot}\\bin\\ /q *.*"
             ],
             "problemMatcher": []
         },
+        // --- UNIT TESTS BUILDING
         {
             "label": "buildTests",
             "type": "shell",
@@ -212,18 +218,18 @@
                 "-isystem",
                 "../googleTest/googletest/include",
                 "-pthread",
-                // Tested includes
-                "-I${workspaceRoot}/utils/inc",
+                // --- INCLUDES
+                "-I${workspaceRoot}/source/utils/headers",
                 // TestCases
-                "${workspaceRoot}/tests/test.cpp",                
+                "${workspaceRoot}/source/tests/unit/unitTest.cpp",                
                 // Tested modules
-                "${workspaceRoot}/utils/src/convertation.cpp",
-                "${workspaceRoot}/utils/src/crc.cpp",
+                "${workspaceRoot}/source/utils/modules/convertation.cpp",
+                "${workspaceRoot}/source/utils/modules/crc.cpp",
                 // TestFramework lib
                 "../googleTest/googletest/build/gtest_main.a",                
                 // output
                 "-o",
-                "${workspaceRoot}/out/tests",
+                "${workspaceRoot}/bin/UnitTests",
                 // compliler flags
                 "-Wall",
                 "-std=c++17"
@@ -233,7 +239,7 @@
             "label": "runTests",
             "dependsOn": "buildTests",
             "type": "shell",
-            "command": "${workspaceRoot}/out/tests",
+            "command": "${workspaceRoot}/bin/UnitTests",
             "group": {
                 "kind": "test",
                 "isDefault": true
