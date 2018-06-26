@@ -28,12 +28,13 @@ ADC::ADC(
         if (chCnt > 1) {
             if (adcUsed == ADC1) {
                 channelsCnt = chCnt > 12 ? 12 : chCnt;  // have only 12 regular channels
-                useDMA = chCnt > 1 ? 1 : 0;             // use DMA when more than 1 channel
+                useDMA = 1;                             // use DMA when more than 1 channel
             }
             else {
                 channelsCnt = 1;                        // ADC2 have no DMA so just 1 channel can be stored
             }
         }
+        else channelsCnt = chCnt;
     }
     
     for(uint32_t i = 0; i < channelsCnt; i++) {
@@ -155,7 +156,7 @@ void ADC::init() {
 
 }
 
-uint32_t ADC::getValue(uint32_t channel) {
+uint32_t ADC::getValue(uint32_t channel) const {
 
     if (channelsType == ResultStoreMode::Regular) {
         if (useDMA) {

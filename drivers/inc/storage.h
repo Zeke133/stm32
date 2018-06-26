@@ -3,6 +3,7 @@
 
 #include <stm32f10x_flash.h>
 
+// Need to be completed, check size of page, crc, and so on
 
 class Storage {
 

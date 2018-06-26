@@ -13,15 +13,19 @@ public:
     int32_t getTemperatureC(void);
     void calibrate(int32_t tempC);
 
+    uint16_t getV25(void) {
+        return V25;
+    }
+
     // delete copy constructor and assignment operator
     InternalTemp(const InternalTemp&) = delete;
     InternalTemp& operator=(const InternalTemp&) = delete;
 
 private:
 
-    InternalTemp(ADC& adcRef);
+    InternalTemp(ADC& adcRef, uint32_t chTemp);
 
-    ADC& adcRef;
+    const ADC& adcRef;
     uint32_t channelTemp;
 
     uint16_t V25 = 1750;            // when V25 = 1.41V at ref 3.3V - THIS MUST BE CALIBRATED!

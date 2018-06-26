@@ -10,6 +10,8 @@
 #include <misc.h>
 #include <gpio.h>
 
+#include <convertation.h>
+
 
 // IRQ handler, extern "C" function, because of c++ bad names
 extern "C" {
@@ -42,14 +44,16 @@ public:
 
     void setUart(uint32_t bauld, uint16_t dataBits, uint16_t stopBits, uint16_t parity);
 
-    inline USART& operator<<(char byte) {
-        sendBlocking(byte);
-        return *this;
+    enum class OutSet {
+        hex,
+        dec
     };
-    inline USART& operator<<(const char * string) {
-        sendBlocking(string);
-        return *this;
-    };
+    USART& operator<<(char byte);                       // for single character
+    USART& operator<<(const char * string);             // for C-string
+    USART& operator<<(enum OutSet manipulator);         // for output manipulators
+    USART& operator<<(uint8_t num);                     // for integers
+    USART& operator<<(uint16_t num);                    // for integers
+    USART& operator<<(uint32_t num);                    // for integers
 
     // delete copy constructor and assignment operator
     USART(const USART&) = delete;
@@ -68,12 +72,13 @@ private:
 
     USART_TypeDef * usart;
 
-    uint8_t outputBuffer[100];    
+    uint8_t outputBuffer[100];
     DMA_Channel_TypeDef * dmaChannel;
 
     uint8_t inputBuffer[100];
     uint8_t inputBufferCnt = 0;
     
+    uint8_t outputNumbersBase = 10;
 };
 
 #endif

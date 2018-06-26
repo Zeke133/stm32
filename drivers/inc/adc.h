@@ -15,12 +15,12 @@ friend int main(void);
 
 public:
 
-    enum ResultStoreMode {
+    enum class ResultStoreMode {
         Injected,
         Regular
     };
 
-    uint32_t getValue(uint32_t channel);
+    uint32_t getValue(uint32_t channel) const;
 
     // delete copy constructor and assignment operator
     ADC(const ADC&) = delete;

@@ -235,5 +235,35 @@ uint8_t * USART::getData() {
     return inputBuffer;
 }
 
+USART& USART::operator<<(enum OutSet manipulator) {
+    if (manipulator == OutSet::dec) outputNumbersBase = 10;
+    else if (manipulator == OutSet::hex) outputNumbersBase = 16;
+    return *this;
+};
+
+USART& USART::operator<<(char byte) {
+    sendBlocking(byte);
+    return *this;
+};
+
+USART& USART::operator<<(const char * string) {
+    sendBlocking(string);
+    return *this;
+};
+
+USART& USART::operator<<(uint8_t num) {
+    sendBlocking(itoa(num, outputNumbersBase));
+    return *this;
+};
+
+USART& USART::operator<<(uint16_t num) {
+    sendBlocking(itoa(num, outputNumbersBase));
+    return *this;
+};
+
+USART& USART::operator<<(uint32_t num) {
+    sendBlocking(itoa(num, outputNumbersBase));
+    return *this;
+};
 
 
