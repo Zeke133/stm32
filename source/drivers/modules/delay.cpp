@@ -65,12 +65,12 @@ inline uint32_t Delay::getDWTTicksValue(void) const {
 	return DWT->CYCCNT;
 }
 
-inline void Delay::startProfiling(void) {
+void Delay::startProfiling(void) {
 
 	profilingStart = getDWTTicksValue();
 }
 
-inline uint32_t Delay::getExecutionTime(void) const {
+uint32_t Delay::getExecutionTicks(void) const {
 
 	uint32_t ticksNow = getDWTTicksValue();
 

@@ -6,7 +6,9 @@
 #include <crc.h>
 #include <convertation.h>
 
-
+/*
+Dallas ds18b20 temperature sensor driver
+*/
 class Ds18b20 : private OneWire {
 
 friend int main(void);
@@ -33,9 +35,13 @@ public:
     void setResolution(enum Resolution res);
     enum Resolution getResolution(void);
 
-    // info
+    // control temperature measurments
+    int32_t getTemperature(void);                   // Get current temperature in 1 step. Blocks for a duration of measurment up to 750ms!
+    void initTemperatureMeasurment(void);           // Start measurment. Doesn't wait for a result. Non blocking.
+    int32_t getLastTemperature(void);               // Get measurment result in format 850000 = 85.0 C
+
+    // status
     enum PowerMode getPowerMode(void);
-    int32_t getTemperature(void);
     uint8_t isErrorState(void);
 
     // config storage in EEPROM
@@ -63,7 +69,9 @@ private:
     uint8_t readPowerSupply(void);
     uint8_t convertT(void);
 
-    // 
+    void waitConvertionEnd(void);
+
+    // -
     uint8_t errorState = 0;
     uint8_t useROM = 0;
     uint8_t ROM[8];

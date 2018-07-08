@@ -9,7 +9,9 @@
 
 #include <crc.h>
 
-
+/*
+Software driver for Dallas 1-Wire interface based on GPIO
+*/
 class OneWire {
 
 friend int main(void);
@@ -39,11 +41,11 @@ protected:
 	const Delay& wait;					// timer
 
 private:
-	
+
 	GPIO_TypeDef* GPIOx;				// Port to run
 	const uint16_t GPIO_Pin;			// Pin of port for communication
 
-	const uint8_t InitTOs[3] = {60, 10, 50};		// Timeouts in initialization - us
+	const uint8_t InitTOs[3] = {48, 7, 41};			// Timeouts in initialization - us
 	const uint8_t WriteTOs[3] = {3, 90, 5};			// Timeouts in write timeslot - us
 	const uint8_t ReadTOs[3] = {1, 7, 90};			// Timeouts in read timeslot - us
 

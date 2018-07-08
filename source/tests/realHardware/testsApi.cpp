@@ -9,26 +9,26 @@
 #include <strings.h>
 
 
-void LedTestInterfaceToUsart(USART& usart, LED& led) {
+void LedTestInterfaceToUsart(Usart& usart, LED& led) {
         
-    usart << "\r\n Check for LED: ";
+    usart.puts("\r\n Check for LED: ");
 
     if (usart.getCount() > 0) {        
         
         if (compare("led.on", usart.getData())) led.on();
         else if (compare("led.off", usart.getData())) led.off();
         else if (compare("led.invert", usart.getData())) led.invert();
-        else usart << " unkn cmd!!!";
+        else usart.puts(" unkn cmd!!!");
     }
     else {
 
-        usart << " no cmd";
+        usart.puts(" no cmd");
     }
 }
 
-void LcdTestInterfaceToUsart(USART& usart, Lcd& lcd) {
+void LcdTestInterfaceToUsart(Usart& usart, Lcd& lcd) {
         
-    usart << "\r\n Check for LCD: ";
+    usart.puts("\r\n Check for LCD: ");
 
     if (usart.getCount() > 0) {
 
@@ -48,47 +48,47 @@ void LcdTestInterfaceToUsart(USART& usart, Lcd& lcd) {
         else if (compare("lcd.puts", usart.getData())) lcd.puts((const char*)&(usart.getData()[8]));
         else if (compare("lcd.bellLoad", usart.getData())) lcd.loadCustomSymbol(1, bell);
         else if (compare("lcd.bellPrint", usart.getData())) lcd.putc(1);
-        else usart << " unkn cmd!!!";
+        else usart.puts(" unkn cmd!!!");
     }
     else {
 
-        usart << " no cmd";
+        usart.puts(" no cmd");
     }
 }
 
-void RTCTestInterfaceToUsart(USART& usart, RealTimeClock& rtc) {
+void RTCTestInterfaceToUsart(Usart& usart, RealTimeClock& rtc) {
         
-    usart << "\r\n Check for RTC: ";
+    usart.puts("\r\n Check for RTC: ");
 
     if (usart.getCount() > 0) {
                 
         if (compare("rtc.getUnixTime", usart.getData())) {
-            usart << " time = ";
-            usart << itoa(rtc.getUnixTime(), 10);
+            usart.puts(" time = ");
+            usart.puts(itoa(rtc.getUnixTime(), 10));
         }
-        else usart << " unkn cmd!!!";
+        else usart.puts(" unkn cmd!!!");
     }
     else {
 
-        usart << " no cmd";
+        usart.puts(" no cmd");
     }
 }
 
-void Ds18b20TestInterfaceToUsart(USART& usart, Ds18b20& sensor) {
+void Ds18b20TestInterfaceToUsart(Usart& usart, Ds18b20& sensor) {
         
-    usart << "\r\n Check for DS18b20: ";
+    usart.puts("\r\n Check for DS18b20: ");
 
     if (usart.getCount() > 0) {
 
         if (compare("ds18b20.saveSettings", usart.getData())) sensor.saveSettings();
         else if (compare("ds18b20.restoreSettings", usart.getData())) sensor.restoreSettings();
-        else if (compare("ds18b20.isErrorState", usart.getData())) usart << (sensor.isErrorState() ? "err" : "ok");
-        else if (compare("ds18b20.getTemperature", usart.getData())) usart << itoa(sensor.getTemperature(), 10);
+        else if (compare("ds18b20.isErrorState", usart.getData())) usart.puts((sensor.isErrorState() ? "err" : "ok"));
+        else if (compare("ds18b20.getTemperature", usart.getData())) usart.puts(itoa(sensor.getTemperature(), 10));
         else if (compare("ds18b20.getPowerMode", usart.getData())) {
-            usart << (sensor.getPowerMode() == Ds18b20::PowerMode::external ? "external" : "parasite");
+            usart.puts((sensor.getPowerMode() == Ds18b20::PowerMode::external ? "external" : "parasite"));
         }
-        else if (compare("ds18b20.getResolution", usart.getData())) usart << itoa((uint8_t)(sensor.getResolution()), 16);
-        else if (compare("ds18b20.getAlarmTemp", usart.getData())) usart << itoa(sensor.getAlarmTemp(), 16);
+        else if (compare("ds18b20.getResolution", usart.getData())) usart.puts(itoa((uint8_t)(sensor.getResolution()), 16));
+        else if (compare("ds18b20.getAlarmTemp", usart.getData())) usart.puts(itoa(sensor.getAlarmTemp(), 16));
         else if (compare("ds18b20.setResolution", usart.getData())) {
 
             sensor.setResolution((Ds18b20::Resolution)atoi((uint8_t *)&(usart.getData()[21]), 16, 2));
@@ -98,10 +98,10 @@ void Ds18b20TestInterfaceToUsart(USART& usart, Ds18b20& sensor) {
             sensor.setAlarmTemp(atoi((uint8_t *)&(usart.getData()[20]), 16, 2), atoi((uint8_t *)&(usart.getData()[22]), 16, 2));
         }
         
-        else usart << " unkn cmd!!!";
+        else usart.puts(" unkn cmd!!!");
     }
     else {
 
-        usart << " no cmd";
+        usart.puts(" no cmd");
     }
 }

@@ -1,9 +1,6 @@
 #include <adc.h>
 
 
-
-
-
 ADC::ADC(
             uint32_t adcN,
             uint32_t clkDiv,                    // example: RCC_PCLK2_Div6
@@ -156,7 +153,7 @@ void ADC::init() {
 
 }
 
-uint32_t ADC::getValue(uint32_t channel) const {
+uint16_t ADC::getValue(uint8_t channel) const {
 
     if (channelsType == ResultStoreMode::Regular) {
         if (useDMA) {

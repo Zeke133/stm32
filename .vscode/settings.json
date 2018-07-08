@@ -6,7 +6,8 @@
         "initializer_list": "cpp",
         "optional": "cpp",
         "type_traits": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "iostream": "cpp"
     },
     "C_Cpp.intelliSenseEngineFallback": "Enabled",
     "terminal.integrated.fontWeightBold": "normal",

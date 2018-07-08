@@ -1,7 +1,5 @@
 #include <oneWire.h>
 
-
-
 OneWire::OneWire( Delay& timer, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin )
 	: wait(timer),
 		GPIOx(GPIOx),
@@ -69,9 +67,10 @@ uint8_t OneWire::Initialization(void) {
 	wait.us(InitTOs[1]*10);
 
 	uint8_t stat = GPIO_ReadInputDataBit(GPIOx, GPIO_Pin);
-	wait.us(InitTOs[2]*10);
+	if (stat) return 1;
 
-	return stat;
+	wait.us(InitTOs[2]*10);
+	return 0;
 }
 
 void OneWire::WriteByte(uint8_t byte) {
@@ -111,7 +110,7 @@ uint8_t OneWire::MatchROM(const uint8_t * romCode /*64 bit RomCode*/) {
 
 	if (Initialization())
 		return 1;
-	
+
 	WriteByte(0x55);
 	for(int i = 0; i < 8; i++) {
 		WriteByte(romCode[i]);

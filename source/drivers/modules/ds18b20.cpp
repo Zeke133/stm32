@@ -74,9 +74,29 @@ uint16_t Ds18b20::getAlarmTemp(void) {
 
 int32_t Ds18b20::getTemperature(void) {
 
-    if (convertT() || readScratchpad()) errorState = 1;
+    if (convertT()) errorState = 1;
+    waitConvertionEnd();
+    if (readScratchpad()) errorState = 1;
 
     return ds18b20Temp2decimal(temperature);
+}
+
+void Ds18b20::initTemperatureMeasurment(void) {
+
+    if (convertT()) errorState = 1;
+}
+
+int32_t Ds18b20::getLastTemperature(void) {
+
+    if (readScratchpad()) {
+        
+        errorState = 1;
+        return 0;
+    }
+    else {
+
+        return ds18b20Temp2decimal(temperature);
+    }   
 }
 
 enum Ds18b20::PowerMode Ds18b20::getPowerMode(void) {
@@ -166,9 +186,9 @@ uint8_t Ds18b20::copyScratchpad(void) {
         // If the Ds18b20 is powered by an external supply,
         // the master can issue read time slots after the command and the Ds18b20 
         // will respond by transmitting a 0 while in progress and a 1 when done.
-        for (uint16_t i = 10; i > 0; i--) {
+        for (uint16_t i = 20; i > 0; i--) {
 
-            wait.ms(1);
+            wait.us(500);
             if (ReadTimeslot()) break;
         }
     }
@@ -181,9 +201,9 @@ uint8_t Ds18b20::recallEE(void) {
 
     WriteByte(0xB8);
 
-    for (uint16_t i = 10; i > 0; i--) {
+    for (uint16_t i = 20; i > 0; i--) {
 
-        wait.ms(1);
+        wait.us(500);
         if (ReadTimeslot()) break;
     }
     return 0;
@@ -206,6 +226,11 @@ uint8_t Ds18b20::convertT(void) {
 
     // Time to Strong Pullup On t SPON Start convert T command issued 10μs
     WriteByte(0x44);
+
+    return 0;
+}
+
+void Ds18b20::waitConvertionEnd(void) {
 
     // Pull-Up for parasite powered on delay
     if (powerMode == PowerMode::parasite) {
@@ -234,13 +259,12 @@ uint8_t Ds18b20::convertT(void) {
         // the master can issue read time slots after the Convert T command and the Ds18b20 
         // will respond by transmitting a 0 while the temperature conversion is in progress
         // and a 1 when the conversion is done.
-        for (uint16_t i = 1000; i > 0; i -= 10) {
+        for (uint16_t i = 150; i > 0; i --) {
 
-            wait.ms(10);
+            wait.ms(5);
             if (ReadTimeslot()) break;
         }
     }
-    return 0;
 }
 
 

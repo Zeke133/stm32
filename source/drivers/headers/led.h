@@ -6,6 +6,9 @@
 
 #include <gpio.h>
 
+/*
+Driver for operations with signaling LEDs
+*/
 class LED {
 
 friend int main(void);

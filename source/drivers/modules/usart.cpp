@@ -45,7 +45,7 @@ void DMA1_Channel7_IRQHandler(void) {
 }
 
 // Class implementation
-USART::USART(int usartN, uint32_t bauld, uint16_t dataBits, uint16_t stopBits, uint16_t parity) {
+Usart::Usart(int usartN, uint32_t bauld, uint16_t dataBits, uint16_t stopBits, uint16_t parity) {
 
     uint8_t irqChannel;
     GPIO_TypeDef * port;
@@ -70,7 +70,7 @@ USART::USART(int usartN, uint32_t bauld, uint16_t dataBits, uint16_t stopBits, u
         dmaChannel = DMA1_Channel4;
         dmaIrq = DMA1_Channel4_IRQn;
     }
-    else if (usartN == 2) {
+    else /*if (usartN == 2)*/ {
         
         uart2bufPtr = inputBuffer;
         uart2bufCntPtr = &inputBufferCnt;
@@ -117,7 +117,7 @@ USART::USART(int usartN, uint32_t bauld, uint16_t dataBits, uint16_t stopBits, u
     USART_ITConfig(usart, USART_IT_RXNE, ENABLE);
 }
 
-void USART::setUart(uint32_t bauld, uint16_t dataBits, uint16_t stopBits, uint16_t parity) {
+void Usart::setUart(uint32_t bauld, uint16_t dataBits, uint16_t stopBits, uint16_t parity) {
 
     /* Configure the usart */
     USART_InitTypeDef USART_InitStructure;
@@ -142,7 +142,7 @@ void USART::setUart(uint32_t bauld, uint16_t dataBits, uint16_t stopBits, uint16
 
 }
 
-void USART::setDMA(void) {
+void Usart::setDMA(void) {
 
     DMA_InitTypeDef DMA_InitStruct;
 
@@ -161,7 +161,7 @@ void USART::setDMA(void) {
     DMA_Init(dmaChannel, &DMA_InitStruct);
 }
 
-void USART::setNvic(uint8_t irqChannel) {
+void Usart::setNvic(uint8_t irqChannel) {
 
     /* NVIC Configuration: Enable the USARTx Interrupt */
     NVIC_InitTypeDef NVIC_InitStructure;
@@ -172,13 +172,13 @@ void USART::setNvic(uint8_t irqChannel) {
     NVIC_Init(&NVIC_InitStructure);
 }
 
-void USART::sendBlocking(char byte) {
+void Usart::putc(char byte) {
 
     USART_SendData(usart, byte);
     while(USART_GetFlagStatus(usart, USART_FLAG_TC) == RESET) {}
 }
 
-void USART::sendBlocking(const char *str) {
+void Usart::puts(const char *str) {
 
     while (*str) {
         USART_SendData(usart, *str++);
@@ -186,7 +186,7 @@ void USART::sendBlocking(const char *str) {
     }
 }
 
-void USART::send(char byte) {
+void Usart::putcFast(char byte) {
 
     outputBuffer[0] = byte;
     /* Restart DMA Channel*/
@@ -195,7 +195,7 @@ void USART::send(char byte) {
     DMA_Cmd(dmaChannel, ENABLE);
 }
 
-void USART::send(const char * str) {
+void Usart::putsFast(const char * str) {
 
     uint32_t i = 0;
     for( ; str[i] != 0; i++) {
@@ -208,7 +208,7 @@ void USART::send(const char * str) {
     DMA_Cmd(dmaChannel, ENABLE);
 }
 
-void USART::send(const char * data, uint32_t len) {
+void Usart::putsFast(const char * data, uint32_t len) {
 
     for(uint32_t i = 0; i < len; i++) {
 
@@ -220,49 +220,19 @@ void USART::send(const char * data, uint32_t len) {
     DMA_Cmd(dmaChannel, ENABLE);
 }
 
-void USART::clear() {
+inline void Usart::clear() {
 
     inputBufferCnt = 0;
 }
 
-uint32_t USART::getCount() {
+inline uint32_t Usart::getCount() {
 
     return inputBufferCnt;
 }
 
-uint8_t * USART::getData() {
+inline uint8_t * Usart::getData() {
 
     return inputBuffer;
 }
 
-USART& USART::operator<<(enum OutSet manipulator) {
-    if (manipulator == OutSet::dec) outputNumbersBase = 10;
-    else if (manipulator == OutSet::hex) outputNumbersBase = 16;
-    return *this;
-};
-
-USART& USART::operator<<(char byte) {
-    sendBlocking(byte);
-    return *this;
-};
-
-USART& USART::operator<<(const char * string) {
-    sendBlocking(string);
-    return *this;
-};
-
-USART& USART::operator<<(uint8_t num) {
-    sendBlocking(itoa(num, outputNumbersBase));
-    return *this;
-};
-
-USART& USART::operator<<(uint16_t num) {
-    sendBlocking(itoa(num, outputNumbersBase));
-    return *this;
-};
-
-USART& USART::operator<<(uint32_t num) {
-    sendBlocking(itoa(num, outputNumbersBase));
-    return *this;
-};
 

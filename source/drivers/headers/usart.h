@@ -10,8 +10,6 @@
 #include <misc.h>
 #include <gpio.h>
 
-#include <convertation.h>
-
 
 // IRQ handler, extern "C" function, because of c++ bad names
 extern "C" {
@@ -23,48 +21,40 @@ extern "C" {
 }
 
 // Class to work around USART
-class USART {
+class Usart {
 
     friend void USART1_IRQHandler(void);
     friend void USART2_IRQHandler(void);
     friend int main(void);
 
 public:
-    
-    enum class OutSet {
-        hex,
-        dec
-    };   
 
-    void send(char byte);
-    void send(const char * string);
-    void send(const char * string, uint32_t len);
-    void sendBlocking(char byte);
-    void sendBlocking(const char *str);
+    // --- SEND DATA
+    // Fast methods use DMA and are not blocking!
+    // so if called without a delay for delivery data in output buffer will be overwriten
+    void putcFast(char byte);
+    void putsFast(const char * string);
+    void putsFast(const char * string, uint32_t len);
+    // Usual blocking methods - are slow, without DMA
+    void putc(char byte);
+    void puts(const char *str);
 
+    // --- RECEIVE DATA
     uint32_t getCount(void);
     uint8_t * getData(void);
 
     void clear(void);
 
+    // --- SETUP
     void setUart(uint32_t bauld, uint16_t dataBits, uint16_t stopBits, uint16_t parity);
 
-    USART& operator<<(char byte);                       // for single character
-    USART& operator<<(const char * string);             // for C-string
-    USART& operator<<(enum OutSet manipulator);         // for output manipulators
-    USART& operator<<(uint8_t num);                     // for integers
-    USART& operator<<(uint16_t num);                    // for integers
-    USART& operator<<(uint32_t num);                    // for integers
-
     // delete copy constructor and assignment operator
-    USART(const USART&) = delete;
-    USART& operator=(const USART&) = delete;
+    Usart(const Usart&) = delete;
+    Usart& operator=(const Usart&) = delete;
 
 private:
 
-    uint8_t outputNumbersBase = 10;
-
-    USART(  int usartN,
+    Usart(  int usartN,
                 uint32_t bauld = 115200,
                 uint16_t dataBits = USART_WordLength_8b,
                 uint16_t stopBits = USART_StopBits_1,

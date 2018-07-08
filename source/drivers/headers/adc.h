@@ -8,7 +8,12 @@
 #include <gpio.h>
 
 
-
+// 
+/*
+ADC driver class
+ADC is 12 bit so max val = 4095
+Vref = 3.3V - ?
+*/
 class ADC {
 
 friend int main(void);
@@ -20,7 +25,8 @@ public:
         Regular
     };
 
-    uint32_t getValue(uint32_t channel) const;
+    // Get value of chanel, channel number is array index 0...n
+    uint16_t getValue(uint8_t channel) const;
 
     // delete copy constructor and assignment operator
     ADC(const ADC&) = delete;
@@ -33,12 +39,12 @@ private:
     void init(void);
 
     ADC_TypeDef * adcUsed;              // address of used ADC
-    enum ResultStoreMode channelsType;  // regular or injected
+    enum ResultStoreMode channelsType;  // regular or injected channels used
     uint32_t clockDivider;              // clock of ADC
     
     uint32_t channelsCnt;               // number of channels used
     uint8_t channelsNumbers[12];        // 0 to 17. TempSens 16 Vref 17
-    uint32_t useDMA;                    // flag of using DMA
+    uint32_t useDMA;                    // flag of using DMA for results storing
     uint16_t dataStorage[12];           // conversion rusults stored by DMA
 
     const uint8_t mapChannel2Injected[4] = {

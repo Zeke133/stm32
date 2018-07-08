@@ -3,10 +3,12 @@
 
 #include <stm32f10x_i2c.h>
 
-
 #include <gpio.h>
 
-
+/*
+I2C driver
+Master mode only can connect to 1 slave device
+*/
 class I2c {
 
     friend int main(void);

@@ -22,22 +22,18 @@ Lcd::Lcd(I2c& interfaceHw, Delay& delay, uint8_t lines)
     entryModeReg |= static_cast<uint8_t>(EntryModeBits::IncrementDecrBit);    // increment adr
     // ShiftDisplayBit = off
 
-    // init I2C - already done, don't carrying about it
-
     //------------------------------------------------------------------------------
 	// SEE PAGE 45/46 FOR INITIALIZATION SPECIFICATION!
 	// according to datasheet, we need at least 40ms after power rises above 2.7V
 	// before sending commands. Arduino can turn on way befer 4.5V so we'll wait 50
 	wait.ms(50);
 
-    //-------------------------------------------------777
 	// Now we pull both RS and R/W low to begin commands
     i2c.startTransmit();
     i2c.write(0);
     i2c.stopTransmit();
     // reset expander and turn backlight off (Bit 8 = 1)
-	wait.ms(1000);
-    //-------------------------------------------------777
+	wait.ms(100);
 
   	// put the LCD into 4 bit mode
 	// this is according to the hitachi HD44780 datasheet
@@ -47,9 +43,8 @@ Lcd::Lcd(I2c& interfaceHw, Delay& delay, uint8_t lines)
     write4bits(0x30);
     wait.ms(5);         // wait min 4.1ms
 
-    write4bits(0x30);
-    // 7777 try without this!
-    wait.ms(5);         // wait min 4.1ms
+    // write4bits(0x30);
+    // wait.ms(5);         // wait min 4.1ms
 
     write4bits(0x30);
     wait.us(150);
@@ -220,6 +215,10 @@ void Lcd::puts(const char* str) {
     while(*str) {
         sendData(*str++);
     }
+}
+
+void Lcd::putc(char symb) {
+    sendData(symb);
 }
 
 

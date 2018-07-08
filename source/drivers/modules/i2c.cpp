@@ -15,7 +15,7 @@ I2c::I2c(uint8_t portNumber, uint8_t slaveAddr) {
 
         RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1, ENABLE);
     }
-    else if (portNumber == 2) {
+    else /*if (portNumber == 2)*/ {
 
         port = I2C2;
         gpioPort = GPIOB;

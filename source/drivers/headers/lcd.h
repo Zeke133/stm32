@@ -6,9 +6,11 @@
 #include <i2c.h>
 #include <delay.h>
 
-// Hitachi HD44780 API
-
-// API for LCD character displays
+/*
+Hitachi HD44780 API
+API for LCD character displays
+Supports connection trought I2C or parallel port (not implemented)
+*/
 class Lcd {
 
         friend int main(void);
@@ -16,7 +18,7 @@ class Lcd {
     public:
         
         void puts(const char* str);
-        void putc(char symb) {  sendData(symb); }
+        void putc(char symb);
 
         void clear(void);
         void home(void);
