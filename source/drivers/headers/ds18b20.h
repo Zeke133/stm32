@@ -72,7 +72,7 @@ private:
     void waitConvertionEnd(void);
 
     // -
-    uint8_t errorState = 0;
+    uint8_t errorState;
     uint8_t useROM = 0;
     uint8_t ROM[8];
     enum PowerMode powerMode;

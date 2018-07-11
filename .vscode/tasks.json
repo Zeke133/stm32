@@ -211,6 +211,53 @@
             ],
             "problemMatcher": []
         },
+        {
+            // Uploading of firmware to MCU via UART
+            "label": "upload",
+            "identifier": "upload",
+            "type": "shell",
+            "command": "${workspaceRoot}\\loader\\STMFlashLoader.exe",
+            "args": [
+                // COM-port setup
+                "-c",
+                "--pn",
+                "6",
+                // Memory MAP
+                "-i",
+                //"STM32F1_Med-density_64K",
+                "STM32F1_Med-density_128K",
+                // Erasing blocks
+                "-e",
+                "--sec",
+                "20",
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12",
+                "13",
+                "14",
+                "15",
+                "16",
+                "17",
+                "18",
+                "19",
+                //"--all",
+                // File with firmware
+                "-d",
+                "--fn",
+                "${workspaceRoot}\\bin\\app.hex"
+            ],
+            "problemMatcher": []
+        },
         // --- UNIT TESTS BUILDING
         {
             "label": "buildTests",

@@ -10,54 +10,46 @@ int main(void) {
 	SetSysClockTo72();
 
     // Init resourses
-    Delay wait;                     // Delay based on SysTickTimer
-    Usart usart1(1);                // USART1
+    Usart usart1(1, 1200);          // USART1
     OStream cout(usart1);
+
+    cout << "STM32F103C8T6. USART1 is ready.\nFirmware: ";
+    cout << __DATE__ << ' ' << __TIME__;
+
+    Delay wait;                     // Delay based on SysTickTimer
     LED led(GPIOC, GPIO_Pin_13);    // LED on gpio
-
-    I2c i2cPort(1, 0x27);           // I2C parallel converter
-    Lcd lcd(i2cPort, wait, 2);      // LCD on I2C adaptor
-
     RealTimeClock rtc(wait);        // RealTime Clock
+
+    DateTime dt;
+    rtc.getTime(dt);
+    cout << OStream::OutSet::dec;
+    cout << "\nRTC: " << dt.date << "." << dt.month << "." << dt.year;
+    cout << " " << dt.hours << ":" << dt.minutes << "." << dt.seconds;
+
+    Storage flash;                  // Flash storage
+    flash.data.var1 ++;
+    flash.writeToFlash();
+    flash.readToRam();
+    cout << "\nReload after ERASING: " << OStream::OutSet::dec << flash.data.var1;
+
+    // I2c i2cPort(1, 0x27);           // I2C parallel converter
+    // Lcd lcd(i2cPort, wait, 2);      // LCD on I2C adaptor
+    // lcd.puts("Hello =)");
+    // lcd.cursorGoTo(1, 0);
+    // lcd.puts("Temp:"); 
 
     uint8_t rom[8] = {0x28, 0x82, 0x65, 0x5B, 0x05, 0x00, 0x00, 0x20};
     Ds18b20 tempSensor(wait, GPIOA, GPIO_Pin_8, rom);   // 1-Wire DS18B20 temperature sensor
     // OneWire oneWire(wait, GPIOA, GPIO_Pin_8);
-
-    Storage flash;                  // Flash storage
+    cout << "\nDs18b20 stateIs " << (tempSensor.isErrorState() ? "err" : "ok");
 
     uint8_t channels[] = {16, 17};
     ADC adc1(   1, 
-                RCC_PCLK2_Div6, 
+                RCC_PCLK2_Div6,
                 ADC::ResultStoreMode::Injected, 
                 2, 
                 channels);          // ADC setup
-
-    // usart test
-    usart1.puts("\nHello, I'm STM32F103.\r\nUSART1 is ready.");
-
-    // lcd test
-    lcd.puts("Hello =)");
-    lcd.cursorGoTo(1, 0);
-    lcd.puts("Temp:");    
-
-    // RTC test
-    DateTime dt;
-    rtc.getTime(dt);
-    cout << OStream::OutSet::dec;
-    cout << "\nDate: " << dt.date << "." << dt.month << "." << dt.year;
-    cout << "\nTime: " << dt.hours << ":" << dt.minutes << "." << dt.seconds;
-
-    // Ds18b20 test
-    cout << "\nDs18b20 stateIs " << (tempSensor.isErrorState() ? "err" : "ok");
-    
-    // Flash test
-    flash.data.var1 ++;
-    flash.writeToFlash();
-    flash.readToRam();
-    cout << "\nFlash test: " << OStream::OutSet::dec << flash.data.var1 << ", " << flash.data.var4;
-
-    // ADC test
+                
     cout << "\nADC test: ";
     cout << OStream::OutSet::dec;
     cout << adc1.getValue(0) << ", ";    // temp
@@ -100,19 +92,19 @@ int main(void) {
         temp = tempSensor.getLastTemperature();
         ticks2 = wait.getExecutionTicks();
 
-        lcd.cursorGoTo(1, 5);
+        // lcd.cursorGoTo(1, 5);
         cout << "\n";
         if (temp < 0) {
-            lcd.putc('-');
+            // lcd.putc('-');
             cout << "-";
         }
         const char * text1 = itoa(temp/10000, 10);
-        lcd.puts(text1);
+        // lcd.puts(text1);
         cout << text1;
-        lcd.putc('.');
+        // lcd.putc('.');
         cout << '.';
         const char * text2 = itoa(temp%10000, 10, 4);
-        lcd.puts(text2);
+        // lcd.puts(text2);
         cout << text2;
 
         // ADC

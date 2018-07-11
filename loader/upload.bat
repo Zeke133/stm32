@@ -1,0 +1,1 @@
+.\STMFlashLoader.exe -i STM32F1_Med-density_64K -d --fn D:\Projects\stm32\bin\app.hex

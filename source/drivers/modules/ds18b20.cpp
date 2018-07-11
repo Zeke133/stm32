@@ -22,14 +22,19 @@ Ds18b20::Ds18b20(Delay& timer, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, uint8_t *
 void Ds18b20::initialization(enum Resolution res) {
 
     if (readPowerSupply() || readScratchpad()) {
+
         errorState = 1;
     }
+    else {
 
-    if (getResolution() != res) {
+        errorState = 0;
 
-        setResolution(res);        
-        saveSettings();
-    }
+        if (getResolution() != res) {
+
+            setResolution(res);        
+            saveSettings();
+        }
+    }    
 }
 
 uint8_t Ds18b20::isErrorState(void) {
@@ -42,10 +47,7 @@ void Ds18b20::setResolution(enum Resolution res) {
     uint8_t conf = static_cast<uint8_t>(res);
     configRegister &= 0x9F;
     configRegister |= conf;
-
-    if (writeScratchpad()) {
-        errorState = 1;
-    }
+    writeScratchpad();
 }
 
 enum Ds18b20::Resolution Ds18b20::getResolution(void) {
@@ -58,10 +60,7 @@ void Ds18b20::setAlarmTemp(int8_t Th, int8_t Tl) {
     // To check !!! 777
     tempTrigerHigh = (Th < 0) ? (0xFF - Th) : Th;
     tempTrigerLow = (Tl < 0) ? (0xFF - Tl) : Tl;
-
-    if (writeScratchpad()) {
-        errorState = 1;
-    }
+    writeScratchpad();
 }
 
 uint16_t Ds18b20::getAlarmTemp(void) {
@@ -74,68 +73,67 @@ uint16_t Ds18b20::getAlarmTemp(void) {
 
 int32_t Ds18b20::getTemperature(void) {
 
-    if (convertT()) errorState = 1;
-    waitConvertionEnd();
-    if (readScratchpad()) errorState = 1;
+    if (!convertT()) {
 
-    return ds18b20Temp2decimal(temperature);
+        waitConvertionEnd();
+
+        return getLastTemperature();
+    }
+    else return 0;
 }
 
 void Ds18b20::initTemperatureMeasurment(void) {
 
-    if (convertT()) errorState = 1;
+    convertT();
 }
 
 int32_t Ds18b20::getLastTemperature(void) {
 
-    if (readScratchpad()) {
-        
-        errorState = 1;
-        return 0;
-    }
-    else {
-
-        return ds18b20Temp2decimal(temperature);
-    }   
+    if (!readScratchpad()) return ds18b20Temp2decimal(temperature);
+    else return 0;
 }
 
 enum Ds18b20::PowerMode Ds18b20::getPowerMode(void) {
     
-    if (readPowerSupply()) errorState = 1;
+    readPowerSupply();
 
     return powerMode;
 }
 
 void Ds18b20::saveSettings(void) {
 
-    if (copyScratchpad()) errorState = 1;
+    copyScratchpad();
 }
 
 void Ds18b20::restoreSettings(void) {
 
-    if (recallEE() || readScratchpad()) errorState = 1;
+    if (!recallEE()) readScratchpad();
 }
 
 uint8_t Ds18b20::selectDevice(void) {
 
-    return useROM ? MatchROM(ROM) : SkipROM();
+    errorState = useROM ? MatchROM(ROM) : SkipROM();
+    return errorState;
 }
 
 uint8_t Ds18b20::writeScratchpad(void) {
 
     if (selectDevice()) return 1;
+
     // Data must be transmitted least significant bit first.
     // All  three bytes MUST be written before the master issues a reset, or the data may be corrupted.
     WriteByte(0x4E);
     WriteByte(tempTrigerHigh);
     WriteByte(tempTrigerLow);
     WriteByte(configRegister);
+
     return 0;
 }
 
 uint8_t Ds18b20::readScratchpad(void) {
 
     if (selectDevice()) return 1;
+
     // The data transfer starts with the least significant bit of byte 0
     // and continues through the scratchpad until the 9th byte (byte 8 – CRC) is read.
     // The master may issue a reset to terminate reading at any time if only part of the scratchpad data is needed.
@@ -173,6 +171,7 @@ uint8_t Ds18b20::readScratchpad(void) {
 uint8_t Ds18b20::copyScratchpad(void) {
 
     if (selectDevice()) return 1;
+
     // If  the  device  is  being  used  in  parasite  power mode,
     // within 10μs (max) after this command is issued the 
     // master must enable a strong pullup on the 1-Wire bus for at least 10ms
@@ -192,6 +191,7 @@ uint8_t Ds18b20::copyScratchpad(void) {
             if (ReadTimeslot()) break;
         }
     }
+
     return 0;
 }
 
@@ -206,6 +206,7 @@ uint8_t Ds18b20::recallEE(void) {
         wait.us(500);
         if (ReadTimeslot()) break;
     }
+
     return 0;
 }
 
@@ -214,7 +215,6 @@ uint8_t Ds18b20::readPowerSupply(void) {
     if (selectDevice()) return 1;
 
     WriteByte(0xB4);
-
     powerMode = static_cast<enum Ds18b20::PowerMode>(ReadTimeslot());
 
     return 0;
