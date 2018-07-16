@@ -1,11 +1,12 @@
 #ifndef _UART_H
 #define _UART_H
 
-
 #include <stm32f10x_rcc.h>
 #include <stm32f10x_gpio.h>
 #include <stm32f10x_usart.h>
 #include <stm32f10x_dma.h>
+
+#include <IWriter.h>
 
 #include <misc.h>
 #include <gpio.h>
@@ -21,7 +22,7 @@ extern "C" {
 }
 
 // Class to work around USART
-class Usart {
+class Usart : IWriter {
 
     friend void USART1_IRQHandler(void);
     friend void USART2_IRQHandler(void);

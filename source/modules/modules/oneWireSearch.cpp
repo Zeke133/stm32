@@ -1,6 +1,6 @@
 #include <oneWireSearch.h>
 
-OneWireSearch::OneWireSearch(OneWire& drv)
+OneWireSearch::OneWireSearch(IOneWire& drv)
     : driver(drv) {
     
     LastDiscrepancy = 0;
@@ -8,6 +8,16 @@ OneWireSearch::OneWireSearch(OneWire& drv)
     LastFamilyDiscrepancy = 0;
     
 	devicesConnectedCount = 0;
+}
+
+const uint8_t* OneWireSearch::getDeviceROM(uint32_t index) const {
+
+    return devicesConnected[index >= devicesConnectedCount ? (devicesConnectedCount - 1) : index];
+}
+
+uint32_t OneWireSearch::getDevicesCount(void) const {
+
+    return devicesConnectedCount;
 }
 
 // Find the 'first' devices on the 1-Wire bus

@@ -1,7 +1,7 @@
 #ifndef _ONE_WIRE_SEARCH_H
 #define _ONE_WIRE_SEARCH_H
 
-#include <oneWire.h>
+#include <IOneWire.h>
 #include <crc.h>
 
 
@@ -13,8 +13,9 @@ public:
 
     // storage of connected devices
     const static uint32_t MaxDevicesConnected = 5;      // Maximum number of connected 1-Wire devices
-	uint8_t devicesConnected[MaxDevicesConnected][8];   // Array of connected devices ROMs
-	uint32_t devicesConnectedCount;                     // Number of connected devoces
+
+    const uint8_t* getDeviceROM(uint32_t index) const;
+    uint32_t getDevicesCount(void) const;
 
     uint32_t searchAllDevices(void);
     uint32_t searchOnly(uint8_t family);
@@ -26,12 +27,15 @@ public:
 
 private:
 
-    OneWireSearch(OneWire& driver);
+    OneWireSearch(IOneWire& driver);
+
+	uint8_t devicesConnected[MaxDevicesConnected][8];   // Array of connected devices ROMs
+	uint32_t devicesConnectedCount;                     // Number of connected devices
 
     // hardware driver
-    OneWire& driver;
+    IOneWire& driver;
 
-    // private methods data
+    // private methods data    
     uint8_t ROM_NO[8];
     uint32_t LastDiscrepancy;
     uint32_t LastFamilyDiscrepancy;

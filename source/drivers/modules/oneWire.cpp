@@ -1,6 +1,6 @@
 #include <oneWire.h>
 
-OneWire::OneWire( Delay& timer, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin )
+OneWire::OneWire(IDelayer& timer, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
 	: wait(timer),
 		GPIOx(GPIOx),
 		GPIO_Pin(GPIO_Pin) {

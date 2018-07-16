@@ -1,6 +1,9 @@
 #ifndef _ONE_WIRE_H
 #define _ONE_WIRE_H
 
+#include <IDelayer.h>
+#include <IOneWire.h>
+
 #include <stm32f10x_rcc.h>
 #include <stm32f10x_gpio.h>
 
@@ -12,7 +15,7 @@
 /*
 Software driver for Dallas 1-Wire interface based on GPIO
 */
-class OneWire {
+class OneWire : public IOneWire {
 
 friend int main(void);
 
@@ -36,9 +39,9 @@ public:
 
 protected:
 
-	OneWire(Delay& timer, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
+	OneWire(IDelayer& timer, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
 
-	const Delay& wait;					// timer
+	IDelayer& wait;						// timer
 
 private:
 

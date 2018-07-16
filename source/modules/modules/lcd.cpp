@@ -2,7 +2,7 @@
 
 
 
-Lcd::Lcd(I2c& interfaceHw, Delay& delay, uint8_t lines)
+Lcd::Lcd(I2c& interfaceHw, IDelayer& delay, uint8_t lines)
     :   i2c(interfaceHw),
         wait(delay) {
 
@@ -85,6 +85,7 @@ void Lcd::write4bits(uint8_t data) {
 
 	i2c.write(data & ~static_cast<uint8_t>(CmdBusBits::En));    // En low
 	wait.us(50);                    // commands need >37us to settle
+
     i2c.stopTransmit();
 }
 
@@ -204,7 +205,7 @@ void Lcd::loadCustomSymbol(uint8_t adr, uint8_t * matrix /*5x8*/) {
 // Turn the (optional) backlight off/on
 void Lcd::backlightSet(uint8_t mode /*1 - on, 0 - off*/) {
 
-    mode ? backlightPin = 1 : backlightPin = 0;
+    backlightPin = mode ? 1 : 0;
 	
     i2c.startTransmit();
 	i2c.write(backlightPin ? static_cast<uint8_t>(CmdBusBits::BackLight) : 0);

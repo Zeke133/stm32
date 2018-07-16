@@ -1,6 +1,6 @@
 #include <rtc.h>
 
-RealTimeClock::RealTimeClock(Delay& wait) {
+RealTimeClock::RealTimeClock(IDelayer& wait) {
 
     if (init()) {
 

@@ -1,7 +1,7 @@
 #ifndef _O_STREAM_H
 #define _O_STREAM_H
 
-#include <usart.h>
+#include <IWriter.h>
 
 #include <convertation.h>
 
@@ -20,7 +20,7 @@ public:
         dec
     };   
 
-    OStream(Usart& device);
+    OStream(IWriter& device);
 
     OStream& operator<<(enum OutSet manipulator);       // for output manipulators
     OStream& operator<<(char symbol);                   // for single character
@@ -33,7 +33,7 @@ public:
 
 private:
 
-    Usart& usart;
+    IWriter& device;
 
     char outputNumbersBase = 10;
 

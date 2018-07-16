@@ -5,7 +5,7 @@
 #include <stm32f10x_rtc.h>
 #include <stm32f10x_pwr.h>
 
-#include <delay.h>
+#include <IDelayer.h>
 #include <convertation.h>
 
 
@@ -27,7 +27,7 @@ public:
     
 private:
 
-    RealTimeClock(Delay& wait);
+    RealTimeClock(IDelayer& wait);
 
     inline uint8_t init(void);
 

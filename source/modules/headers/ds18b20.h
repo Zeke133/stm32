@@ -1,7 +1,8 @@
 #ifndef _DS18B20_H
 #define _DS18B20_H
 
-#include <oneWire.h>
+#include <IOneWire.h>
+#include <IDelayer.h>
 
 #include <crc.h>
 #include <convertation.h>
@@ -9,7 +10,7 @@
 /*
 Dallas ds18b20 temperature sensor driver
 */
-class Ds18b20 : private OneWire {
+class Ds18b20 {
 
 friend int main(void);
 
@@ -54,8 +55,8 @@ public:
 
 private:
 
-    Ds18b20(Delay& timer, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, enum Resolution res = Resolution::_12bit);
-    Ds18b20(Delay& timer, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, uint8_t * ROM, enum Resolution res = Resolution::_12bit);
+    Ds18b20(IOneWire& oneWire, IDelayer& wait, enum Resolution res = Resolution::_12bit);
+    Ds18b20(IOneWire& oneWire, IDelayer& wait, uint8_t * ROM, enum Resolution res = Resolution::_12bit);
 
     // procedures
     void initialization(enum Resolution res);
@@ -72,6 +73,8 @@ private:
     void waitConvertionEnd(void);
 
     // -
+    IOneWire& oneWire;
+    IDelayer& wait;
     uint8_t errorState;
     uint8_t useROM = 0;
     uint8_t ROM[8];

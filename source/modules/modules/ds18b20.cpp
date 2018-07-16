@@ -1,15 +1,15 @@
 #include <ds18b20.h>
 
-Ds18b20::Ds18b20(Delay& timer, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, enum Resolution res)
-    : OneWire(timer, GPIOx, GPIO_Pin) {
+Ds18b20::Ds18b20(IOneWire& oneWire, IDelayer& wait, enum Resolution res)
+    : oneWire(oneWire), wait(wait) {
 
     useROM = 0;
 
     initialization(res);
 }
 
-Ds18b20::Ds18b20(Delay& timer, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, uint8_t * _ROM, enum Resolution res)
-    : OneWire(timer, GPIOx, GPIO_Pin) {
+Ds18b20::Ds18b20(IOneWire& oneWire, IDelayer& wait, uint8_t * _ROM, enum Resolution res)
+    : oneWire(oneWire), wait(wait) {
 
     useROM = 1;
     for (int i = 0; i < 8; i++) {
@@ -112,7 +112,7 @@ void Ds18b20::restoreSettings(void) {
 
 uint8_t Ds18b20::selectDevice(void) {
 
-    errorState = useROM ? MatchROM(ROM) : SkipROM();
+    errorState = useROM ? oneWire.MatchROM(ROM) : oneWire.SkipROM();
     return errorState;
 }
 
@@ -122,10 +122,10 @@ uint8_t Ds18b20::writeScratchpad(void) {
 
     // Data must be transmitted least significant bit first.
     // All  three bytes MUST be written before the master issues a reset, or the data may be corrupted.
-    WriteByte(0x4E);
-    WriteByte(tempTrigerHigh);
-    WriteByte(tempTrigerLow);
-    WriteByte(configRegister);
+    oneWire.WriteByte(0x4E);
+    oneWire.WriteByte(tempTrigerHigh);
+    oneWire.WriteByte(tempTrigerLow);
+    oneWire.WriteByte(configRegister);
 
     return 0;
 }
@@ -137,13 +137,13 @@ uint8_t Ds18b20::readScratchpad(void) {
     // The data transfer starts with the least significant bit of byte 0
     // and continues through the scratchpad until the 9th byte (byte 8 – CRC) is read.
     // The master may issue a reset to terminate reading at any time if only part of the scratchpad data is needed.
-    WriteByte(0xBE);
+    oneWire.WriteByte(0xBE);
 
     uint8_t scratchpad[9];
     uint8_t crc = 0;
     for (uint8_t i = 0; i < 9; i++) {
 
-        scratchpad[i] = ReadByte();
+        scratchpad[i] = oneWire.ReadByte();
         crc = calcCRC_1wireQuick(crc, scratchpad[i]);
     }
 
@@ -175,7 +175,7 @@ uint8_t Ds18b20::copyScratchpad(void) {
     // If  the  device  is  being  used  in  parasite  power mode,
     // within 10μs (max) after this command is issued the 
     // master must enable a strong pullup on the 1-Wire bus for at least 10ms
-    WriteByte(0x48);
+    oneWire.WriteByte(0x48);
 
     // Pull-Up for parasite powered on delay
     if (powerMode == PowerMode::parasite) {
@@ -188,7 +188,7 @@ uint8_t Ds18b20::copyScratchpad(void) {
         for (uint16_t i = 20; i > 0; i--) {
 
             wait.us(500);
-            if (ReadTimeslot()) break;
+            if (oneWire.ReadTimeslot()) break;
         }
     }
 
@@ -199,12 +199,12 @@ uint8_t Ds18b20::recallEE(void) {
 
     if (selectDevice()) return 1;
 
-    WriteByte(0xB8);
+    oneWire.WriteByte(0xB8);
 
     for (uint16_t i = 20; i > 0; i--) {
 
         wait.us(500);
-        if (ReadTimeslot()) break;
+        if (oneWire.ReadTimeslot()) break;
     }
 
     return 0;
@@ -214,8 +214,8 @@ uint8_t Ds18b20::readPowerSupply(void) {
 
     if (selectDevice()) return 1;
 
-    WriteByte(0xB4);
-    powerMode = static_cast<enum Ds18b20::PowerMode>(ReadTimeslot());
+    oneWire.WriteByte(0xB4);
+    powerMode = static_cast<enum Ds18b20::PowerMode>(oneWire.ReadTimeslot());
 
     return 0;
 }
@@ -225,7 +225,7 @@ uint8_t Ds18b20::convertT(void) {
     if (selectDevice()) return 1;
 
     // Time to Strong Pullup On t SPON Start convert T command issued 10μs
-    WriteByte(0x44);
+    oneWire.WriteByte(0x44);
 
     return 0;
 }
@@ -262,7 +262,7 @@ void Ds18b20::waitConvertionEnd(void) {
         for (uint16_t i = 150; i > 0; i --) {
 
             wait.ms(5);
-            if (ReadTimeslot()) break;
+            if (oneWire.ReadTimeslot()) break;
         }
     }
 }

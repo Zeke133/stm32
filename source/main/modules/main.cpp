@@ -13,7 +13,7 @@ int main(void) {
     Usart usart1(1, 1200);          // USART1
     OStream cout(usart1);
 
-    cout << "STM32F103C8T6. USART1 is ready.\nFirmware: ";
+    cout << "\nSTM32F103C8T6. USART1 is ready.\nFirmware: ";
     cout << __DATE__ << ' ' << __TIME__;
 
     Delay wait;                     // Delay based on SysTickTimer
@@ -39,8 +39,8 @@ int main(void) {
     // lcd.puts("Temp:"); 
 
     uint8_t rom[8] = {0x28, 0x82, 0x65, 0x5B, 0x05, 0x00, 0x00, 0x20};
-    Ds18b20 tempSensor(wait, GPIOA, GPIO_Pin_8, rom);   // 1-Wire DS18B20 temperature sensor
-    // OneWire oneWire(wait, GPIOA, GPIO_Pin_8);
+    OneWire oneWire(wait, GPIOA, GPIO_Pin_8);
+    Ds18b20 tempSensor(oneWire, wait, rom);   // 1-Wire DS18B20 temperature sensor
     cout << "\nDs18b20 stateIs " << (tempSensor.isErrorState() ? "err" : "ok");
 
     uint8_t channels[] = {16, 17};
@@ -49,7 +49,7 @@ int main(void) {
                 ADC::ResultStoreMode::Injected, 
                 2, 
                 channels);          // ADC setup
-                
+
     cout << "\nADC test: ";
     cout << OStream::OutSet::dec;
     cout << adc1.getValue(0) << ", ";    // temp

@@ -10,12 +10,23 @@
                 // --- FLAGS
                 "-mcpu=cortex-m3",
                 "-mthumb",
-                "-Wall",
-                "-ffunction-sections",
-                "-fno-exceptions",      // if use exceptions - produse error: undefined reference to `_exit'; undefined reference to `_kill'; undefined reference to `_getpid'
-                "-g",
-                "-O0",
-                "-c",
+                // ---
+                "-g",                           // debug mode
+                "-O0",                          // optimisation
+                "-c",                           // compile only, without link
+                // ---
+                "-Wall",                        // show all warnings
+                // ---
+                "--specs=nano.specs",           // To use newlib-nano
+                "-ffunction-sections",          // which split functions and data into their own ELF sections.
+                "-fdata-sections",              // This allows the linker to eliminate additional unused code when passed --gc-sections
+                "-fno-exceptions",              // in libs
+                "-fno-non-call-exceptions",
+                "-fno-rtti",
+                "-fno-use-cxa-atexit",          // Teardown code (including global destructors) can be omitted
+                "-ffreestanding",               // indicates that your program exists in an environment
+                                                // where standard library facilities may be absent
+                                                // and where your program may not begin at main()
                 // --- DEFINES
                 "-DSTM32F103C8",
                 "-DSTM32F10X_MD",
@@ -28,8 +39,10 @@
                 "-I${workspaceRoot}/libs/cmsis/CM3/DeviceSupport/ST/STM32F10x",
                 "-I${workspaceRoot}/libs/STM32F10x_StdPeriph_Driver/inc",
                 // User
+                "-I${workspaceRoot}/source/interfaces",
                 "-I${workspaceRoot}/source/main/headers",
                 "-I${workspaceRoot}/source/drivers/headers",
+                "-I${workspaceRoot}/source/modules/headers",
                 "-I${workspaceRoot}/source/utils/headers",
                 "-I${workspaceRoot}/source/tests/realHardware/headers",
                 // --- SOURCES
@@ -55,19 +68,19 @@
                 "${workspaceRoot}/source/drivers/modules/led.cpp",
                 "${workspaceRoot}/source/drivers/modules/usart.cpp",
                 "${workspaceRoot}/source/drivers/modules/oneWire.cpp",
-                "${workspaceRoot}/source/drivers/modules/oneWireSearch.cpp",
-                "${workspaceRoot}/source/drivers/modules/ds18b20.cpp",
                 "${workspaceRoot}/source/drivers/modules/i2c.cpp",
-                "${workspaceRoot}/source/drivers/modules/lcd.cpp",
                 "${workspaceRoot}/source/drivers/modules/rtc.cpp",
                 "${workspaceRoot}/source/drivers/modules/adc.cpp",
                 "${workspaceRoot}/source/drivers/modules/tacho.cpp",
                 "${workspaceRoot}/source/drivers/modules/storage.cpp",
-                "${workspaceRoot}/source/drivers/modules/intTempSensor.cpp",
+                "${workspaceRoot}/source/modules/modules/oneWireSearch.cpp",
+                "${workspaceRoot}/source/modules/modules/ds18b20.cpp",
+                "${workspaceRoot}/source/modules/modules/lcd.cpp",
+                "${workspaceRoot}/source/modules/modules/analogTempSensor.cpp",
+                "${workspaceRoot}/source/modules/modules/oStream.cpp",     
                 "${workspaceRoot}/source/utils/modules/convertation.cpp",
                 "${workspaceRoot}/source/utils/modules/crc.cpp",
-                "${workspaceRoot}/source/utils/modules/strings.cpp",
-                "${workspaceRoot}/source/utils/modules/oStream.cpp",                
+                "${workspaceRoot}/source/utils/modules/strings.cpp",           
                 "${workspaceRoot}/source/tests/realHardware/testsApi.cpp",
                 "${workspaceRoot}/source/main/modules/main.cpp"
             ],
@@ -82,18 +95,24 @@
             "type": "shell",
             "command": "arm-none-eabi-g++",
             "args": [
+                // ---
                 "-mcpu=cortex-m3",
                 "-mthumb",
-                "-g",
-                //"--specs=nosys.specs",  // no semi-hosting which produses - libg.a(lib_a-exit.o): In function `exit': exit.c:(.text.exit+0x16): undefined reference to `_exit'
-                "-nostartfiles",  // no standart libs! kills last error - libg.a(lib_a-exit.o): In function `exit': exit.c:(.text.exit+0x16): undefined reference to `_exit'
-                "-Wl,-Map=${workspaceRoot}/bin/app.map",
-                "-O0",
-                "-Wl,--gc-sections",
-                "-Wl,-T${workspaceRoot}/linkScripts/link.ld",
-                "-g",
-                "-o",
+                "-O0",                          // optimization level
+                "-g",                           // debug mode
+                // ---
+                "--specs=nano.specs",           // To use newlib-nano
+                "--specs=nosys.specs",          // no semi-hosting
+                "-nostartfiles",                // Do not use the standard system startup files
+                // ---
+                "-Wl,-Map=${workspaceRoot}/bin/app.map",        // .map output
+                "-Wl,-cref",                    // include cross-referenses in .map
+                "-Wl,--gc-sections",            // bring out unused blocks of code from output
+                "-Wl,-T${workspaceRoot}/linkScripts/link.ld",   // linking script
+                // --
+                "-o",                           // output file
                 "${workspaceRoot}/bin/app.elf",
+                // ---
                 "${workspaceRoot}/misc.o",
                 "${workspaceRoot}/startup_stm32f10x_md.o",
                 "${workspaceRoot}/system_stm32f10x.o",
@@ -121,7 +140,7 @@
                 "${workspaceRoot}/adc.o",
                 "${workspaceRoot}/tacho.o",
                 "${workspaceRoot}/storage.o",
-                "${workspaceRoot}/intTempSensor.o",                
+                "${workspaceRoot}/analogTempSensor.o",                
                 "${workspaceRoot}/convertation.o",
                 "${workspaceRoot}/crc.o",
                 "${workspaceRoot}/strings.o",
@@ -221,7 +240,7 @@
                 // COM-port setup
                 "-c",
                 "--pn",
-                "6",
+                "5",
                 // Memory MAP
                 "-i",
                 //"STM32F1_Med-density_64K",

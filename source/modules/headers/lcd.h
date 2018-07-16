@@ -3,15 +3,16 @@
 
 #include <stm32f10x.h>
 
+#include <IWriter.h>
+#include <IDelayer.h>
 #include <i2c.h>
-#include <delay.h>
 
 /*
 Hitachi HD44780 API
 API for LCD character displays
 Supports connection trought I2C or parallel port (not implemented)
 */
-class Lcd {
+class Lcd : public IWriter {
 
         friend int main(void);
 
@@ -42,15 +43,15 @@ class Lcd {
 
     private:
 
-        Lcd(I2c& i2c, Delay& delay, uint8_t lines);
+        Lcd(I2c& i2c, IDelayer& delay, uint8_t lines);
 
         void write4bits(uint8_t data);
         void writeData(uint8_t value, uint8_t mode);
         void sendInstruction(uint8_t value);
         void sendData(uint8_t value);
 
-        const I2c& i2c;
-        const Delay& wait;
+        I2c& i2c;
+        IDelayer& wait;
 
         uint8_t backlightPin;
 

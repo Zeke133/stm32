@@ -7,7 +7,9 @@
         "optional": "cpp",
         "type_traits": "cpp",
         "utility": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "*.tcc": "cpp",
+        "streambuf": "cpp"
     },
     "C_Cpp.intelliSenseEngineFallback": "Enabled",
     "terminal.integrated.fontWeightBold": "normal",

@@ -1,11 +1,11 @@
-#ifndef _ANALOG_SENSORS_H
-#define _ANALOG_SENSORS_H
+#ifndef _ANALOG_TEMP_SENSOR_H
+#define _ANALOG_TEMP_SENSOR_H
 
 #include <adc.h>
 
 // Does not calibrated properly, so need to be veryfied and may be not usefull at all
 
-class InternalTemp {
+class AnalogTempSensor {
 
 friend int main(void);
     
@@ -19,12 +19,12 @@ public:
     }
 
     // delete copy constructor and assignment operator
-    InternalTemp(const InternalTemp&) = delete;
-    InternalTemp& operator=(const InternalTemp&) = delete;
+    AnalogTempSensor(const AnalogTempSensor&) = delete;
+    AnalogTempSensor& operator=(const AnalogTempSensor&) = delete;
 
 private:
 
-    InternalTemp(ADC& adcRef, uint32_t chTemp);
+    AnalogTempSensor(ADC& adcRef, uint32_t chTemp);
 
     const ADC& adcRef;
     uint32_t channelTemp;

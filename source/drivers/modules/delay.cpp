@@ -38,7 +38,7 @@ Delay::Delay() {
 	profilingStart = 0;
 }
 
-void Delay::ms(uint32_t ms) const {
+void Delay::ms(uint32_t ms) {
 
 	// Reload ms value
 	msCount = ms;
@@ -46,7 +46,7 @@ void Delay::ms(uint32_t ms) const {
 	while (msCount) ;
 }
 
-void Delay::us(uint32_t us) const {
+void Delay::us(uint32_t us) {
 
 	uint32_t ticksBegin = getDWTTicksValue();
 	uint32_t ticksEnd = ticksBegin + us * sysTicksPerUs;
@@ -70,7 +70,7 @@ void Delay::startProfiling(void) {
 	profilingStart = getDWTTicksValue();
 }
 
-uint32_t Delay::getExecutionTicks(void) const {
+uint32_t Delay::getExecutionTicks(void) {
 
 	uint32_t ticksNow = getDWTTicksValue();
 
