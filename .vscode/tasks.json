@@ -289,12 +289,14 @@
                 // --- INCLUDES
                 "-I${workspaceRoot}/source/utils/headers",
                 // TestCases
-                "${workspaceRoot}/source/tests/unit/unitTest.cpp",                
+                "${workspaceRoot}/source/tests/unit/convertationTest.cpp",
+                "${workspaceRoot}/source/tests/unit/crcTest.cpp",
+                "${workspaceRoot}/source/tests/unit/runAllTests.cpp",
                 // Tested modules
                 "${workspaceRoot}/source/utils/modules/convertation.cpp",
                 "${workspaceRoot}/source/utils/modules/crc.cpp",
                 // TestFramework lib
-                "../googleTest/googletest/build/gtest_main.a",                
+                "../googleTest/googletest/build/gtest_main.a",
                 // output
                 "-o",
                 "${workspaceRoot}/bin/UnitTests",

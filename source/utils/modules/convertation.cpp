@@ -67,7 +67,6 @@ int32_t atoi(const uint8_t * mas, uint8_t base, uint8_t signs) {
 
 void unix2DateTime(DateTime& dateTimeRef, uint32_t unixTime) {
     
-    // Make unit tests!777
     uint32_t time;
     uint32_t t1, a, b, c, d, e, m;
 

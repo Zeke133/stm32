@@ -163,48 +163,53 @@ namespace UnitTests {
 
         unix2DateTime(dt, val.unixFormat);
 
-        EXPECT_EQ(dt, val.dateTime);
+        EXPECT_EQ(dt.year, val.dateTime.year);
+        EXPECT_EQ(dt.month, val.dateTime.month);
+        EXPECT_EQ(dt.date, val.dateTime.date);
+        EXPECT_EQ(dt.wday, val.dateTime.wday);
+        EXPECT_EQ(dt.hours, val.dateTime.hours);
+        EXPECT_EQ(dt.minutes, val.dateTime.minutes);
+        EXPECT_EQ(dt.seconds, val.dateTime.seconds);
     }
 
     vector<struct DateTimeValues> dateTimeValues {
 
         {
             {
-                {
-                    .hours = 0,
-                    .minutes = 0,
-                    .seconds = 0,
-                    .date = 1,
-                    .wday = 0,
-                    .month = 1,
-                    .year = 1970
-                },
-                0
+                .hours = 0,
+                .minutes = 0,
+                .seconds = 0,
+                .date = 1,
+                .wday = 3,
+                .month = 1,
+                .year = 1970
             },
+            0
+        },
+        {
             {
-                {
-                    .hours = 9,
-                    .minutes = 25,
-                    .seconds = 16,
-                    .date = 8,
-                    .wday = 1,
-                    .month = 5,
-                    .year = 2018
-                },
-                1525771516
+                .hours = 9,
+                .minutes = 25,
+                .seconds = 16,
+                .date = 8,
+                .wday = 1,
+                .month = 5,
+                .year = 2018
             },
+            1525771516
+        },
+        {
             {
-                {
-                    .hours = 9,
-                    .minutes = 12,
-                    .seconds = 16,
-                    .date = 8,
-                    .wday = 1,
-                    .month = 5,
-                    .year = 2018
-                },
-                1525770736	// GMT: Tuesday, May 8, 2018 9:12:16 AM
-            }
+                .hours = 9,
+                .minutes = 12,
+                .seconds = 16,
+                .date = 8,
+                .wday = 1,
+                .month = 5,
+                .year = 2018
+            },
+            1525770736	// GMT: Tuesday, May 8, 2018 9:12:16 AM
+        }
     };
 
     INSTANTIATE_TEST_CASE_P(DateTimeConvertation, DateTimeToUnixTester,
