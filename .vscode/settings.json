@@ -1,16 +1,4 @@
 {
-    "files.associations": {
-        "sstream": "cpp",
-        "array": "cpp",
-        "string_view": "cpp",
-        "initializer_list": "cpp",
-        "optional": "cpp",
-        "type_traits": "cpp",
-        "utility": "cpp",
-        "iostream": "cpp",
-        "*.tcc": "cpp",
-        "streambuf": "cpp"
-    },
     "C_Cpp.intelliSenseEngineFallback": "Enabled",
     "terminal.integrated.fontWeightBold": "normal",
     "terminal.explorerKind": "external"
