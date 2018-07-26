@@ -1,8 +1,10 @@
 #ifndef _GPIO_H
 #define _GPIO_H
 
+extern "C" {
 #include <stm32f10x_rcc.h>
 #include <stm32f10x_gpio.h>
+}
 
 /*
 API for port set-up

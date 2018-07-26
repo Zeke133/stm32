@@ -5,11 +5,7 @@
 
 #include <convertation.h>
 
-
-// Good idea to make an output stream for usability
-// but Vtable is not supported by embedded c++ compiller
-// SO IT DOESN'T WORK!
-
+// Output stream for usability
 
 class OStream {
     

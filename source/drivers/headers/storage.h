@@ -1,7 +1,9 @@
 #ifndef _SETTINGS_H
 #define _SETTINGS_H
 
+extern "C" {
 #include <stm32f10x_flash.h>
+}
 
 // Need to be completed, check size of page, crc, and so on
 

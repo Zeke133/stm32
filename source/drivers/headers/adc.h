@@ -1,9 +1,11 @@
 #ifndef _ADC_H
 #define _ADC_H
 
+extern "C" {
 #include <stm32f10x_adc.h>
 #include <stm32f10x_rcc.h>
 #include <stm32f10x_dma.h>
+}
 
 #include <gpio.h>
 

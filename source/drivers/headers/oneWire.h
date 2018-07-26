@@ -1,11 +1,13 @@
 #ifndef _ONE_WIRE_H
 #define _ONE_WIRE_H
 
-#include <IDelayer.h>
-#include <IOneWire.h>
-
+extern "C" {
 #include <stm32f10x_rcc.h>
 #include <stm32f10x_gpio.h>
+}
+
+#include <IDelayer.h>
+#include <IOneWire.h>
 
 #include <gpio.h>
 #include <delay.h>

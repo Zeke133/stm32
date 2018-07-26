@@ -1,8 +1,10 @@
 #ifndef _LED_H
 #define _LED_H
 
+extern "C" {
 #include <stm32f10x_rcc.h>
 #include <stm32f10x_gpio.h>
+}
 
 #include <gpio.h>
 

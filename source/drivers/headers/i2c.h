@@ -1,7 +1,9 @@
 #ifndef _I2C_H
 #define _I2C_H
 
+extern "C" {
 #include <stm32f10x_i2c.h>
+}
 
 #include <gpio.h>
 

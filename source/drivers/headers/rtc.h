@@ -1,9 +1,11 @@
 #ifndef _RTC_H
 #define _RTC_H
 
+extern "C" {
 #include <stm32f10x_rcc.h>
 #include <stm32f10x_rtc.h>
 #include <stm32f10x_pwr.h>
+}
 
 #include <IDelayer.h>
 #include <convertation.h>

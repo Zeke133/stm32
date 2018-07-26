@@ -2,8 +2,8 @@
 #define _ONE_WIRE_SEARCH_H
 
 #include <IOneWire.h>
-#include <crc.h>
 
+#include <crc.h>
 
 class OneWireSearch {
 

@@ -1,10 +1,12 @@
 #ifndef _DELAY_H
 #define _DELAY_H
 
+extern "C" {
+#include <stm32f10x.h>
+}
+
 #include <IDelayer.h>
 #include <IProfiler.h>
-
-#include <stm32f10x.h>
 
 extern "C" {
     void SysTick_Handler();

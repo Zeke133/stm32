@@ -1,10 +1,12 @@
 #ifndef _UART_H
 #define _UART_H
 
+extern "C" {
 #include <stm32f10x_rcc.h>
 #include <stm32f10x_gpio.h>
 #include <stm32f10x_usart.h>
 #include <stm32f10x_dma.h>
+}
 
 #include <IWriter.h>
 

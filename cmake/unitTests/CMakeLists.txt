@@ -3,13 +3,15 @@ cmake_minimum_required (VERSION 2.6)
 # Project name
 project (UnitTests)
 
+set(ROOT_DIR ${UnitTests_SOURCE_DIR}/../../)
+
 # Path to GoogleTest Framework - change if needed
 set(GOOGLE_TEST_DIR "D:/Projects/googleTest")
 # Path to Unit Test sources
-set(TEST_SOURCE_DIR source/tests/unit)
+set(TEST_SOURCE_DIR ${ROOT_DIR}/source/tests/unit)
 # Path to tested functionality
-set(MODULES_HEADER_DIR source/utils/headers)
-set(MODULES_SOURCE_DIR source/utils/modules)
+set(MODULES_HEADER_DIR ${ROOT_DIR}/source/utils/headers)
+set(MODULES_SOURCE_DIR ${ROOT_DIR}/source/utils/modules)
 
 # List of source files to build
 set(SOURCES_TO_BUILD

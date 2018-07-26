@@ -1,8 +1,9 @@
 #ifndef _TACHO_H
 #define _TACHO_H
 
-
+extern "C" {
 #include <stm32f10x_tim.h>
+}
 
 #include <gpio.h>
 
