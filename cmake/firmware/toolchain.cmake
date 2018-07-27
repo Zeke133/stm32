@@ -1,3 +1,4 @@
+
 set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_PROCESSOR ARM)
 
@@ -8,9 +9,13 @@ set(CMAKE_CXX_COMPILER arm-none-eabi-g++)
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 # CMAKE_TRY_COMPILE_PLATFORM_VARIABLES
 
-# These are visible to the project as the
-# CMAKE_<LANG>_FLAGS, CMAKE_<LANG>_FLAGS_<CONFIG>, CMAKE_<TARGETTYPE>_LINKER_FLAGS and
-# CMAKE_<TARGETTYPE>_LINKER_FLAGS_<CONFIG> variables, which were covered back in Section 14.3,
-# “Compiler And Linker Variables”. 
+# Stupid syntax let flags be defined only in one string
+# SET(CMAKE_EXE_LINKER_FLAGS_INIT
+#     "--specs=nano.specs"
+#     "--specs=nosys.specs"
+#     "-nostartfiles"
+# )
+
 # CMAKE_<LANG>_COMPILER_EXTERNAL_TOOLCHAIN variable which can be used to specify the directory in
 # which these utilities are located
+

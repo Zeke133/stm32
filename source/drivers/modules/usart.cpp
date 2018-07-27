@@ -225,12 +225,12 @@ inline void Usart::clear() {
     inputBufferCnt = 0;
 }
 
-uint32_t Usart::getCount() {
+inline uint32_t Usart::getCount() {
 
     return inputBufferCnt;
 }
 
-uint8_t * Usart::getData() {
+inline uint8_t * Usart::getData() {
 
     return inputBuffer;
 }

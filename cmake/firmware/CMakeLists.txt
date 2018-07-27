@@ -1,14 +1,16 @@
 cmake_minimum_required (VERSION 3.6)
 
 # Project name
-project (
-    Firmware
+project(
+    MOTO_BC
     VERSION 0.1.1
+    DESCRIPTION "Firmware for vintage motorcycle board computer on STM32F103C8T6 base"
+    HOMEPAGE_URL "https://github.com/Zeke133/stm32"
     LANGUAGES C CXX
 )
 
-set(ROOT_DIR ${Firmware_SOURCE_DIR}/../../)
-
+# ROOT path
+set(ROOT_DIR ${PROJECT_SOURCE_DIR}/../..)
 # CMSIS path
 set(CMSIS_DIR ${ROOT_DIR}/libs/cmsis)
 # Std Peripherial driver path
@@ -45,17 +47,35 @@ set(SOURCE_TESTS_DIR ${ROOT_DIR}/source/tests/realHardware)
 set(SOURCE_MAIN_DIR ${ROOT_DIR}/source/main/modules)
 
 
-# Compile STDPeriph into separate library
-add_library(stdPeriph STATIC)
-target_include_directories(stdPeriph
+# ---
+# Compile CMSIS liblary to static
+# ---
+add_library(cmsis STATIC)
+target_include_directories(
+    cmsis
     PUBLIC ${HEADERS_CMSIS_DIR}/CoreSupport
     PUBLIC ${HEADERS_CMSIS_DIR}/DeviceSupport/ST/STM32F10x
-    PUBLIC ${HEADERS_STDPERIPH_DIR}
     )
-target_sources(stdPeriph
+target_sources(
+    cmsis
     PRIVATE ${SOURCE_CMSIS_DIR}/system_stm32f10x
     PRIVATE ${SOURCE_STARTUP_DIR}/startup_stm32f10x_md.S        # ASM startup init
-    # ${SOURCE_STARTUP_DIR}/startup_stm32f10x_md.c      # ANSI C startup init
+    # ${SOURCE_STARTUP_DIR}/startup_stm32f10x_md.c              # ANSI C startup init
+)
+get_target_property(CMSIS_SOURCES cmsis SOURCES)
+set_source_files_properties(${CMSIS_SOURCES} PROPERTIES LANGUAGE CXX)
+
+# ---
+# Compile STDPeriph library to static
+# ---
+add_library(std_peripherial STATIC)
+target_link_libraries(std_peripherial PUBLIC cmsis)
+target_include_directories(
+    std_peripherial
+    PUBLIC ${HEADERS_STDPERIPH_DIR}
+)
+target_sources(
+    std_peripherial
     PRIVATE ${SOURCE_STDPERIPH_DIR}/misc
     PRIVATE ${SOURCE_STDPERIPH_DIR}/stm32f10x_rcc
     PRIVATE ${SOURCE_STDPERIPH_DIR}/stm32f10x_gpio
@@ -68,42 +88,26 @@ target_sources(stdPeriph
     PRIVATE ${SOURCE_STDPERIPH_DIR}/stm32f10x_tim
     PRIVATE ${SOURCE_STDPERIPH_DIR}/stm32f10x_flash
     )
-target_compile_definitions(stdPeriph
-    PRIVATE STM32F103C8
-    PRIVATE STM32F10X_MD
-    PRIVATE USE_STDPERIPH_DRIVER
-    PRIVATE __ASSEMBLY__
-    )
-target_compile_options(stdPeriph
-    # Common flags
-    PRIVATE -mcpu=cortex-m3
-    PRIVATE -mthumb
-    PRIVATE -g                              # debug mode
-    PRIVATE -O0                             # optimisation
-    PRIVATE -c                              # compile only, without link
-    PRIVATE -Wall                           # show all warnings
-    # Bare metal specific flags
-    PRIVATE --specs=nano.specs              # To use newlib-nano
-    PRIVATE -ffunction-sections             # which split functions and data into their own ELF sections.
-    PRIVATE -fdata-sections                 # This allows the linker to eliminate
-                                            # additional unused code when passed --gc-sections
-    PRIVATE -ffreestanding                  # indicates that your program exists in an environment
-                                            # where standard library facilities may be absent
-                                            # and where your program may not begin at main()
-    )
+# Force CMake to interpret SOURCE files like C++ files to compile with g++
+get_target_property(STD_SOURCES std_peripherial SOURCES)
+set_source_files_properties(${STD_SOURCES} PROPERTIES LANGUAGE CXX)
 
-# Executable file
+# ---
+# Compile executable
+# ---
 add_executable(app)
-target_link_libraries(app PUBLIC stdPeriph)
-target_include_directories(app
+target_link_libraries(app PRIVATE cmsis std_peripherial)
+target_include_directories(
+    app
     PRIVATE ${HEADERS_INTERFACES_DIR}
     PRIVATE ${HEADERS_MAIN_DIR}
     PRIVATE ${HEADERS_DRIVERS_DIR}
     PRIVATE ${HEADERS_MODULES_DIR}
     PRIVATE ${HEADERS_UTILS_DIR}
     PRIVATE ${HEADERS_TESTS_DIR}
-    )
-target_sources(app
+)
+target_sources(
+    app
     PRIVATE ${SOURCE_DRIVERS_DIR}/delay
     PRIVATE ${SOURCE_DRIVERS_DIR}/sysClock
     PRIVATE ${SOURCE_DRIVERS_DIR}/gpio
@@ -125,56 +129,87 @@ target_sources(app
     PRIVATE ${SOURCE_UTILS_DIR}/strings
     PRIVATE ${SOURCE_TESTS_DIR}/testsApi
     PRIVATE ${SOURCE_MAIN_DIR}/main
-    )
-target_compile_definitions(app
-    PRIVATE STM32F103C8
-    PRIVATE STM32F10X_MD
-    PRIVATE USE_STDPERIPH_DRIVER
-    PRIVATE __ASSEMBLY__
-    PRIVATE SUPPORT_CPLUSPLUS
-    )
-target_compile_options(app
-    # Common flags
-    PRIVATE -mcpu=cortex-m3
-    PRIVATE -mthumb
-    PRIVATE -g                              # debug mode
-    PRIVATE -O0                             # optimisation
-    PRIVATE -c                              # compile only, without link
-    PRIVATE -Wall                           # show all warnings
-    # Bare metal specific flags
-    PRIVATE --specs=nano.specs              # To use newlib-nano
-    PRIVATE -ffunction-sections             # which split functions and data into their own ELF sections.
-    PRIVATE -fdata-sections                 # This allows the linker to eliminate
+)
+
+
+set_property(
+    TARGET cmsis std_peripherial app
+    PROPERTY
+        COMPILE_DEFINITIONS
+            STM32F103C8
+            STM32F10X_MD
+            USE_STDPERIPH_DRIVER
+            __ASSEMBLY__
+            SUPPORT_CPLUSPLUS
+)
+set_property(
+    TARGET cmsis std_peripherial app
+    PROPERTY
+        COMPILE_OPTIONS
+            # Common flags
+            -mcpu=cortex-m3
+            -mthumb
+            -g                              # debug mode
+            -O0                             # optimisation
+            -Wall                           # show all warnings
+            # Bare metal specific flags
+            --specs=nano.specs              # To use newlib-nano
+            -ffunction-sections             # which split functions and data into their own ELF sections.
+            -fdata-sections                 # This allows the linker to eliminate
                                             # additional unused code when passed --gc-sections
-    PRIVATE -fno-exceptions                 # in libs
-    PRIVATE -fno-non-call-exceptions
-    PRIVATE -fno-rtti
-    PRIVATE -fno-use-cxa-atexit             # Teardown code (including global destructors) can be omitted
-    PRIVATE -ffreestanding                  # indicates that your program exists in an environment
+            -fno-exceptions                 # in libs
+            -fno-non-call-exceptions
+            -fno-rtti
+            -fno-use-cxa-atexit             # Teardown code (including global destructors) can be omitted
+            -ffreestanding                  # indicates that your program exists in an environment
                                             # where standard library facilities may be absent
                                             # and where your program may not begin at main()
-    )
-
-
-
-
-# set_target_properties(app
-#     PROPERTIES
-#     LINK_FLAGS
-#     -mcpu=cortex-m3
-#     -mthumb
-#     -O0                                         # optimization level
-#     -g                                          # debug mode
-#     # ---
-#     --specs=nano.specs                          # To use newlib-nano
-#     --specs=nosys.specs                         # no semi-hosting
-#     -nostartfiles                               # Do not use the standard system startup files
-#     # ---
-#     -Wl,-Map=${ROOT_DIR}/bin/app.map       # .map output
-#     -Wl,-cref                                   # include cross-referenses in .map
-#     -Wl,--gc-sections                           # bring out unused blocks of code from output
-#     -Wl,-T${ROOT_DIR}/linkScripts/link.ld  # linking script
+)
+# set(BARE_METAL_LINK_FLAGS
+#     --specs=nano.specs --specs=nosys.specs -nostartfiles)
+# set(ARM_LINK_FLAGS
+#     -mcpu=cortex-m3 -mthumb)
+# set(SCRIPT_LINK_FLAG
+#     -Wl,-T${ROOT_DIR}/linkScripts/link.ld)
+# set(MAP_OUT_LINK_FLAG
+#     -Wl,-Map=${ROOT_DIR}/bin/app.map)
+# set(USER_LINK_FLAGS
+#     -O0 -g -Wl,-cref -Wl,--gc-sections)
+# set_property(
+#     TARGET app
+#     PROPERTY
+#         LINK_FLAGS
+#             "${BARE_METAL_LINK_FLAGS} ${ARM_LINK_FLAGS} ${SCRIPT_LINK_FLAG} ${MAP_OUT_LINK_FLAG} ${USER_LINK_FLAGS}"
 # )
+
+# -fdata-sections -g -fno-common -fmessage-length=0")
+
+set(CMAKE_EXE_LINKER_FLAGS
+    "-mcpu=cortex-m3 -mthumb -O0 -g --specs=nano.specs --specs=nosys.specs -nostartfiles -Wl,-Map=${ROOT_DIR}/bin/app.map -Wl,-cref -Wl,--gc-sections -Wl,-T${ROOT_DIR}/linkScripts/link.ld"
+    # "-mcpu=cortex-m3
+    # -mthumb
+    # -O0
+    # -g
+    # --specs=nano.specs
+    # --specs=nosys.specs
+    # -nostartfiles
+    # -Wl,-Map=${ROOT_DIR}/bin/app.map
+    # -Wl,-cref
+    # -Wl,--gc-sections
+    # -Wl,-T${ROOT_DIR}/linkScripts/link.ld"
+)
+# -mcpu=cortex-m3
+# -mthumb
+# -O0                                         # optimization level
+# -g                                          # debug mode
+# --specs=nano.specs                          # To use newlib-nano
+# --specs=nosys.specs                         # no semi-hosting
+# -nostartfiles                               # Do not use the standard system startup files
+# -Wl,-Map=${ROOT_DIR}/bin/app.map            # .map output
+# -Wl,-cref                                   # include cross-referenses in .map
+# -Wl,--gc-sections                           # bring out unused blocks of code from output
+# -Wl,-T${ROOT_DIR}/linkScripts/link.ld       # linking script
+
 
 # add_custom_target(run
 #     COMMAND binary
