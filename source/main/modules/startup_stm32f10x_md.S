@@ -34,11 +34,11 @@
 
     .section .stack
     .align 3
-#ifdef __STACK_SIZE
-    .equ    Stack_Size, __STACK_SIZE
-#else
+//#ifdef __STACK_SIZE
+//    .equ    Stack_Size, __STACK_SIZE
+//#else
     .equ    Stack_Size, 0x400
-#endif
+//#endif
     .globl    __StackTop
     .globl    __StackLimit
 __StackLimit:
@@ -49,11 +49,11 @@ __StackTop:
 
     .section .heap
     .align 3
-#ifdef __HEAP_SIZE
-    .equ    Heap_Size, __HEAP_SIZE
-#else
+//#ifdef __HEAP_SIZE
+//    .equ    Heap_Size, __HEAP_SIZE
+//#else
     .equ    Heap_Size, 0xC00
-#endif
+//#endif
     .globl    __HeapBase
     .globl    __HeapLimit
 __HeapBase:
@@ -150,7 +150,7 @@ Reset_Handler:
     ldr    r2, =__data_start__
     ldr    r3, =__data_end__
 
-#if 1
+//#if 1
 /* Here are two copies of loop implemenations. First one favors code size
  * and the second one favors performance. Default uses the first one.
  * Change to "#if 0" to use the second one */
@@ -160,7 +160,7 @@ Reset_Handler:
     ldrlt   r0, [r1], #4
     strlt   r0, [r2], #4
     blt    .flash_to_ram_loop
-#else
+/* #else
     subs    r3, r2
     ble    .flash_to_ram_loop_end
 .flash_to_ram_loop:
@@ -169,12 +169,12 @@ Reset_Handler:
     str    r0, [r2, r3]
     bgt    .flash_to_ram_loop
 .flash_to_ram_loop_end:
-#endif
+#endif */
 
-#ifndef __NO_SYSTEM_INIT
+//#ifndef __NO_SYSTEM_INIT
     ldr    r0, =SystemInit
     blx    r0
-#endif
+//#endif
 
     ldr    r0, =_start
     bx    r0

@@ -5,5 +5,9 @@
 *.map
 *.exe
 *.sym
+*.a
 
-
+cmake/CMakeFiles
+cmake/CMakeCache.txt
+cmake/Makefile
+cmake/cmake_install.cmake
