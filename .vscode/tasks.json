@@ -44,7 +44,7 @@
                 "-I${workspaceRoot}/source/drivers/headers",
                 "-I${workspaceRoot}/source/modules/headers",
                 "-I${workspaceRoot}/source/utils/headers",
-                "-I${workspaceRoot}/source/tests/realHardware/headers",
+                "-I${workspaceRoot}/source/debugApi/headers",
                 // --- SOURCES
                 // Libs
                 "${workspaceRoot}/source/main/modules/startup_stm32f10x_md.S",      // ASM startup init
@@ -63,8 +63,8 @@
                 "${workspaceRoot}/libs/STM32F10x_StdPeriph_Driver/src/stm32f10x_flash.c",
                 // User
                 "${workspaceRoot}/source/drivers/modules/delay.cpp",
-                "${workspaceRoot}/source/drivers/modules/sysClock.c",
-                "${workspaceRoot}/source/drivers/modules/gpio.c",
+                "${workspaceRoot}/source/drivers/modules/sysClock.cpp",
+                "${workspaceRoot}/source/drivers/modules/gpio.cpp",
                 "${workspaceRoot}/source/drivers/modules/led.cpp",
                 "${workspaceRoot}/source/drivers/modules/usart.cpp",
                 "${workspaceRoot}/source/drivers/modules/oneWire.cpp",
@@ -81,7 +81,7 @@
                 "${workspaceRoot}/source/utils/modules/convertation.cpp",
                 "${workspaceRoot}/source/utils/modules/crc.cpp",
                 "${workspaceRoot}/source/utils/modules/strings.cpp",           
-                "${workspaceRoot}/source/tests/realHardware/testsApi.cpp",
+                "${workspaceRoot}/source/debugApi/modules/debugApi.cpp",
                 "${workspaceRoot}/source/main/modules/main.cpp"
             ],
             "problemMatcher": [
@@ -145,7 +145,7 @@
                 "${workspaceRoot}/crc.o",
                 "${workspaceRoot}/strings.o",
                 "${workspaceRoot}/oStream.o",
-                "${workspaceRoot}/testsApi.o",
+                "${workspaceRoot}/debugApi.o",
                 "${workspaceRoot}/main.o"
             ],
             "problemMatcher": [
