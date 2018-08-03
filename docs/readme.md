@@ -1,1 +1,1 @@
-Here is different documentation used on project
+Here is different documentation used on project.

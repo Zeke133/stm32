@@ -1,6 +1,7 @@
 Here would be binary files to run
 
 - UnitTests - executable to run tests
+
 - app.elf - program
 - app.hex - program to flash on MCU
 - app.bin - program to flash on MCU
