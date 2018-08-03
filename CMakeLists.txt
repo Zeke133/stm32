@@ -12,6 +12,7 @@ project(
         CXX     # user project
 )
 
+
 # ---
 # Libraries CMSIS and STD_Peripherial
 add_subdirectory(libs)
@@ -30,12 +31,6 @@ target_sources(
 # Link firmware
 add_executable(app.elf)
 target_link_libraries(app.elf PRIVATE startup modules)
-set_target_properties(
-    app.elf
-    PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin
-)
-
 # Link properties
 set(MAP_FILE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin/app.map)
 set(LINKER_SCRIPT_PATH ${PROJECT_SOURCE_DIR}/linkScripts/link.ld)
@@ -49,7 +44,6 @@ set_property(
             # Stupid syntax let flags be defined only in one string
             "${PLATFORM_LINK_FLAGS} ${EMBEDDED_LINK_FLAGS} ${USER_LINK_FLAG} -Wl,-T${LINKER_SCRIPT_PATH}"
 )
-
 # -mcpu=cortex-m3
 # -mthumb
 # -O0                                         # optimization level
@@ -76,6 +70,12 @@ add_custom_command(
 )
 
 # ---
+# Unit tests
+enable_testing()
+add_subdirectory(unitTests)
+add_test(NAME utils COMMAND unitTests)
+
+# ---
 # Setup common compilation properties
 set_property(
     TARGET cmsis std_peripherial modules
@@ -98,8 +98,13 @@ set_property(
                                             # and where your program may not begin at main()
 )
 
-# Try precompiled header for STD_PERIPH ?!!!
+set_property(
+    TARGET
+        app.elf
+        unitTests
+    PROPERTY
+        RUNTIME_OUTPUT_DIRECTORY
+            ${PROJECT_SOURCE_DIR}/bin
+)
 
-# make tests
-add_subdirectory(unitTests)
-add_test(NAME all COMMAND unitTests)
+# Try precompiled header for STD_PERIPH ?!!!

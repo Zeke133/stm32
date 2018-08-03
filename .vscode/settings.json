@@ -1,7 +1,5 @@
 {
     "workbench.sideBar.location": "right",
-    "terminal.integrated.rendererType": "auto",
-    "terminal.integrated.shell.windows": "C:\\windows\\System32\\cmd.exe",
     "cmake.cmakePath": "C:/Program Files/CMake/bin/cmake.exe",
     "java.errors.incompleteClasspath.severity": "ignore",
     "editor.quickSuggestions": {
@@ -34,6 +32,4 @@
     "workbench.colorTheme": "Dark+ Material",
     //
     "C_Cpp.intelliSenseEngineFallback": "Enabled",
-    "terminal.integrated.fontWeightBold": "normal",
-    "terminal.explorerKind": "external"
 }

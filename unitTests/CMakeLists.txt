@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.9)
 
 # Project name
 project (
-    UnitTests
+    unitTests
     VERSION 0.1.1
     DESCRIPTION "Firmware for vintage motorcycle board computer on STM32F103C8T6 base"
     HOMEPAGE_URL "https://github.com/Zeke133/stm32"
@@ -37,7 +37,7 @@ include_directories (${MODULES_HEADER_DIR})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall")
 
 # Executable file
-add_executable(UnitTests ${SOURCES_TO_BUILD})
+add_executable(unitTests ${SOURCES_TO_BUILD})
 # Link with static library
-target_link_libraries(UnitTests ${GOOGLE_TEST_DIR}/googletest/build/gtest_main.a)
+target_link_libraries(unitTests ${GOOGLE_TEST_DIR}/googletest/build/gtest_main.a)
 

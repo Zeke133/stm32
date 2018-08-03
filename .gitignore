@@ -1,13 +1,6 @@
-*.o
-*.bin
-*.elf
-*.hex
-*.map
-*.exe
-*.sym
-*.a
+/bin/*.*
 
-CMakeFiles
-CMakeCache.txt
-Makefile
-cmake_install.cmake
+!/bin/readme.md
+
+/build
+
