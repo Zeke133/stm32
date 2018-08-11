@@ -32,4 +32,5 @@
     "workbench.colorTheme": "Dark+ Material",
     //
     "C_Cpp.intelliSenseEngineFallback": "Enabled",
+    "C_Cpp.intelliSenseEngine": "Default",
 }
