@@ -4,25 +4,14 @@ Lcd_ssd1306::Lcd_ssd1306(I2c& i2c, IDelayer& delay)
     :   i2c(i2c),
         wait(delay) {
 
-    // initialization should be here
     init();
 }
 
-void Lcd_ssd1306::writeCommand(char byte) {
-
-    // HAL_I2C_Mem_Write(  I2C_HandleTypeDef *hi2c,
-    //                     uint16_t DevAddress,
-    //                     uint16_t MemAddress,
-    //                     uint16_t MemAddSize,
-    //                     uint8_t *pData,
-    //                     uint16_t Size,
-    //                     uint32_t Timeout);
-    // HAL_I2C_Mem_Write(&hi2c1,SSD1306_I2C_ADDR,0x00,1,&command,1,10);
+void Lcd_ssd1306::writeCommand(unsigned char byte) {
 
     i2c.startTransmit();
     i2c.write(byte);
     i2c.stopTransmit();
-
 }
 
 void Lcd_ssd1306::init(void) {
@@ -31,45 +20,57 @@ void Lcd_ssd1306::init(void) {
     wait.ms(100);
 
     // Init LCD
-    writeCommand(0xAE);     // display off
-    writeCommand(0x20);     // Set Memory Addressing Mode
-    writeCommand(0x10);     //00,Horizontal Addressing Mode;01,Vertical Addressing Mode;10,Page Addressing Mode (RESET);11,Invalid
-    writeCommand(0xB0);     //Set Page Start Address for Page Addressing Mode,0-7
-    writeCommand(0xC8);     //Set COM Output Scan Direction
-    writeCommand(0x00);     //---set low column address
-    writeCommand(0x10);     //---set high column address
-    writeCommand(0x40);     //--set start line address
-    writeCommand(0x81);     //--set contrast control register
+    writeCommand(DisplayCmd::SetDispOff);
+
+    writeCommand(DisplayCmd::SetMemAdrMode);
+    writeCommand(DisplayCmd::SetMemAdrModeHoriz);
+
+    writeCommand(DisplayCmd::SetPageStartAddr | 0);
+
+    writeCommand(DisplayCmd::SetCOMOutScanDirRemap);
+
+    writeCommand(DisplayCmd::SetLowColStartAddr | 0);
+    writeCommand(DisplayCmd::SetHighColStartAddr | 0);
+
+    writeCommand(DisplayCmd::SetDispStartLine | 0);
+
+    writeCommand(DisplayCmd::SetContrastCtrl);
     writeCommand(0xFF);
-    writeCommand(0xA1);     //--set segment re-map 0 to 127
-    writeCommand(0xA6);     //--set normal display
-    writeCommand(0xA8);     //--set multiplex ratio(1 to 64)
-    writeCommand(0x3F);     //
-    writeCommand(0xA4);     //0xa4,Output follows RAM content;0xa5,Output ignores RAM content
-    writeCommand(0xD3);     //-set display offset
-    writeCommand(0x00);     //-not offset
-    writeCommand(0xD5);     //--set display clock divide ratio/oscillator frequency
-    writeCommand(0xF0);     //--set divide ratio
-    writeCommand(0xD9);     //--set pre-charge period
-    writeCommand(0x22);     //
-    writeCommand(0xDA);     //--set com pins hardware configuration
-    writeCommand(0x12);
-    writeCommand(0xDB);     //--set vcomh
-    writeCommand(0x20);     //0x20,0.77xVcc
-    writeCommand(0x8D);     //--set DC-DC enable
-    writeCommand(0x14);     //
-    writeCommand(0xAF);     //--turn on SSD1306 panel
+
+    writeCommand(DisplayCmd::SetSegmentRemapOn);
+
+    writeCommand(DisplayCmd::SetNormalDisp);
+
+    writeCommand(DisplayCmd::SetMultiplexRatio);
+    writeCommand(0x3F);
+
+    writeCommand(DisplayCmd::EntireDispResume);
+
+    writeCommand(DisplayCmd::SetDispOffset);
+    writeCommand(0x00);
+
+    writeCommand(DisplayCmd::SetDispClckDiv);
+    writeCommand(0xF0);
+
+    writeCommand(DisplayCmd::SetPrechargePer);
+    writeCommand(0x22);
+
+    writeCommand(DisplayCmd::SetCOMPinsHWConf);
+    writeCommand(DisplayCmd::SetCOMAlt | DisplayCmd::SetCOMNoRemap);
+
+    writeCommand(DisplayCmd::SetVcomhDeselectLev);
+    writeCommand(DisplayCmd::SetVcomh077Vcc);
+
+    writeCommand(DisplayCmd::ChargePumpSet);
+    writeCommand(DisplayCmd::EnableChargePump);
+
+    writeCommand(DisplayCmd::SetDispOn);
 
     // Clear screen
-    ssd1306_Fill(Black);
+    fill(Black);
 
     // Flush buffer to screen
-    ssd1306_UpdateScreen();
-
-    // Set default values for screen object
-    SSD1306.CurrentX = 0;
-    SSD1306.CurrentY = 0;
-
+    update();
 }
 
 // Fill the whole screen with the given color

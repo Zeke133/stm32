@@ -33,4 +33,8 @@
     //
     "C_Cpp.intelliSenseEngineFallback": "Enabled",
     "C_Cpp.intelliSenseEngine": "Default",
+    "files.associations": {
+        "xiosbase": "cpp",
+        "set": "cpp"
+    },
 }
