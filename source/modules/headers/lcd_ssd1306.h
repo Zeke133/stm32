@@ -30,7 +30,10 @@ class Lcd_ssd1306 : public IWriter {
         void puts(const char* str);
         void putc(char symb);
 
-        
+        void drawPixel(uint8_t x, uint8_t y, uint8_t pixelVal);
+        void fill(unsigned char bit);
+        void update();
+        void cursorGoTo(uint8_t x, uint8_t y);
 
         // delete copy constructor and assignment operator
         Lcd_ssd1306(const Lcd_ssd1306&) = delete;
@@ -57,11 +60,6 @@ class Lcd_ssd1306 : public IWriter {
         void writeData(unsigned char * buffer, int size);
 
         void init(void);
-
-        void fill(unsigned char bit);
-        void update();
-        void drawPixel(uint8_t x, uint8_t y, uint8_t pixelVal);
-        void cursorGoTo();
 
         enum class DisplayCmd : unsigned char {
 

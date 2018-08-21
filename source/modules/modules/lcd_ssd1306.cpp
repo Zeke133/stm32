@@ -164,12 +164,9 @@ void Lcd_ssd1306::putc(char symbol) {
     // use current coordinates as top,left angle of object
     // move cursor if doesn't fit to borders
     if (cursorX + columns >= width) {
-        
+
         cursorX = 0;
-        if (cursorY + rows >= height) {
-            
-            cursorY = 0;
-        }        
+        cursorY += rows;
     }
     if (cursorY + rows >= height) {
 
@@ -196,31 +193,22 @@ void Lcd_ssd1306::putc(char symbol) {
     cursorY += rows;
 }
 
-// Write full string to screenbuffer
-char Lcd_ssd1306::puts(char* str, FontDef font, SSD1306_COLOR color)
-{
+// Write string to display-buffer
+void Lcd_ssd1306::puts(const char * str) {
+
     // Write until null-byte
-    while (*str) 
-    {
-        if (ssd1306_WriteChar(*str, font, color) != *str)
-        {
-            // Char could not be written
-            return *str;
-        }
-        
-        // Next char
+    while (*str) {
+
+        putc(*str);
         str++;
     }
-
-    // Everything ok
-    return *str;
 }
 
 // Position the cursor
-void Lcd_ssd1306::cursorGoTo(uint8_t x, uint8_t y) 
-{
-    SSD1306.CurrentX = x;
-    SSD1306.CurrentY = y;
+void Lcd_ssd1306::cursorGoTo(uint8_t x, uint8_t y) {
+
+    cursorX = (x >= width) ? 0 : x;
+    cursorY = (y >= height) ? 0 : y;
 }
 
 

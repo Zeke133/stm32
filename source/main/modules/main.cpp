@@ -38,6 +38,13 @@ int main(void) {
     // lcd.cursorGoTo(1, 0);
     // lcd.puts("Temp:"); 
 
+    I2c i2cPort(1, 0x78, 400000);   // I2C parallel converter
+    Font_7x10 font;
+    Lcd_ssd1306 lcd(i2cPort, wait, font);      // LCD on I2C adaptor
+    lcd.puts("Hello =)");
+    lcd.cursorGoTo(0, 40);
+    lcd.puts("Temp:");
+
     uint8_t rom[8] = {0x28, 0x82, 0x65, 0x5B, 0x05, 0x00, 0x00, 0x20};
     OneWire oneWire(wait, GPIOA, GPIO_Pin_8);
     Ds18b20 tempSensor(oneWire, wait, rom);   // 1-Wire DS18B20 temperature sensor
