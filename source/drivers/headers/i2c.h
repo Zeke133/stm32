@@ -30,7 +30,7 @@ public:
 
 private:
 
-    I2c(uint8_t portNumber, uint8_t slaveAddress);
+    I2c(uint8_t portNumber, uint8_t slaveAddress, uint32_t speedClk = 100000);
 
     I2C_TypeDef* port;        // Hardware port used for communication by this instanse
     uint8_t slaveAddress;

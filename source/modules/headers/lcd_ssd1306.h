@@ -3,22 +3,9 @@
 
 #include <IWriter.h>
 #include <IDelayer.h>
+#include <IPixelFont.h>
 
 #include <i2c.h>
-
-/**
- * This Library is written and optimized by Olivier Van den Eede(4ilo) in 2016
- * for Stm32 Uc and HAL-i2c lib's.
- *
- * To use this library with ssd1306 oled display you will need to customize the defines below.
- *
- * This library uses 2 extra files (fonts.c/h).
- * In this files are 3 different fonts you can use:
- * 		- Font_7x10
- * 		- Font_11x18
- * 		- Font_16x26
- *
- */
 
 /*
 API for LCD character displays
@@ -29,7 +16,10 @@ organic / polymer light emitting diode dot-matrix graphic display system.
 It consists of 128 segments and 64 commons.
 This IC is designed for Common Cathode type OLED panel.
 
-I2C address default = 0x78
+I2C parameters:
+    address default = 0x78
+    tcycle Clock Cycle Time 2.5 us which equal to 400kHz
+    tIDLE Idle Time before a new transmission can start 1.3 us
 */
 class Lcd_ssd1306 : public IWriter {
 
@@ -48,26 +38,29 @@ class Lcd_ssd1306 : public IWriter {
 
     private:
 
-        Lcd_ssd1306(I2c& i2c, IDelayer& delay);
+        Lcd_ssd1306(I2c& i2c, IDelayer& delay, IPixelFont& defaultFont);
 
         I2c& i2c;
         IDelayer& wait;
+        IPixelFont& fontDefault;
 
         const char width = 128;
         const char height = 64;
+        const char pagesNum = height / 8;
 
-        char displayBuffer[width * height / 8];
+        char displayBuffer[pagesNum][width];
 
         char cursorX = 0;
         char cursorY = 0;
 
         void writeCommand(unsigned char byte);
+        void writeData(unsigned char * buffer, int size);
 
-        void init();
+        void init(void);
 
-        void fill();
+        void fill(unsigned char bit);
         void update();
-        void drawPixel();
+        void drawPixel(uint8_t x, uint8_t y, uint8_t pixelVal);
         void cursorGoTo();
 
         enum class DisplayCmd : unsigned char {

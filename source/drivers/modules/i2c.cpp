@@ -1,6 +1,6 @@
 #include <i2c.h>
 
-I2c::I2c(uint8_t portNumber, uint8_t slaveAddr) {
+I2c::I2c(uint8_t portNumber, uint8_t slaveAddr, uint32_t speedClk) {
 
     GPIO_TypeDef* gpioPort;
     uint16_t gpioPins;
@@ -30,7 +30,7 @@ I2c::I2c(uint8_t portNumber, uint8_t slaveAddr) {
 
     //I2C configuration
     I2C_InitTypeDef i2c;
-    i2c.I2C_ClockSpeed = 100000;
+    i2c.I2C_ClockSpeed = speedClk;
     i2c.I2C_Mode = I2C_Mode_I2C;
     i2c.I2C_DutyCycle = I2C_DutyCycle_2;
     i2c.I2C_OwnAddress1 = 0x15;    // Random adress
@@ -71,7 +71,6 @@ void I2c::write(uint8_t data) const {
     
     I2C_SendData(port, data);
     while (!I2C_CheckEvent(port, I2C_EVENT_MASTER_BYTE_TRANSMITTED));
-    
 }
 
 uint8_t I2c::read(void) const {
