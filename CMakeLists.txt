@@ -12,6 +12,7 @@ project(
         CXX     # user project
 )
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # ---
 # Libraries CMSIS and STD_Peripherial
@@ -107,5 +108,4 @@ set_property(
             ${PROJECT_SOURCE_DIR}/bin
 )
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Try precompiled header for STD_PERIPH ?!!!

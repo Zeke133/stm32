@@ -8,7 +8,7 @@ Lcd_ssd1306::Lcd_ssd1306(I2c& i2c, IDelayer& delay, IPixelFont& defaultFont)
     init();
 }
 
-void Lcd_ssd1306::writeCommand(unsigned char byte) {
+void Lcd_ssd1306::writeCommand(uint8_t byte) {
 
     i2c.startTransmit();
     i2c.write(byte);
@@ -16,11 +16,11 @@ void Lcd_ssd1306::writeCommand(unsigned char byte) {
     wait.us(2);
 }
 
-void Lcd_ssd1306::writeData(unsigned char * buffer, int size) {
+void Lcd_ssd1306::writeData(const uint8_t * buffer, uint16_t size) {
 
     i2c.startTransmit();
 
-    for(int i = 0; i < size; i++) {
+    for(uint16_t i = 0; i < size; i++) {
 
         i2c.write(buffer[i]);
     }
@@ -35,51 +35,51 @@ void Lcd_ssd1306::init(void) {
     wait.ms(100);
 
     // Init LCD
-    writeCommand(DisplayCmd::SetDispOff);
+    writeCommand(static_cast<uint8_t>(DisplayCmd::SetDispOff));
 
-    writeCommand(DisplayCmd::SetMemAdrMode);
-    writeCommand(DisplayCmd::SetMemAdrModeHoriz);
+    writeCommand(static_cast<uint8_t>(DisplayCmd::SetMemAdrMode));
+    writeCommand(static_cast<uint8_t>(DisplayCmd::SetMemAdrModePage));
 
-    writeCommand(DisplayCmd::SetPageStartAddr | 0);
+    writeCommand(static_cast<uint8_t>(DisplayCmd::SetPageStartAddr) | 0);
 
-    writeCommand(DisplayCmd::SetCOMOutScanDirRemap);
+    writeCommand(static_cast<uint8_t>(DisplayCmd::SetCOMOutScanDirRemap));
 
-    writeCommand(DisplayCmd::SetLowColStartAddr | 0);
-    writeCommand(DisplayCmd::SetHighColStartAddr | 0);
+    writeCommand(static_cast<uint8_t>(DisplayCmd::SetLowColStartAddr) | 0);
+    writeCommand(static_cast<uint8_t>(DisplayCmd::SetHighColStartAddr) | 0);
 
-    writeCommand(DisplayCmd::SetDispStartLine | 0);
+    writeCommand(static_cast<uint8_t>(DisplayCmd::SetDispStartLine) | 0);
 
-    writeCommand(DisplayCmd::SetContrastCtrl);
+    writeCommand(static_cast<uint8_t>(DisplayCmd::SetContrastCtrl));
     writeCommand(0xFF);
 
-    writeCommand(DisplayCmd::SetSegmentRemapOn);
+    writeCommand(static_cast<uint8_t>(DisplayCmd::SetSegmentRemapOn));
 
-    writeCommand(DisplayCmd::SetNormalDisp);
+    writeCommand(static_cast<uint8_t>(DisplayCmd::SetNormalDisp));
 
-    writeCommand(DisplayCmd::SetMultiplexRatio);
+    writeCommand(static_cast<uint8_t>(DisplayCmd::SetMultiplexRatio));
     writeCommand(0x3F);
 
-    writeCommand(DisplayCmd::EntireDispResume);
+    writeCommand(static_cast<uint8_t>(DisplayCmd::EntireDispResume));
 
-    writeCommand(DisplayCmd::SetDispOffset);
+    writeCommand(static_cast<uint8_t>(DisplayCmd::SetDispOffset));
     writeCommand(0x00);
 
-    writeCommand(DisplayCmd::SetDispClckDiv);
+    writeCommand(static_cast<uint8_t>(DisplayCmd::SetDispClckDiv));
     writeCommand(0xF0);
 
-    writeCommand(DisplayCmd::SetPrechargePer);
+    writeCommand(static_cast<uint8_t>(DisplayCmd::SetPrechargePer));
     writeCommand(0x22);
 
-    writeCommand(DisplayCmd::SetCOMPinsHWConf);
-    writeCommand(DisplayCmd::SetCOMAlt | DisplayCmd::SetCOMNoRemap);
+    writeCommand(static_cast<uint8_t>(DisplayCmd::SetCOMPinsHWConf));
+    writeCommand(static_cast<uint8_t>(DisplayCmd::SetCOMAlt) | static_cast<uint8_t>(DisplayCmd::SetCOMNoRemap));
 
-    writeCommand(DisplayCmd::SetVcomhDeselectLev);
-    writeCommand(DisplayCmd::SetVcomh077Vcc);
+    writeCommand(static_cast<uint8_t>(DisplayCmd::SetVcomhDeselectLev));
+    writeCommand(static_cast<uint8_t>(DisplayCmd::SetVcomh077Vcc));
 
-    writeCommand(DisplayCmd::ChargePumpSet);
-    writeCommand(DisplayCmd::EnableChargePump);
+    writeCommand(static_cast<uint8_t>(DisplayCmd::ChargePumpSet));
+    writeCommand(static_cast<uint8_t>(DisplayCmd::EnableChargePump));
 
-    writeCommand(DisplayCmd::SetDispOn);
+    writeCommand(static_cast<uint8_t>(DisplayCmd::SetDispOn));
 
     // Clear screen
     fill(0);
@@ -89,12 +89,14 @@ void Lcd_ssd1306::init(void) {
 }
 
 // Fill the whole screen with the given bit, color depends of display settings
-void Lcd_ssd1306::fill(unsigned char bit) {
+void Lcd_ssd1306::fill(uint8_t bit) {
 
-    unsigned char filler = (bit) ? 0x00 : 0xFF;
+    uint8_t filler = (bit) ? 0x00 : 0xFF;
 
     for(int page = 0; page < pagesNum; page++) {
+
         for(int segment = 0; segment < width; segment++) {
+
             displayBuffer[page][segment] = filler;
         }
     }
@@ -103,7 +105,7 @@ void Lcd_ssd1306::fill(unsigned char bit) {
 // Write display-buffer to the LCD
 void Lcd_ssd1306::update(void) {
 
-    for (int page = 0; page < pagesNum; page++) {
+    for (uint8_t page = 0; page < pagesNum; page++) {
 
         // 10.1.13 Set Page Start Address for Page Addressing Mode (B0h~B7h).
         // This command positions the page start address from 0 to 7 in GDDRAM under Page Addressing Mode.
@@ -155,8 +157,8 @@ void Lcd_ssd1306::drawPixel(uint8_t x, uint8_t y, uint8_t pixelVal)
 void Lcd_ssd1306::putc(char symbol) {
 
     IPixelFont& font = fontDefault;
-    int columns = font.getWidth;
-    int rows = font.getHeight;
+    int columns = font.getWidth();
+    int rows = font.getHeight();
     uint8_t inverted = 0;
 
     const uint8_t * bitmapPtr = (uint8_t*)font.getData(symbol - 0x20);

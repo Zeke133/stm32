@@ -38,9 +38,10 @@ int main(void) {
     // lcd.cursorGoTo(1, 0);
     // lcd.puts("Temp:"); 
 
-    I2c i2cPort(1, 0x78, 400000);   // I2C parallel converter
+    I2c i2cPort(1, 0x78, 100000);   // I2C parallel converter
     Font_7x10 font;
     Lcd_ssd1306 lcd(i2cPort, wait, font);      // LCD on I2C adaptor
+    lcd.fill(1);
     lcd.puts("Hello =)");
     lcd.cursorGoTo(0, 40);
     lcd.puts("Temp:");

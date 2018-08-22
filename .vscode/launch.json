@@ -2,7 +2,33 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "(gdb) Launch",
+            "name": "target",
+            "type": "cppdbg",
+            "request": "launch",
+            // "debugServerPath": "${workspaceFolder}/utils/openocd/bin/openocd.exe",
+            // "debugServerArgs": "-s ${workspaceFolder}/utils/openocd/share/openocd/scripts -c \"adapter_khz 3000\" -f interface/stlink-v2.cfg -c \"transport select hla_swd\" -f target/stm32f4x.cfg -c \"gdb_port 50250\" -c init -c \"reset init\" -c \"echo **READY**\"",
+            // "filterStderr": true,
+            // "serverStarted": "READY",
+            "windows": {
+                "miDebuggerPath": "c:/Program Files (x86)/GNU Tools ARM Embedded/7 2018-q2-update/bin/arm-none-eabi-gdb.exe"
+            },
+            "MIMode": "gdb",
+            "targetArchitecture": "arm",
+            "program": "${workspaceFolder}/bin/app.elf",
+            "cwd": "${workspaceFolder}",
+            "setupCommands": [
+                { "text": "exec-file D:/Projects/stm32/bin/app.hex" },
+                { "text": "set remotetimeout 30" },
+                { "text": "target remote localhost:50250" },
+                { "text": "monitor halt" },
+                { "text": "monitor reset init" },
+                { "text": "load" },
+                { "text": "info target" }
+            ],
+            "externalConsole": false
+        },
+        {
+            "name": "tests",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/out/tests.exe",
