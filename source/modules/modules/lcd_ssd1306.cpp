@@ -148,7 +148,7 @@ void Lcd_ssd1306::drawPixel(uint8_t x, uint8_t y, uint8_t pixelVal)
     } 
     else {
 
-        displayBuffer[y / 8][x + (y / 8) * width] &= ~(1 << (y % 8));
+        displayBuffer[y / 8][x] &= ~(1 << (y % 8));
     }
 }
 

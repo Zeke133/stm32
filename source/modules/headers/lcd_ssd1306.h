@@ -17,7 +17,9 @@ It consists of 128 segments and 64 commons.
 This IC is designed for Common Cathode type OLED panel.
 
 I2C parameters:
-    address default = 0x78
+    “SA0” bit provides an extension bit for the slave address.
+    Either “0111100” or “0111101”, can be selected as the slave address of SSD1306.
+    D/C# pin acts as SA0 for slave address selection.
     tcycle Clock Cycle Time 2.5 us which equal to 400kHz
     tIDLE Idle Time before a new transmission can start 1.3 us
 */

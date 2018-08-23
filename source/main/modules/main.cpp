@@ -10,7 +10,7 @@ int main(void) {
 	SetSysClockTo72();
 
     // Init resourses
-    Usart usart1(1, 1200);          // USART1
+    Usart usart1(1, 115200);        // USART1
     OStream cout(usart1);
 
     cout << "\nSTM32F103C8T6. USART1 is ready.\nFirmware: ";
@@ -38,7 +38,7 @@ int main(void) {
     // lcd.cursorGoTo(1, 0);
     // lcd.puts("Temp:"); 
 
-    I2c i2cPort(1, 0x78, 100000);   // I2C parallel converter
+    I2c i2cPort(1, 0x3C, 100000);   // I2C parallel converter
     Font_7x10 font;
     Lcd_ssd1306 lcd(i2cPort, wait, font);      // LCD on I2C adaptor
     lcd.fill(1);
@@ -46,10 +46,10 @@ int main(void) {
     lcd.cursorGoTo(0, 40);
     lcd.puts("Temp:");
 
-    uint8_t rom[8] = {0x28, 0x82, 0x65, 0x5B, 0x05, 0x00, 0x00, 0x20};
-    OneWire oneWire(wait, GPIOA, GPIO_Pin_8);
-    Ds18b20 tempSensor(oneWire, wait, rom);   // 1-Wire DS18B20 temperature sensor
-    cout << "\nDs18b20 stateIs " << (tempSensor.isErrorState() ? "err" : "ok");
+    // uint8_t rom[8] = {0x28, 0x82, 0x65, 0x5B, 0x05, 0x00, 0x00, 0x20};
+    // OneWire oneWire(wait, GPIOA, GPIO_Pin_8);
+    // Ds18b20 tempSensor(oneWire, wait, rom);   // 1-Wire DS18B20 temperature sensor
+    // cout << "\nDs18b20 stateIs " << (tempSensor.isErrorState() ? "err" : "ok");
 
     uint8_t channels[] = {16, 17};
     ADC adc1(   1, 
@@ -82,46 +82,15 @@ int main(void) {
     //     cout << "not found";
     // }
 
-    uint32_t ticks1, ticks2;
-    int32_t temp;
-
     while (1) {
 
         // Delay metering check
         wait.us(1000000);
         led.invert();
-    
-        // Temp measuring to LCD
-        wait.startProfiling();
-        tempSensor.initTemperatureMeasurment();
-        ticks1 = wait.getExecutionTicks();
-    
-        wait.startProfiling();
-        temp = tempSensor.getLastTemperature();
-        ticks2 = wait.getExecutionTicks();
-
-        // lcd.cursorGoTo(1, 5);
-        cout << "\n";
-        if (temp < 0) {
-            // lcd.putc('-');
-            cout << "-";
-        }
-        const char * text1 = itoa(temp/10000, 10);
-        // lcd.puts(text1);
-        cout << text1;
-        // lcd.putc('.');
-        cout << '.';
-        const char * text2 = itoa(temp%10000, 10, 4);
-        // lcd.puts(text2);
-        cout << text2;
-
-        // ADC
-        // cout << "\nADC: " << adc1.getValue(0) << ", " << adc1.getValue(1);
-
-        cout << "\nTicks1 = " << ticks1 << "\nTicks2 = " << ticks2;
-        wait.startProfiling();
-        ticks1 = wait.getExecutionTicks();
-        cout << "\nTicks3 = " << ticks1;
+        cout << "\nADC test: ";
+        cout << OStream::OutSet::dec;
+        cout << adc1.getValue(0) << ", ";    // temp
+        cout << adc1.getValue(1);            // Vref
 
         // usart1.sendBlocking(" Rcv: ");
         // usart1.send((const char *)usart1.getData(), usart1.getCount());
