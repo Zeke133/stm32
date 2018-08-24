@@ -61,7 +61,7 @@ private:
     void writeCommand(uint8_t byte);
     void writeData(const uint8_t * buffer, uint16_t size);
 
-    void init(void);
+    void initialization(void);
 
     enum class DisplayCmd : unsigned char {
 

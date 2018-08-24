@@ -41,10 +41,11 @@ int main(void) {
     I2c i2cPort(1, 0x3C, 100000);   // I2C parallel converter
     Font_7x10 font;
     Lcd_ssd1306 lcd(i2cPort, wait, font);      // LCD on I2C adaptor
-    lcd.fill(1);
+    lcd.fill(0);
     lcd.puts("Hello =)");
-    lcd.cursorGoTo(0, 40);
-    lcd.puts("Temp:");
+    lcd.update();
+    lcd.puts("Hello =)");
+    lcd.update();
 
     // uint8_t rom[8] = {0x28, 0x82, 0x65, 0x5B, 0x05, 0x00, 0x00, 0x20};
     // OneWire oneWire(wait, GPIOA, GPIO_Pin_8);
