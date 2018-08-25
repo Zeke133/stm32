@@ -3,6 +3,9 @@
 
 #include <stdint.h>
 
+/*
+Interface for graphic fonts.
+*/
 class IPixelFont {
 
 public:

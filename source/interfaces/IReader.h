@@ -3,6 +3,9 @@
 
 #include <stdint.h>
 
+/*
+Interface for text input.
+*/
 class IReader {
 
 public:

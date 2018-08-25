@@ -1,7 +1,6 @@
-
 #include <usart.h>
 #include <led.h>
-#include <lcd.h>
+#include <hd44780.h>
 #include <rtc.h>
 #include <ds18b20.h>
 

@@ -3,6 +3,9 @@
 
 #include <stdint.h>
 
+/*
+Interface to provide time delay functionality in easy way.
+*/
 class IDelayer {
 
 public:

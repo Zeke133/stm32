@@ -5,51 +5,61 @@
 add_library(modules)
 target_link_libraries(modules PRIVATE startup std_peripherial)
 
-set(HEADERS_INTERFACES_DIR interfaces)
-set(HEADERS_DRIVERS_DIR drivers/headers)
-set(HEADERS_MODULES_DIR modules/headers)
-set(HEADERS_UTILS_DIR utils/headers)
-set(HEADERS_TESTS_DIR debugApi/headers)
-set(HEADERS_MAIN_DIR main/headers)
+set(CORE_DIR            core)
+set(DEBUG_API_DIR       debugApi)
+set(EXT_DISPLAYS_DIR    externalDevices/displays)
+set(EXT_LEDS_DIR        externalDevices/leds)
+set(EXT_PROTOCOLS_DIR   externalDevices/protocols)
+set(EXT_SENSORS_DIR     externalDevices/sensors)
+set(INT_DEVICES_DIR     internalDevices)
+set(INTERFACES_DIR      interfaces)
+set(IO_GRAPH_DIR        ioProviders/graphicRender)
+set(IO_TEXT_DIR         ioProviders/textOutput)
+set(UTILS_DIR           utils)
+
+set(H_DIR               headers)
+set(SRC_DIR             modules)
+
 target_include_directories(
     modules
-    PRIVATE ${HEADERS_INTERFACES_DIR}
-    PRIVATE ${HEADERS_MAIN_DIR}
-    PRIVATE ${HEADERS_DRIVERS_DIR}
-    PRIVATE ${HEADERS_MODULES_DIR}
-    PRIVATE ${HEADERS_UTILS_DIR}
-    PRIVATE ${HEADERS_TESTS_DIR}
+    PRIVATE ${INTERFACES_DIR}
+    PRIVATE ${CORE_DIR}/${H_DIR}
+    PRIVATE ${DEBUG_API_DIR}/${H_DIR}
+    PRIVATE ${EXT_DISPLAYS_DIR}/${H_DIR}
+    PRIVATE ${EXT_LEDS_DIR}/${H_DIR}
+    PRIVATE ${EXT_PROTOCOLS_DIR}/${H_DIR}
+    PRIVATE ${EXT_SENSORS_DIR}/${H_DIR}
+    PRIVATE ${INT_DEVICES_DIR}/${H_DIR}
+    PRIVATE ${IO_GRAPH_DIR}/${H_DIR}
+    PRIVATE ${IO_TEXT_DIR}/${H_DIR}
+    PRIVATE ${UTILS_DIR}/${H_DIR}
 )
 
-set(SOURCE_DRIVERS_DIR drivers/modules)
-set(SOURCE_MODULES_DIR modules/modules)
-set(SOURCE_UTILS_DIR utils/modules)
-set(SOURCE_DEBUG_DIR debugApi/modules)
-set(SOURCE_MAIN_DIR main/modules)
 target_sources(
     modules
-    PRIVATE ${SOURCE_DRIVERS_DIR}/delay
-    PRIVATE ${SOURCE_DRIVERS_DIR}/sysClock
-    PRIVATE ${SOURCE_DRIVERS_DIR}/gpio
-    PRIVATE ${SOURCE_DRIVERS_DIR}/led
-    PRIVATE ${SOURCE_DRIVERS_DIR}/usart
-    PRIVATE ${SOURCE_DRIVERS_DIR}/oneWire
-    PRIVATE ${SOURCE_DRIVERS_DIR}/i2c
-    PRIVATE ${SOURCE_DRIVERS_DIR}/rtc
-    PRIVATE ${SOURCE_DRIVERS_DIR}/adc
-    PRIVATE ${SOURCE_DRIVERS_DIR}/tacho
-    PRIVATE ${SOURCE_DRIVERS_DIR}/storage
-    PRIVATE ${SOURCE_MODULES_DIR}/oneWireSearch
-    PRIVATE ${SOURCE_MODULES_DIR}/ds18b20
-    PRIVATE ${SOURCE_MODULES_DIR}/lcd
-    PRIVATE ${SOURCE_MODULES_DIR}/lcd_ssd1306
-    PRIVATE ${SOURCE_MODULES_DIR}/analogTempSensor
-    PRIVATE ${SOURCE_MODULES_DIR}/oStream
-    PRIVATE ${SOURCE_UTILS_DIR}/convertation
-    PRIVATE ${SOURCE_UTILS_DIR}/crc
-    PRIVATE ${SOURCE_UTILS_DIR}/strings
-    PRIVATE ${SOURCE_DEBUG_DIR}/debugApi
-    PRIVATE ${SOURCE_MAIN_DIR}/main
+    PRIVATE ${CORE_DIR}/${SRC_DIR}/main
+    PRIVATE ${DEBUG_API_DIR}/${SRC_DIR}/debugApi
+    PRIVATE ${EXT_DISPLAYS_DIR}/${SRC_DIR}/hd44780
+    PRIVATE ${EXT_DISPLAYS_DIR}/${SRC_DIR}/ssd1306
+    PRIVATE ${EXT_LEDS_DIR}/${SRC_DIR}/led
+    PRIVATE ${EXT_PROTOCOLS_DIR}/${SRC_DIR}/oneWire
+    PRIVATE ${EXT_PROTOCOLS_DIR}/${SRC_DIR}/oneWireSearch
+    PRIVATE ${EXT_SENSORS_DIR}/${SRC_DIR}/ds18b20
+    PRIVATE ${EXT_SENSORS_DIR}/${SRC_DIR}/tacho
+    PRIVATE ${INT_DEVICES_DIR}/${SRC_DIR}/adc
+    PRIVATE ${INT_DEVICES_DIR}/${SRC_DIR}/analogTempSensor
+    PRIVATE ${INT_DEVICES_DIR}/${SRC_DIR}/delay
+    PRIVATE ${INT_DEVICES_DIR}/${SRC_DIR}/gpio
+    PRIVATE ${INT_DEVICES_DIR}/${SRC_DIR}/i2c
+    PRIVATE ${INT_DEVICES_DIR}/${SRC_DIR}/rtc
+    PRIVATE ${INT_DEVICES_DIR}/${SRC_DIR}/storage
+    PRIVATE ${INT_DEVICES_DIR}/${SRC_DIR}/sysClock
+    PRIVATE ${INT_DEVICES_DIR}/${SRC_DIR}/usart
+    # PRIVATE ${IO_GRAPH_DIR}/${SRC_DIR}/
+    PRIVATE ${IO_TEXT_DIR}/${SRC_DIR}/oStream
+    PRIVATE ${UTILS_DIR}/${SRC_DIR}/convertation
+    PRIVATE ${UTILS_DIR}/${SRC_DIR}/crc
+    PRIVATE ${UTILS_DIR}/${SRC_DIR}/strings
 )
 
 target_compile_options(

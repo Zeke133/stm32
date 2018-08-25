@@ -10,6 +10,8 @@
         "initializer_list": "cpp",
         "type_traits": "cpp",
         "xtree": "cpp",
-        "ios": "cpp"
+        "ios": "cpp",
+        "system_error": "cpp",
+        "xtr1common": "cpp"
     },
 }

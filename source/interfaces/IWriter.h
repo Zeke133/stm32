@@ -3,6 +3,9 @@
 
 #include <stdint.h>
 
+/*
+Interface for text output.
+*/
 class IWriter {
 
 public:

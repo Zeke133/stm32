@@ -20,7 +20,7 @@ add_subdirectory(libs)
 # User Modules library
 add_subdirectory(source)
 # Startup procedure
-set(SOURCE_STARTUP_DIR source/main/modules)
+set(SOURCE_STARTUP_DIR source/startup)
 add_library(startup OBJECT)
 target_sources(
     startup

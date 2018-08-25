@@ -3,6 +3,9 @@
 
 #include <stdint.h>
 
+/*
+Interface for providing 1-Wire protocol functionality.
+*/
 class IOneWire {
 
 public:

@@ -13,7 +13,7 @@
                 "miDebuggerPath": "c:/Program Files (x86)/GNU Tools ARM Embedded/7 2018-q2-update/bin/arm-none-eabi-gdb.exe"
             },
             "miDebuggerServerAddress": "127.0.0.1:50250",
-            "preLaunchTask": "connectTarget"
+            "preLaunchTask": "stLinkConnect"
         },
         {
             "name": "tests",

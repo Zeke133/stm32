@@ -2,41 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "connectTarget",
-            "identifier": "connectTarget",
-            "type": "shell",
-            "windows": {
-                "options": {
-                    "cwd": "${workspaceRoot}\\utils"
-                },
-                "command": "${workspaceRoot}\\utils\\openOCDConnect.bat"
-            },
-            "problemMatcher": [],
-            "dependsOn": "flashTarget",
-            "isBackground": true
-        },
-        {
-            "label": "flashTarget",
-            "identifier": "flashTarget",
-            "type": "shell",
-            "windows": {
-                "options": {
-                    "cwd": "${workspaceRoot}\\utils"
-                },
-                "command": "${workspaceRoot}\\utils\\openOCDFlash.bat"
-            },
-            "problemMatcher": []
-        },
-        {
-            "label": "cmakeGenerateBuildTest",
-            "identifier": "cmakeGenBuildTest",
-            "type": "shell",
-            "windows": {
-                "command": "./generateBuildTest.bat"
-            },
-            "problemMatcher": "$gcc"
-        },
-        {
+            // Builds a project if make files already generated
             "label": "build",
             "identifier": "build",
             "type": "shell",
@@ -47,16 +13,64 @@
             "group": {
                 "kind": "build",
                 "isDefault": true
-            },
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": true,
-                "panel": "shared",
-                "showReuseMessage": true
             }
         },
         {
+            // Generates Cmake cache and Make files to 'build' directory
+            // creates 'compile_commands.json' for LSP IntelliSense
+            // bilds project and runs unit tests
+            "label": "cmakeGenerateBuildTest",
+            "identifier": "cmakeGenBuildTest",
+            "type": "shell",
+            "windows": {
+                "command": "./generateBuildTest.bat"
+            },
+            "problemMatcher": "$gcc"
+        },
+        {
+            // Builds and runs unit tests
+            "label": "test",
+            "type": "shell",
+            "windows": {
+                "command": "./test.bat"
+            },
+            "problemMatcher": "$gcc",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
+        },
+        {
+            // Connects to target MCU via SWD interface using OpenOCD
+            // after connection GDB can connect to OpenOCD for debug
+            "label": "stLinkConnect",
+            "identifier": "stLinkConnect",
+            "type": "shell",
+            "windows": {
+                "options": {
+                    "cwd": "${workspaceRoot}\\utils\\win"
+                },
+                "command": "${workspaceRoot}\\utils\\win\\openOCDConnect.bat"
+            },
+            "problemMatcher": [],
+            "dependsOn": "stLinkFlash",
+            "isBackground": true
+        },
+        {
+            // Flashes target MCU via SWD interface using OpenOCD
+            "label": "stLinkFlash",
+            "identifier": "stLinkFlash",
+            "type": "shell",
+            "windows": {
+                "options": {
+                    "cwd": "${workspaceRoot}\\utils\\win"
+                },
+                "command": "${workspaceRoot}\\utils\\win\\openOCDFlash.bat"
+            },
+            "problemMatcher": []
+        },
+        {
+            // Flashes target MCU via Usart and default bootloader
             "label": "upload",
             "identifier": "upload",
             "type": "shell",
@@ -104,38 +118,6 @@
                 "--fn",
                 "${workspaceRoot}\\bin\\app.hex"
             ],
-            "problemMatcher": "$gcc"
-        },
-        {
-            "label": "buildTests",
-            "type": "shell",
-            "command": "g++",
-            "args": [
-                "-isystem",
-                "../googleTest/googletest/include",
-                "-pthread",
-                "-I${workspaceRoot}/source/utils/headers",
-                "${workspaceRoot}/source/tests/unit/convertationTest.cpp",
-                "${workspaceRoot}/source/tests/unit/crcTest.cpp",
-                "${workspaceRoot}/source/tests/unit/runAllTests.cpp",
-                "${workspaceRoot}/source/utils/modules/convertation.cpp",
-                "${workspaceRoot}/source/utils/modules/crc.cpp",
-                "../googleTest/googletest/build/gtest_main.a",
-                "-o",
-                "${workspaceRoot}/bin/UnitTests",
-                "-Wall",
-                "-std=c++17"
-            ]
-        },
-        {
-            "label": "runTests",
-            "dependsOn": "buildTests",
-            "type": "shell",
-            "command": "${workspaceRoot}/bin/UnitTests",
-            "group": {
-                "kind": "test",
-                "isDefault": true
-            },
             "problemMatcher": "$gcc"
         }
     ]

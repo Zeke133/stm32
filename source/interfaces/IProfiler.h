@@ -3,6 +3,9 @@
 
 #include <stdint.h>
 
+/*
+Interface for profiling and performance measuring.
+*/
 class IProfiler {
 
 public:
