@@ -1,6 +1,5 @@
 #include <SysClock.h>
 
-
 void SetSysClockTo72(void) {
 
     ErrorStatus HSEStartUpStatus;
@@ -36,14 +35,11 @@ void SetSysClockTo72(void) {
         RCC_PLLConfig(RCC_PLLSource_HSE_Div1, RCC_PLLMul_9);
         RCC_PLLCmd( ENABLE);
 
-        while (RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET) {}
+        while (RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET) ;
 
         RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
 
-        while (RCC_GetSYSCLKSource() != 0x08) {}
+        while (RCC_GetSYSCLKSource() != 0x08) ;
     }
-    else {
-        while (1) {}
-    }
+    else while (1) ;
 }
-

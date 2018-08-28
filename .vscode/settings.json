@@ -12,6 +12,7 @@
         "xtree": "cpp",
         "ios": "cpp",
         "system_error": "cpp",
-        "xtr1common": "cpp"
+        "xtr1common": "cpp",
+        "xmemory0": "cpp"
     },
 }

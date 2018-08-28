@@ -1,29 +1,28 @@
 #include <convertation.h>
 
-
 const char * itoa(unsigned int val, int base, uint8_t width) {
 
-	const char * symbols = "0123456789ABCDEF";
-	static char buf[11];
-	int i;
+    const char * symbols = "0123456789ABCDEF";
+    static char buf[11];
+    int i;
 
-	for(i = 0; i < 10; i++) {
-		buf[i] = '0';
-	}
+    for(i = 0; i < 10; i++) {
+        buf[i] = '0';
+    }
 
-	buf[i--] = 0;
+    buf[i--] = 0;
 
-	while(1) {
+    while(1) {
 
-		if(i < 0) return buf;
+        if(i < 0) return buf;
 
-		buf[i] = symbols[val % base];
-		val /= base;
+        buf[i] = symbols[val % base];
+        val /= base;
 
-		if(val == 0) return width ? &buf[10-width] : &buf[i];
-		i--;
-	}
-	return "ERROR!";
+        if(val == 0) return width ? &buf[10-width] : &buf[i];
+        i--;
+    }
+    return "ERROR!";
 }
 
 int32_t atoi(const uint8_t * mas, uint8_t base, uint8_t signs) {
@@ -42,27 +41,21 @@ int32_t atoi(const uint8_t * mas, uint8_t base, uint8_t signs) {
     }
 
     for( ; i < signs; i++) {
-        
         // check for end of string
-        if (mas[i] == 0) {
-            break;
-        }
+        if (mas[i] == 0) break;
         // search of symbol
         uint8_t s = 0;
         for ( ; s < base; s++) {
-            
             if (mas[i] == symbols[s]) break;
         }
         // no such symbol
-        if (s == base) {
-            break;
-        }
+        if (s == base) break;
         // add to number
         res *= base;
-        res += s;        
+        res += s;
     }
 
-    return res * sign;        
+    return res * sign;
 }
 
 void unix2DateTime(DateTime& dateTimeRef, uint32_t unixTime) {
@@ -78,22 +71,20 @@ void unix2DateTime(DateTime& dateTimeRef, uint32_t unixTime) {
     time = unixTime;
     t1 = time / 60;
     dateTimeRef.seconds = time - t1 * 60;
- 
+
     time = t1;
     t1 = time / 60;
     dateTimeRef.minutes = time - t1 * 60;
- 
+
     time = t1;
     t1 = time / 24;
     dateTimeRef.hours = time - t1 * 24;
 
-    //
     // time = unixTime;
     // t1 = time % 86400;
     // dateTimeRef.hours = t1 / 3600;
     // dateTimeRef.minutes = t1 % 3600 / 60;
     // dateTimeRef.seconds = t1 % 3600 % 60;
-    
 
     // Calc of week day
     dateTimeRef.wday = jdn % 7;
@@ -109,18 +100,18 @@ void unix2DateTime(DateTime& dateTimeRef, uint32_t unixTime) {
     dateTimeRef.month = m + 3 - 12 * (m / 10);
     dateTimeRef.year = 100 * b + d - 4800 + (m / 10);
 }
- 
+
 uint32_t dateTime2Unix(const DateTime& dateTime) {
 
     uint8_t a;
     uint16_t y;
     uint8_t m;
     uint32_t JDN;
- 
+
     a = (14 - dateTime.month) / 12;
     y = dateTime.year + 4800 - a;
     m = dateTime.month + (12 * a) - 3;
- 
+
     JDN = dateTime.date;
     JDN += (153 * m + 2) / 5;
     JDN += 365 * y;
@@ -133,7 +124,7 @@ uint32_t dateTime2Unix(const DateTime& dateTime) {
     JDN += (dateTime.hours * 3600);
     JDN += (dateTime.minutes * 60);
     JDN += (dateTime.seconds);
- 
+
     return JDN;
 }
 
@@ -142,7 +133,6 @@ int32_t ds18b20Temp2decimal(uint16_t tempDs18b20) {
     int32_t result = 0;
 
     if (tempDs18b20 & 0xF800) {     // sign is "-"
-
         result = (~tempDs18b20 >> 4) & 0x7F;
         result *= 10000;
         result += 10000;
@@ -152,7 +142,6 @@ int32_t ds18b20Temp2decimal(uint16_t tempDs18b20) {
         if (tempDs18b20 & 0x01) result -= 625;
         result *= -1;
     } else {                        // sign is "+"
-
         result = (tempDs18b20 >> 4) & 0x7F;
         result *= 10000;        
         if (tempDs18b20 & 0x08) result += 5000;
@@ -162,4 +151,3 @@ int32_t ds18b20Temp2decimal(uint16_t tempDs18b20) {
     }
     return result;
 }
-

@@ -1,20 +1,14 @@
 #include <adc.h>
 
+ADC::ADC( uint32_t adcN,
+          uint32_t clkDiv,                    // example: RCC_PCLK2_Div6
+          enum ResultStoreMode chType,
+          uint32_t chCnt,
+          const uint8_t * chNumbers) {
 
-ADC::ADC(
-            uint32_t adcN,
-            uint32_t clkDiv,                    // example: RCC_PCLK2_Div6
-            enum ResultStoreMode chType,
-            uint32_t chCnt,
-            const uint8_t * chNumbers) {
+    if (adcN == 1) adcUsed = ADC1;
+    else adcUsed = ADC2;
 
-    if (adcN == 1) {
-        adcUsed = ADC1;
-    }
-    else {
-        adcUsed = ADC2;
-    }
-    
     clockDivider = clkDiv;
     channelsType = chType;
     useDMA = 0;
@@ -27,9 +21,7 @@ ADC::ADC(
                 channelsCnt = chCnt > 12 ? 12 : chCnt;  // have only 12 regular channels
                 useDMA = 1;                             // use DMA when more than 1 channel
             }
-            else {
-                channelsCnt = 1;                        // ADC2 have no DMA so just 1 channel can be stored
-            }
+            else channelsCnt = 1;                       // ADC2 have no DMA so just 1 channel can be stored
         }
         else channelsCnt = chCnt;
     }
@@ -42,7 +34,7 @@ ADC::ADC(
 }
 
 void ADC::init() {
-    
+
     // set clock for ADC. MAX can be 14Mhz!
     RCC_ADCCLKConfig(clockDivider);
     // enable ADC system clock    
@@ -50,9 +42,7 @@ void ADC::init() {
 
     // DMA configuration
     if (useDMA) {
-
         RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1 , ENABLE);
-
         DMA_InitTypeDef DMA_InitStructure;
         DMA_InitStructure.DMA_BufferSize = channelsCnt;
         DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;
@@ -76,16 +66,9 @@ void ADC::init() {
         for(uint32_t i = 0; i < channelsCnt; i++) {
 
             uint32_t channel = channelsNumbers[i];
-
-            if (channel < 8) {
-                pinsA |= (1 << channel);
-            }
-            else if (channel == 8) {
-                pinsB |= GPIO_Pin_0;
-            }
-            else if (channel == 9) {
-                pinsB |= GPIO_Pin_1;
-            }
+            if (channel < 8) pinsA |= (1 << channel);
+            else if (channel == 8) pinsB |= GPIO_Pin_0;
+            else if (channel == 9) pinsB |= GPIO_Pin_1;
         }
         // May be need another speed sestting - must be checked
         if (pinsA) GPIO_Init_My(GPIOA, pinsA, GPIO_Mode_AIN, GPIO_Speed_50MHz /*777*/);
@@ -105,66 +88,47 @@ void ADC::init() {
     }
 
     if (channelsType == ResultStoreMode::Injected) {
-
         ADC_InjectedSequencerLengthConfig(adcUsed, channelsCnt);
         for(uint32_t i = 0; i < channelsCnt; i++) {
-            
             ADC_InjectedChannelConfig(adcUsed, channelsNumbers[i], i+1, ADC_SampleTime_7Cycles5);
         }
         ADC_ExternalTrigInjectedConvConfig(adcUsed, ADC_ExternalTrigInjecConv_None);
     } else {
-
         for(uint32_t i = 0; i < channelsCnt; i++) {
-            
             ADC_RegularChannelConfig(adcUsed, channelsNumbers[i], i+1, ADC_SampleTime_7Cycles5);
         }
     }
-    
+
     // Enable Temperature sensor if used
-    for(uint32_t i = 0; i < channelsCnt; i++)
-    {
-        if (channelsNumbers[i] == ADC_Channel_TempSensor) {
-            ADC_TempSensorVrefintCmd(ENABLE);
-        }
+    for(uint32_t i = 0; i < channelsCnt; i++) {
+        if (channelsNumbers[i] == ADC_Channel_TempSensor) ADC_TempSensorVrefintCmd(ENABLE);
     }
-        
+
     // Enable ADC
     ADC_Cmd(adcUsed, ENABLE);                           // enable ADC
 
     // Enable DMA
-    if (useDMA) {
-        ADC_DMACmd(adcUsed, ENABLE);
-    }
- 
+    if (useDMA) ADC_DMACmd(adcUsed, ENABLE);
+
     // ADC calibration (optional, but recommended at power on)
     ADC_ResetCalibration(adcUsed);                      // Reset previous calibration
     while(ADC_GetResetCalibrationStatus(adcUsed));
     ADC_StartCalibration(adcUsed);                      // Start new calibration (ADC must be off at that time)
     while(ADC_GetCalibrationStatus(adcUsed));
 
-    // start conversion 777 need or not?
+    // start conversion need or not???
     ADC_Cmd(ADC1,ENABLE);                               // enable ADC
-    
-    if (channelsType == ResultStoreMode::Injected) {
-        ADC_AutoInjectedConvCmd(adcUsed, ENABLE);
-    }
+
+    if (channelsType == ResultStoreMode::Injected) ADC_AutoInjectedConvCmd(adcUsed, ENABLE);
 
     ADC_SoftwareStartConvCmd(adcUsed, ENABLE);          // start conversion (will be endless as we are in continuous mode)
-
 }
 
 uint16_t ADC::getValue(uint8_t channel) const {
 
     if (channelsType == ResultStoreMode::Regular) {
-        if (useDMA) {
-            return dataStorage[channel];
-        }
-        else {
-            return ADC_GetConversionValue(adcUsed);
-        }
+        if (useDMA) return dataStorage[channel];
+        else return ADC_GetConversionValue(adcUsed);
     }
-    else {
-        return ADC_GetInjectedConversionValue(adcUsed, mapChannel2Injected[channel]);
-    }
+    else return ADC_GetInjectedConversionValue(adcUsed, mapChannel2Injected[channel]);
 }
-

@@ -1,11 +1,5 @@
 #include <oStream.h>
 
-OStream::OStream(IWriter& driver)
-    : device(driver) {
-    
-    //
-}
-
 OStream& OStream::operator<<(enum OutSet manipulator) {
     if (manipulator == OutSet::dec) outputNumbersBase = 10;
     else if (manipulator == OutSet::hex) outputNumbersBase = 16;
@@ -44,5 +38,3 @@ OStream& OStream::operator<<(int32_t num) {
     device.puts(itoa(num, outputNumbersBase));
     return *this;
 };
-
-

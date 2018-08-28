@@ -1,6 +1,7 @@
 #ifndef _DS18B20_H
 #define _DS18B20_H
 
+// using
 #include <IOneWire.h>
 #include <IDelayer.h>
 
@@ -8,16 +9,13 @@
 #include <convertation.h>
 
 /*
-Dallas ds18b20 temperature sensor driver
+Dallas ds18b20 temperature sensor API
 */
 class Ds18b20 {
-
-friend int main(void);
 
 public:
 
     enum class Resolution : uint8_t {
-
         // masks with bits for Configuraion register
         _9bit = 0x00,       // 9-bit resolution  93.75 ms
         _10bit = 0x20,      // 10-bit resolution  187.5 ms
@@ -25,11 +23,17 @@ public:
         _12bit = 0x60       // 12-bit resolution  750 ms
     };
     enum class PowerMode : uint8_t {
-
         parasite = 0,
         external = 1
     };
-    
+
+    Ds18b20(IOneWire& oneWire, IDelayer& wait, enum Resolution res = Resolution::_12bit);
+    Ds18b20(IOneWire& oneWire, IDelayer& wait, uint8_t * ROM, enum Resolution res = Resolution::_12bit);
+
+    // delete copy constructor and assignment operator
+    Ds18b20(const Ds18b20&) = delete;
+    Ds18b20& operator=(const Ds18b20&) = delete;
+
     // configuration
     void setAlarmTemp(int8_t Th, int8_t Tl);
     uint16_t getAlarmTemp(void);
@@ -49,22 +53,15 @@ public:
     void saveSettings(void);
     void restoreSettings(void);
 
-    // delete copy constructor and assignment operator
-    Ds18b20(const Ds18b20&) = delete;
-    Ds18b20& operator=(const Ds18b20&) = delete;
-
 private:
-
-    Ds18b20(IOneWire& oneWire, IDelayer& wait, enum Resolution res = Resolution::_12bit);
-    Ds18b20(IOneWire& oneWire, IDelayer& wait, uint8_t * ROM, enum Resolution res = Resolution::_12bit);
 
     // procedures
     void initialization(enum Resolution res);
     uint8_t selectDevice(void);
-    
+
     // hardware commands
     uint8_t writeScratchpad(void);
-    uint8_t readScratchpad(void);        
+    uint8_t readScratchpad(void);
     uint8_t copyScratchpad(void);
     uint8_t recallEE(void);
     uint8_t readPowerSupply(void);
@@ -85,7 +82,7 @@ private:
     uint8_t tempTrigerLow;
     uint8_t configRegister;     // 0 R1 R0 1  1 1 1 1
     uint16_t temperature;
-    
+
 };
 
 #endif

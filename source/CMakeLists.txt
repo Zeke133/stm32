@@ -38,24 +38,24 @@ target_include_directories(
 target_sources(
     modules
     PRIVATE ${CORE_DIR}/${SRC_DIR}/main
-    PRIVATE ${DEBUG_API_DIR}/${SRC_DIR}/debugApi
+    PRIVATE ${DEBUG_API_DIR}/${SRC_DIR}/_debugApi
     PRIVATE ${EXT_DISPLAYS_DIR}/${SRC_DIR}/hd44780
     PRIVATE ${EXT_DISPLAYS_DIR}/${SRC_DIR}/ssd1306
     PRIVATE ${EXT_LEDS_DIR}/${SRC_DIR}/led
     PRIVATE ${EXT_PROTOCOLS_DIR}/${SRC_DIR}/oneWire
-    PRIVATE ${EXT_PROTOCOLS_DIR}/${SRC_DIR}/oneWireSearch
+    PRIVATE ${EXT_PROTOCOLS_DIR}/${SRC_DIR}/_oneWireSearch
     PRIVATE ${EXT_SENSORS_DIR}/${SRC_DIR}/ds18b20
-    PRIVATE ${EXT_SENSORS_DIR}/${SRC_DIR}/tacho
+    PRIVATE ${EXT_SENSORS_DIR}/${SRC_DIR}/_tacho
     PRIVATE ${INT_DEVICES_DIR}/${SRC_DIR}/adc
-    PRIVATE ${INT_DEVICES_DIR}/${SRC_DIR}/analogTempSensor
+    PRIVATE ${INT_DEVICES_DIR}/${SRC_DIR}/_analogTempSensor
     PRIVATE ${INT_DEVICES_DIR}/${SRC_DIR}/delay
     PRIVATE ${INT_DEVICES_DIR}/${SRC_DIR}/gpio
     PRIVATE ${INT_DEVICES_DIR}/${SRC_DIR}/i2c
     PRIVATE ${INT_DEVICES_DIR}/${SRC_DIR}/rtc
-    PRIVATE ${INT_DEVICES_DIR}/${SRC_DIR}/storage
+    PRIVATE ${INT_DEVICES_DIR}/${SRC_DIR}/_storage
     PRIVATE ${INT_DEVICES_DIR}/${SRC_DIR}/sysClock
     PRIVATE ${INT_DEVICES_DIR}/${SRC_DIR}/usart
-    # PRIVATE ${IO_GRAPH_DIR}/${SRC_DIR}/
+    PRIVATE ${IO_GRAPH_DIR}/${SRC_DIR}/textRender
     PRIVATE ${IO_TEXT_DIR}/${SRC_DIR}/oStream
     PRIVATE ${UTILS_DIR}/${SRC_DIR}/convertation
     PRIVATE ${UTILS_DIR}/${SRC_DIR}/crc

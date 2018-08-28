@@ -1,14 +1,14 @@
 #ifndef _LCD_SSD1306_H
 #define _LCD_SSD1306_H
 
-#include <IWriter.h>
+// implements
+#include <IGraphicOutput.h>
+// using
 #include <IDelayer.h>
-#include <IPixelFont.h>
-
 #include <i2c.h>
 
 /*
-API for LCD character displays
+API for OLED graphic displays based on SSD1306 controller.
 Supports connection trought I2C.
 
 SSD1306 is a single-chip CMOS OLED/PLED driver with controller for
@@ -16,53 +16,61 @@ organic / polymer light emitting diode dot-matrix graphic display system.
 It consists of 128 segments and 64 commons.
 This IC is designed for Common Cathode type OLED panel.
 
-I2C parameters:
+I2C parameters for connection:
     “SA0” bit provides an extension bit for the slave address.
     Either “0111100” or “0111101”, can be selected as the slave address of SSD1306.
     D/C# pin acts as SA0 for slave address selection.
     tcycle Clock Cycle Time 2.5 us which equal to 400kHz
     tIDLE Idle Time before a new transmission can start 1.3 us
 */
-class Ssd1306 : public IWriter {
-
-    friend int main(void);
+class Ssd1306 : public IGraphicOutput {
 
 public:
-    
-    void puts(const char* str);
-    void putc(char symb);
 
-    void drawPixel(uint8_t x, uint8_t y, uint8_t pixelVal);
-    void fill(uint8_t bit);
-    void update(void);
-    void updatePage(uint8_t pageNumber, uint8_t startColumn);
-    void cursorGoTo(uint8_t x, uint8_t y);
-
-    void scroll(void);
-
-    void setOnOff(uint8_t value);
-    void setContrast(uint8_t value);
-    void setInversion(uint8_t value);
+    Ssd1306(I2c& i2c, IDelayer& delay, uint8_t address = (0x3C << 1));
 
     // delete copy constructor and assignment operator
     Ssd1306(const Ssd1306&) = delete;
     Ssd1306& operator=(const Ssd1306&) = delete;
 
-private:
+    // IGraphicOutput interface implementation
+    void drawPixel(uint8_t x, uint8_t y, uint8_t pixelVal);
+    void fill(uint8_t bit);
+    void update(void);
+    void updatePage(uint8_t pageNumber, uint8_t startColumn);
 
-    Ssd1306(I2c& i2c, IDelayer& delay, IPixelFont& defaultFont);
+    virtual uint8_t getWidth(void) const = 0;
+    virtual uint8_t getHeight(void) const = 0;
+
+    // Specific settings
+    void setOnOff(uint8_t value);
+    void setContrast(uint8_t value);
+    void setInversion(uint8_t value);
+
+    /*
+    Display hardware acceleration feature: image scrolling
+    */
+    void setScroll( uint8_t leftRight,                  // direction: 0 left, 1 right
+                    uint8_t allowVertical = 0,          // enable vertical scrolling
+                    uint8_t speed = 3,                  // speed [0 - 7]
+                    uint8_t startPage = 0,              // [0 - 7]
+                    uint8_t endPage = 7,                // [0 - 7], endPage >= startPage
+                    uint8_t verticalOffset = 1);        // [0 - 63]
+    void setScrollVerticalArea(uint8_t rowsFixedOnTopNumber, uint8_t rowsScrolledNumber);
+    void startScroll(void);
+    void stopScroll(void);
+
+private:
 
     I2c& i2c;
     IDelayer& wait;
-    IPixelFont& fontDefault;
+    const uint8_t address;
 
     static const uint8_t width = 128;
     static const uint8_t height = 64;
     static const uint8_t pagesNum = height / 8;
 
     uint8_t displayBuffer[pagesNum][width];
-    uint8_t cursorX = 0;
-    uint8_t cursorY = 0;
 
     void initialization(void);
     void writeCommand(uint8_t byte);
@@ -70,6 +78,7 @@ private:
 
     enum class DisplayCmd : unsigned char {
 
+        // -------------------------------
         // 1. Fundamental Command Table
         SetContrastCtrl = 0x81,                 // Set Contrast Control. Double byte command to select 1 out of 256 contrast steps.
         // next follows byte of value 0-FF      // Contrast increases as the value increases. (RESET = 7Fh)
@@ -83,8 +92,56 @@ private:
         SetDispOff = 0xAE,                      // Set Display ON/OFF. AEh Display OFF (sleep mode) (RESET)
         SetDispOn = 0xAF,                       // Set Display ON/OFF. AFh Display ON in normal mode 
 
+        // -------------------------------
         // 2. Scrolling Command Table
+        SetScrollRightHoriz = 0x26,             // Continuous Horizontal Scroll Setup
+        SetScrollLeftHoriz = 0x27,
+        // next follows 6 bytes
+        // [0] 0 0 0 0 0 0  0  0  - dummy byte 0x00
+        // [1] * * * * * B2 B1 B0 - start page address 0x00 - 0x07
+        // [2] * * * * * C2 C1 C0 - time interval between each scroll step in terms of frame frequency
+        // 000b – 5 frames 100b – 3 frames 001b – 64 frames 101b – 4 frames 010b – 128 frames 110b – 25 frame 011b – 256 frames 111b – 2 frame
+        // [3] * * * * * D2 D1 D0 - end page address 0x00 - 0x07, must be >= than start page address
+        // [4] 0 0 0 0 0 0  0  0  - dummy byte 0x00
+        // [5] 1 1 1 1 1 1  1  1  - dummy byte 0xFF
 
+        SetScrollVerRightHoriz = 0x29,          // Continuous Vertical and Horizontal Scroll Setup
+        SetScrollVerLeftHoriz = 0x2A,
+        // next follows 5 bytes
+        // [0] 0 0 0 0 0 0  0  0  - dummy byte 0x00
+        // [1] * * * * * B2 B1 B0 - start page address 0x00 - 0x07
+        // [2] * * * * * C2 C1 C0 - time interval between each scroll step in terms of frame frequency
+        // 000b – 5 frames      100b – 3 frames
+        // 001b – 64 frames     101b – 4 frames
+        // 010b – 128 frames    110b – 25 frame
+        // 011b – 256 frames    111b – 2 frame
+        // [3] * * * * * D2 D1 D0 - end page address 0x00 - 0x07, must be >= than start page address
+        // [4] * * E5 E4 E3 E2 E1 E0 - vertical scrolling offset. 0x01 - offset=1 row, 0x3F - offset=63 rows
+
+        SetScrollDeactivate = 0x2E,             // Stop scrolling that is configured by command 26h/27h/29h/2Ah.
+        // Note (1) After sending 2Eh command to deactivate the scrolling action, the ram data needs to be rewritten.
+
+        SetScrollActivate = 0x2F,               // Start scrolling that is configured by the scrolling setup commands 26h/27h/29h/2Ah
+
+        SetScrollVertArea = 0xA3,               // Set Vertical Scroll Area
+        // next follows 2 bytes
+        // [0] * * A5 A4 A3 A2 A1 A0 - set No. of rows in top fixed area.
+        // The No. of rows in top fixed area is referenced to the top of the GDDRAM (i.e. row 0).[RESET = 0]
+        // [1] * B6 B5 B4 B3 B2 B1 B0 - Set No. of rows in scroll area.
+        // This is the number of rows to be used for vertical scrolling. The scroll area starts in the first row below the top fixed area. [RESET = 64]
+        // Notes:
+        // (1) A[5:0]+B[6:0] <= MUX ratio
+        // (2) B[6:0] <= MUX ratio
+        // (3a) Vertical scrolling offset (E[5:0] in 29h/2Ah) < B[6:0]
+        // (3b) Set Display Start Line (X5X4X3X2X1X0 of 40h~7Fh) < B[6:0]
+        // (4) The last row of the scroll area shifts to the first row of the scroll area.
+        // (5) For 64d MUX display
+        // A[5:0] = 0, B[6:0]=64 : whole area scrolls
+        // A[5:0]= 0, B[6:0] < 64 : top area scrolls
+        // A[5:0] + B[6:0] < 64 : central area scrolls
+        // A[5:0] + B[6:0] = 64 : bottom area scrolls
+
+        // -------------------------------
         // 3. Addressing Setting Command Table
         SetLowColStartAddr = 0x00,              // Set Lower Column Start Address for Page Addressing Mode
         // use with '|x', where 'x' - value to set
@@ -120,6 +177,7 @@ private:
                                                 // Set GDDRAM Page Start Address (PAGE0~PAGE7) for Page Addressing Mode using X[2:0].
                                                 // Note (1) This command is only for page addressing mode
 
+        // -------------------------------
         // 4. Hardware Configuration (Panel resolution & layout related) Command Table
         SetDispStartLine = 0x40,                // Set Display Start Line.
         // use with '|x', where 'x' - value to set
@@ -145,6 +203,7 @@ private:
         SetCOMSeq = 0x02,                       // A[4]=0b, Sequential COM pin configuration
         SetCOMAlt = 0x12,                       // A[4]=1b(RESET), Alternative COM pin configuration
 
+        // -------------------------------
         // 5. Timing & Driving Scheme Setting Command Table
         SetDispClckDiv = 0xD5,                  // Set  Display Clock Divide Ratio/Oscillator Frequency
         // next follows next follows 'x|y', where 'x', 'y' - values to set
@@ -167,7 +226,7 @@ private:
 
         NOP = 0xE3,                             // NOP: Command for no operation
 
-
+        // -------------------------------
         // Charge Pump Command Table
         ChargePumpSet = 0x8D,                   // Charge Pump Setting
         DisableChargePump = 0x10,               // A[2] = 0b, Disable charge pump(RESET)

@@ -1,12 +1,10 @@
-#ifndef _I_OUTPUT_H
-#define _I_OUTPUT_H
-
-#include <stdint.h>
+#ifndef _I_TEXT_OUTPUT_H
+#define _I_TEXT_OUTPUT_H
 
 /*
 Interface for text output.
 */
-class IWriter {
+class ITextOutput {
 
 public:
 
@@ -16,4 +14,3 @@ public:
 };
 
 #endif
-

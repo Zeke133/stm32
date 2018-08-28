@@ -1,39 +1,36 @@
 #ifndef _LED_H
 #define _LED_H
 
+// using
 extern "C" {
 #include <stm32f10x_rcc.h>
 #include <stm32f10x_gpio.h>
 }
-
 #include <gpio.h>
 
 /*
-Driver for operations with signaling LEDs
+API for easy operations with signaling LED
 */
 class LED {
 
-friend int main(void);
-
 public:
 
-    void on();
-    void off();
-    void invert();
+    LED(GPIO_TypeDef* port, uint16_t pin);
 
     // delete copy constructor and assignment operator
     LED(const LED&) = delete;
     LED& operator=(const LED&) = delete;
 
+    void on();
+    void off();
+    void invert();
+
 private:
 
-    LED(GPIO_TypeDef* port, uint16_t pin);
-
-	GPIO_TypeDef* port;
-	uint16_t pin;
+    GPIO_TypeDef* port;
+    uint16_t pin;
     uint32_t state;
 
 };
 
 #endif
-

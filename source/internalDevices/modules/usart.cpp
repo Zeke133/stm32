@@ -1,6 +1,5 @@
 #include <usart.h>
 
-
 static uint8_t * uart1bufPtr;
 static uint8_t * uart2bufPtr;
 static uint8_t * uart1bufCntPtr;
@@ -10,27 +9,15 @@ static uint8_t * uart2bufCntPtr;
 void USART1_IRQHandler(void) {
 
     if ((USART1->SR & USART_FLAG_RXNE) != (u16)RESET) {
-
-        if (*uart1bufCntPtr < 100) {
-
-            uart1bufPtr[(*uart1bufCntPtr)++] = USART_ReceiveData(USART1);
-        }
-        else {
-            USART_ReceiveData(USART1);
-        }
+        if (*uart1bufCntPtr < 100) uart1bufPtr[(*uart1bufCntPtr)++] = USART_ReceiveData(USART1);
+        else USART_ReceiveData(USART1);
     }
 }
 void USART2_IRQHandler(void) {
-    
+
     if ((USART2->SR & USART_FLAG_RXNE) != (u16)RESET) {
-
-        if (*uart2bufCntPtr < 100) {
-
-            uart2bufPtr[(*uart2bufCntPtr)++] = USART_ReceiveData(USART2);
-        }
-        else {
-            USART_ReceiveData(USART2);
-        }
+        if (*uart2bufCntPtr < 100) uart2bufPtr[(*uart2bufCntPtr)++] = USART_ReceiveData(USART2);
+        else USART_ReceiveData(USART2);
     }
 }
 void DMA1_Channel4_IRQHandler(void) {
@@ -53,7 +40,6 @@ Usart::Usart(int usartN, uint32_t bauld, uint16_t dataBits, uint16_t stopBits, u
     IRQn_Type dmaIrq;
 
     if (usartN == 1) {
-        
         uart1bufPtr = inputBuffer;
         uart1bufCntPtr = &inputBufferCnt;
 
@@ -71,7 +57,6 @@ Usart::Usart(int usartN, uint32_t bauld, uint16_t dataBits, uint16_t stopBits, u
         dmaIrq = DMA1_Channel4_IRQn;
     }
     else /*if (usartN == 2)*/ {
-        
         uart2bufPtr = inputBuffer;
         uart2bufCntPtr = &inputBufferCnt;
 
@@ -199,9 +184,8 @@ void Usart::putsFast(const char * str) {
 
     uint32_t i = 0;
     for( ; str[i] != 0; i++) {
-
         outputBuffer[i] = str[i];
-    }    
+    }
     /* Restart DMA Channel*/
     DMA_Cmd(dmaChannel, DISABLE);
     dmaChannel->CNDTR = i;
@@ -211,9 +195,8 @@ void Usart::putsFast(const char * str) {
 void Usart::putsFast(const char * data, uint32_t len) {
 
     for(uint32_t i = 0; i < len; i++) {
-
         outputBuffer[i] = data[i];
-    }    
+    }
     /* Restart DMA Channel*/
     DMA_Cmd(dmaChannel, DISABLE);
     dmaChannel->CNDTR = len;
@@ -234,5 +217,3 @@ inline uint8_t * Usart::getData() {
 
     return inputBuffer;
 }
-
-

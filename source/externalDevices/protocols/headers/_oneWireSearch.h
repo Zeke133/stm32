@@ -1,15 +1,21 @@
 #ifndef _ONE_WIRE_SEARCH_H
 #define _ONE_WIRE_SEARCH_H
 
+// using
 #include <IOneWire.h>
-
 #include <crc.h>
 
+/*
+Alpha implementation of 1-Wire search ROM algorithm
+*/
 class OneWireSearch {
 
-friend int main(void);
-
 public:
+
+    OneWireSearch(IOneWire& driver);
+    // delete copy constructor and assignment operator
+    OneWireSearch(const OneWireSearch&) = delete;
+    OneWireSearch& operator=(const OneWireSearch&) = delete;
 
     // storage of connected devices
     const static uint32_t MaxDevicesConnected = 5;      // Maximum number of connected 1-Wire devices
@@ -21,21 +27,15 @@ public:
     uint32_t searchOnly(uint8_t family);
     uint32_t searchExcept(uint8_t family);
 
-    // delete copy constructor and assignment operator
-    OneWireSearch(const OneWireSearch&) = delete;
-    OneWireSearch& operator=(const OneWireSearch&) = delete;
-
 private:
 
-    OneWireSearch(IOneWire& driver);
-
-	uint8_t devicesConnected[MaxDevicesConnected][8];   // Array of connected devices ROMs
-	uint32_t devicesConnectedCount;                     // Number of connected devices
+    uint8_t devicesConnected[MaxDevicesConnected][8];   // Array of connected devices ROMs
+    uint32_t devicesConnectedCount;                     // Number of connected devices
 
     // hardware driver
     IOneWire& driver;
 
-    // private methods data    
+    // private methods data
     uint8_t ROM_NO[8];
     uint32_t LastDiscrepancy;
     uint32_t LastFamilyDiscrepancy;
@@ -51,6 +51,4 @@ private:
 
 };
 
-
 #endif
-

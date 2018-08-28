@@ -22,16 +22,12 @@ Ds18b20::Ds18b20(IOneWire& oneWire, IDelayer& wait, uint8_t * _ROM, enum Resolut
 void Ds18b20::initialization(enum Resolution res) {
 
     if (readPowerSupply() || readScratchpad()) {
-
         errorState = 1;
     }
     else {
-
         errorState = 0;
-
         if (getResolution() != res) {
-
-            setResolution(res);        
+            setResolution(res);
             saveSettings();
         }
     }    
@@ -57,7 +53,7 @@ enum Ds18b20::Resolution Ds18b20::getResolution(void) {
 
 void Ds18b20::setAlarmTemp(int8_t Th, int8_t Tl) {
 
-    // To check !!! 777
+    // Need to be checked
     tempTrigerHigh = (Th < 0) ? (0xFF - Th) : Th;
     tempTrigerLow = (Tl < 0) ? (0xFF - Tl) : Tl;
     writeScratchpad();
@@ -74,9 +70,7 @@ uint16_t Ds18b20::getAlarmTemp(void) {
 int32_t Ds18b20::getTemperature(void) {
 
     if (!convertT()) {
-
         waitConvertionEnd();
-
         return getLastTemperature();
     }
     else return 0;
@@ -94,7 +88,7 @@ int32_t Ds18b20::getLastTemperature(void) {
 }
 
 enum Ds18b20::PowerMode Ds18b20::getPowerMode(void) {
-    
+
     readPowerSupply();
 
     return powerMode;
@@ -142,17 +136,14 @@ uint8_t Ds18b20::readScratchpad(void) {
     uint8_t scratchpad[9];
     uint8_t crc = 0;
     for (uint8_t i = 0; i < 9; i++) {
-
         scratchpad[i] = oneWire.ReadByte();
         crc = calcCRC_1wireQuick(crc, scratchpad[i]);
     }
 
     // check CRC8
     if (crc != 0) {
-
         return 1;
     } else {
-
         temperature = scratchpad[1];
         temperature <<= 8;
         temperature += scratchpad[0];
@@ -179,14 +170,12 @@ uint8_t Ds18b20::copyScratchpad(void) {
 
     // Pull-Up for parasite powered on delay
     if (powerMode == PowerMode::parasite) {
-
         wait.ms(10);
     } else {
         // If the Ds18b20 is powered by an external supply,
         // the master can issue read time slots after the command and the Ds18b20 
         // will respond by transmitting a 0 while in progress and a 1 when done.
         for (uint16_t i = 20; i > 0; i--) {
-
             wait.us(500);
             if (oneWire.ReadTimeslot()) break;
         }
@@ -202,7 +191,6 @@ uint8_t Ds18b20::recallEE(void) {
     oneWire.WriteByte(0xB8);
 
     for (uint16_t i = 20; i > 0; i--) {
-
         wait.us(500);
         if (oneWire.ReadTimeslot()) break;
     }
@@ -234,7 +222,6 @@ void Ds18b20::waitConvertionEnd(void) {
 
     // Pull-Up for parasite powered on delay
     if (powerMode == PowerMode::parasite) {
-
         // Bus is pulled to Vsup by every Read/Write command
         // Wait max convertion time
         switch (getResolution()) {
@@ -260,11 +247,8 @@ void Ds18b20::waitConvertionEnd(void) {
         // will respond by transmitting a 0 while the temperature conversion is in progress
         // and a 1 when the conversion is done.
         for (uint16_t i = 150; i > 0; i --) {
-
             wait.ms(5);
             if (oneWire.ReadTimeslot()) break;
         }
     }
 }
-
-

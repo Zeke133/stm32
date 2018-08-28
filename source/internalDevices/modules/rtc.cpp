@@ -15,7 +15,7 @@ RealTimeClock::RealTimeClock(IDelayer& wait) {
             .month = 1,
             .year = 2018
         };
- 
+
         // Must have a delay after RTC initialization to set a time
         wait.ms(500);
         setTime(time);
@@ -72,5 +72,3 @@ uint32_t RealTimeClock::getUnixTime(void) const {
 
     return RTC_GetCounter();
 }
-
-

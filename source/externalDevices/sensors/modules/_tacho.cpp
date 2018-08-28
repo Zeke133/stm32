@@ -1,11 +1,11 @@
-#include <tacho.h>
+#include <_tacho.h>
 
 static uint16_t prevTicks;
 static uint16_t currentTicks;
 static uint32_t ticks;
 
 void TIM2_IRQHandler(void) {
- 
+
     if (TIM_GetITStatus(TIM2, TIM_IT_CC2) != RESET) {
         /* Reset flag */
         TIM_ClearITPendingBit(TIM2, TIM_IT_CC2);
@@ -60,19 +60,17 @@ Tacho::Tacho() {
 }
 
 uint32_t Tacho::getRpm(void) {
-    
+
     return 6000000/ticks;
 }
 
 uint32_t Tacho::getSpeed(void) {
-    
+
     // https://ru.wikipedia.org/wiki/%D0%9C%D0%B5%D1%82%D1%80_%D0%B2_%D1%81%D0%B5%D0%BA%D1%83%D0%BD%D0%B4%D1%83
     return (100000*rotateLength*3600)/(1000000*ticks);
 }
 
 void Tacho::setRotationLength(uint32_t len) {
-    
+
     rotateLength = len;
 }
-
-

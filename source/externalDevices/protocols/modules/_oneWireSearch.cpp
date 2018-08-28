@@ -1,4 +1,4 @@
-#include <oneWireSearch.h>
+#include <_oneWireSearch.h>
 
 OneWireSearch::OneWireSearch(IOneWire& drv)
     : driver(drv) {
@@ -7,7 +7,7 @@ OneWireSearch::OneWireSearch(IOneWire& drv)
     LastDeviceFlag = 0;
     LastFamilyDiscrepancy = 0;
     
-	devicesConnectedCount = 0;
+    devicesConnectedCount = 0;
 }
 
 const uint8_t* OneWireSearch::getDeviceROM(uint32_t index) const {
@@ -71,7 +71,7 @@ uint32_t OneWireSearch::search() {
         uint32_t rom_byte_number = 0;
         
         // loop to do the search
-        do {            
+        do {
             
             uint8_t rom_byte_mask = 1;
 
@@ -81,7 +81,6 @@ uint32_t OneWireSearch::search() {
 
             // check for no devices on 1-wire
             if ((id_bit == 1) && (cmp_id_bit == 1)) {
-
                 break;
             }
             else {
@@ -90,7 +89,6 @@ uint32_t OneWireSearch::search() {
                 
                 // all devices coupled have 0 or 1
                 if (id_bit != cmp_id_bit) {
-
                     search_direction = id_bit;  // bit write value for search
                 }
                 else {
@@ -98,18 +96,15 @@ uint32_t OneWireSearch::search() {
                     // if this discrepancy if before the Last Discrepancy
                     // on a previous next then pick the same as last time
                     if (id_bit_number < LastDiscrepancy) {
-
                         search_direction = ((ROM_NO[rom_byte_number] & rom_byte_mask) > 0);
                     }
                     else {
-
                         // if equal to last pick 1, if not then pick 0
                         search_direction = (id_bit_number == LastDiscrepancy);
                     }
 
                     // if 0 was picked then record its position in LastZero
                     if (search_direction == 0) {
-
                         last_zero = id_bit_number;
                         // check for Last discrepancy in family
                         if (last_zero < 9) {
@@ -136,7 +131,6 @@ uint32_t OneWireSearch::search() {
                 if (rom_byte_mask == 0) {
 
                     crc8 = calcCRC_1wireQuick(crc8, ROM_NO[rom_byte_number]);  // accumulate the CRC
-
                     rom_byte_number++;
                     rom_byte_mask = 1;
                 }
@@ -168,8 +162,8 @@ uint32_t OneWireSearch::search() {
 // Verify the device with the ROM number in ROM_NO buffer is present.
 // Return 1 : device verified present
 //        0 : device not present
-uint32_t OneWireSearch::verify()
-{
+uint32_t OneWireSearch::verify() {
+
     uint8_t rom_backup[8];
     uint32_t i, rslt, ld_backup, ldf_backup, lfd_backup;
 
@@ -194,9 +188,7 @@ uint32_t OneWireSearch::verify()
             }
         }
     }
-    else {
-        rslt = 0;
-    }
+    else rslt = 0;
 
     // restore the search state 
     for (i = 0; i < 8; i++) {
@@ -212,8 +204,8 @@ uint32_t OneWireSearch::verify()
 
 // Setup the search to find the device type 'family_code' on the next call
 // to next() if it is present.
-void OneWireSearch::targetSetup(uint8_t family_code)
-{
+void OneWireSearch::targetSetup(uint8_t family_code) {
+
     // set the search state to find SearchFamily type devices
     ROM_NO[0] = family_code;
     for (uint32_t i = 1; i < 8; i++) {
@@ -226,8 +218,8 @@ void OneWireSearch::targetSetup(uint8_t family_code)
 
 // Setup the search to skip the current device type on the next call
 // to OWNext().
-void OneWireSearch::familySkipSetup(void)
-{
+void OneWireSearch::familySkipSetup(void) {
+
     // set the Last discrepancy to last family discrepancy
     LastDiscrepancy = LastFamilyDiscrepancy;
     LastFamilyDiscrepancy = 0;
@@ -243,18 +235,18 @@ uint32_t OneWireSearch::searchAllDevices(void) {
     uint32_t res = OneWireSearch::first();
     while (res) {
         for (uint32_t i = 0; i < 8; i++) {
-			devicesConnected[devicesConnectedCount][i] = ROM_NO[i];
+            devicesConnected[devicesConnectedCount][i] = ROM_NO[i];
         }
-		if (++devicesConnectedCount >= MaxDevicesConnected) {
-			break;
-		}
+        if (++devicesConnectedCount >= MaxDevicesConnected) {
+            break;
+        }
         res = OneWireSearch::next();
     }
-	return devicesConnectedCount;
+    return devicesConnectedCount;
 }
 
 uint32_t OneWireSearch::searchOnly(uint8_t family) {
-	
+
     devicesConnectedCount = 0;
     OneWireSearch::targetSetup(family);
     while (OneWireSearch::next()) {
@@ -264,13 +256,13 @@ uint32_t OneWireSearch::searchOnly(uint8_t family) {
         }
         // store device found
         for (uint32_t i = 0; i < 8; i++) {
-			devicesConnected[devicesConnectedCount][i] = ROM_NO[i];
+            devicesConnected[devicesConnectedCount][i] = ROM_NO[i];
         }
-		if (++devicesConnectedCount >= MaxDevicesConnected) {
-			break;
-		}
+        if (++devicesConnectedCount >= MaxDevicesConnected) {
+            break;
+        }
     }
-	return devicesConnectedCount;
+    return devicesConnectedCount;
 }
 
 uint32_t OneWireSearch::searchExcept(uint8_t family) {
@@ -281,19 +273,18 @@ uint32_t OneWireSearch::searchExcept(uint8_t family) {
 
         // check for incorrect type
         if (ROM_NO[0] == family) {
-			OneWireSearch::familySkipSetup();
-		}
+            OneWireSearch::familySkipSetup();
+        }
         else {
             // store device found
             for (uint32_t i = 0; i < 8; i++) {
-				devicesConnected[devicesConnectedCount][i] = ROM_NO[i];
-			}
+                devicesConnected[devicesConnectedCount][i] = ROM_NO[i];
+            }
             if (++devicesConnectedCount >= MaxDevicesConnected) {
-				break;
-			}
+                break;
+            }
         }
         res = next();
     }
-	return devicesConnectedCount;
+    return devicesConnectedCount;
 }
-

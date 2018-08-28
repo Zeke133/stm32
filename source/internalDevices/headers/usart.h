@@ -1,18 +1,17 @@
-#ifndef _UART_H
-#define _UART_H
+#ifndef _USART_H
+#define _USART_H
 
+// implements
+#include <ITextOutput.h>
+// using
 extern "C" {
 #include <stm32f10x_rcc.h>
 #include <stm32f10x_gpio.h>
 #include <stm32f10x_usart.h>
 #include <stm32f10x_dma.h>
 }
-
-#include <IWriter.h>
-
 #include <misc.h>
 #include <gpio.h>
-
 
 // IRQ handler, extern "C" function, because of c++ bad names
 extern "C" {
@@ -23,14 +22,26 @@ extern "C" {
     void DMA1_Channel7_IRQHandler(void);
 }
 
-// Class to work around USART
-class Usart : IWriter {
+/*
+USART driver API. Possibility of using blocking and non-blocking DMA based methods.
+Implements ITextOutput interface.
+*/
+class Usart : public ITextOutput {
 
     friend void USART1_IRQHandler(void);
     friend void USART2_IRQHandler(void);
-    friend int main(void);
 
 public:
+
+    Usart(  int usartN,
+                uint32_t bauld = 115200,
+                uint16_t dataBits = USART_WordLength_8b,
+                uint16_t stopBits = USART_StopBits_1,
+                uint16_t parity = USART_Parity_No);
+
+    // delete copy constructor and assignment operator
+    Usart(const Usart&) = delete;
+    Usart& operator=(const Usart&) = delete;
 
     // --- SEND DATA
     // Fast methods use DMA and are not blocking!
@@ -51,17 +62,7 @@ public:
     // --- SETUP
     void setUart(uint32_t bauld, uint16_t dataBits, uint16_t stopBits, uint16_t parity);
 
-    // delete copy constructor and assignment operator
-    Usart(const Usart&) = delete;
-    Usart& operator=(const Usart&) = delete;
-
 private:
-
-    Usart(  int usartN,
-                uint32_t bauld = 115200,
-                uint16_t dataBits = USART_WordLength_8b,
-                uint16_t stopBits = USART_StopBits_1,
-                uint16_t parity = USART_Parity_No);
 
     void setNvic(uint8_t irqChannel);
     void setDMA(void);
@@ -73,7 +74,7 @@ private:
 
     uint8_t inputBuffer[100];
     uint8_t inputBufferCnt = 0;
-    
+
 };
 
 #endif

@@ -1,15 +1,22 @@
 #ifndef _ANALOG_TEMP_SENSOR_H
 #define _ANALOG_TEMP_SENSOR_H
 
+// using
 #include <adc.h>
 
-// Does not calibrated properly, so need to be veryfied and may be not usefull at all
-
+/*
+ALPHA
+Does not calibrated properly, so need to be veryfied and may be not usefull at all
+*/
 class AnalogTempSensor {
 
-friend int main(void);
-    
 public:
+
+    AnalogTempSensor(ADC& adcRef, uint32_t chTemp);
+
+    // delete copy constructor and assignment operator
+    AnalogTempSensor(const AnalogTempSensor&) = delete;
+    AnalogTempSensor& operator=(const AnalogTempSensor&) = delete;
 
     int32_t getTemperatureC(void);
     void calibrate(int32_t tempC);
@@ -18,13 +25,7 @@ public:
         return V25;
     }
 
-    // delete copy constructor and assignment operator
-    AnalogTempSensor(const AnalogTempSensor&) = delete;
-    AnalogTempSensor& operator=(const AnalogTempSensor&) = delete;
-
 private:
-
-    AnalogTempSensor(ADC& adcRef, uint32_t chTemp);
 
     const ADC& adcRef;
     uint32_t channelTemp;
@@ -45,6 +46,4 @@ private:
 
 };
 
-
 #endif
-

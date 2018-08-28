@@ -1,13 +1,13 @@
 #include <main.h>
 
 void LedTestInterfaceToUsart(Usart& usart, LED& led);
-void LcdTestInterfaceToUsart(Usart& usart, Lcd& lcd);
+void LcdTestInterfaceToUsart(Usart& usart, Hd44780& lcd);
 void RTCTestInterfaceToUsart(Usart& usart, RealTimeClock& rtc);
 void Ds18b20TestInterfaceToUsart(Usart& usart, Ds18b20& sensor);
 
 int main(void) {
 
-	SetSysClockTo72();
+    SetSysClockTo72();
 
     // Init resourses
     Usart usart1(1, 115200);        // USART1
@@ -32,21 +32,24 @@ int main(void) {
     flash.readToRam();
     cout << "\nReload after ERASING: " << OStream::OutSet::dec << flash.data.var1;
 
-    // I2c i2cPort(1, (0x27 << 1);           // I2C parallel converter
-    // Lcd lcd(i2cPort, wait, 2);      // LCD on I2C adaptor
-    // lcd.puts("Hello =)");
-    // lcd.cursorGoTo(1, 0);
-    // lcd.puts("Temp:"); 
+    I2c i2cPort(1);                 // I2C parallel converter. Address is 0x27 << 1
+    Hd44780 lcd(i2cPort, wait, 2, 16);  // LCD on I2C adaptor
+    lcd.puts("Hello =)");
+    lcd.setCursorShow(1);
+    lcd.setCursorBlink(1);
+    lcd.setCursor(1, 0);
+    lcd.puts("Temp:");
+    lcd.setCursor(0, 3);
 
-    I2c i2cPort(1, 0x3C << 1, 100000);   // I2C parallel converter
-    Font_7x10 font;
-    Ssd1306 lcd(i2cPort, wait, font);      // LCD on I2C adaptor
-    lcd.fill(0);
-    lcd.puts("Hello =)");
-    lcd.update();
-    lcd.puts("Hello =)");
-    lcd.update();
-    lcd.scroll();
+    // I2c i2cPort(1/*, 400000*/);     // I2C parallel converter. Address is 0x3C << 1
+    // Font_7x10 font;
+    // Ssd1306 lcd(i2cPort, wait, font);   // LCD on I2C adaptor
+    // lcd.fill(0);
+    // lcd.puts("Hello =)");
+    // lcd.update();
+    // lcd.puts("Hello =)");
+    // lcd.update();
+    // lcd.scroll();
 
     // uint8_t rom[8] = {0x28, 0x82, 0x65, 0x5B, 0x05, 0x00, 0x00, 0x20};
     // OneWire oneWire(wait, GPIOA, GPIO_Pin_8);

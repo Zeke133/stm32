@@ -1,22 +1,23 @@
 #ifndef _O_STREAM_H
 #define _O_STREAM_H
 
-#include <IWriter.h>
-
+// using
+#include <ITextOutput.h>
 #include <convertation.h>
 
-// Output stream for usability
-
+/*
+Output stream simple implementation for better usability.
+*/
 class OStream {
-    
+
 public:
+
+    OStream(ITextOutput& driver) : device(driver) {};
 
     enum class OutSet : char {
         hex,
         dec
-    };   
-
-    OStream(IWriter& device);
+    };
 
     OStream& operator<<(enum OutSet manipulator);       // for output manipulators
     OStream& operator<<(char symbol);                   // for single character
@@ -29,11 +30,9 @@ public:
 
 private:
 
-    IWriter& device;
-
+    ITextOutput& device;
     char outputNumbersBase = 10;
 
 };
-
 
 #endif

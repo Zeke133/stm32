@@ -7,7 +7,7 @@ extern "C" {
 }
 
 /*
-API for port set-up
+API for general purpose IO port setup
 */
 void GPIO_Init_My(GPIO_TypeDef* port, uint16_t pins, GPIOMode_TypeDef mode, GPIOSpeed_TypeDef speed);
 

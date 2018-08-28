@@ -1,4 +1,4 @@
-#include <analogTempSensor.h>
+#include <_analogTempSensor.h>
 
 
 AnalogTempSensor::AnalogTempSensor(ADC& adc, uint32_t chTemp)
@@ -11,7 +11,7 @@ AnalogTempSensor::AnalogTempSensor(ADC& adc, uint32_t chTemp)
 int32_t AnalogTempSensor::getTemperatureC(void) {
 
     uint32_t val = adcRef.getValue(channelTemp);
-    
+
     return ((V25 - val) / AvgSlope + 25);
 }
 
@@ -21,5 +21,3 @@ void AnalogTempSensor::calibrate(int32_t temp) {
 
     V25 = temp * (AvgSlope + 25) + val;
 }
-
-
