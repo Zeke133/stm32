@@ -32,8 +32,8 @@ int main(void) {
     flash.readToRam();
     cout << "\nReload after ERASING: " << OStream::OutSet::dec << flash.data.var1;
 
-    I2c i2cPort(1);                 // I2C parallel converter. Address is 0x27 << 1
-    Hd44780 lcd(i2cPort, wait, 2, 16);  // LCD on I2C adaptor
+    I2c i2cPort(1);
+    Hd44780 lcd(i2cPort, wait, 1, 16);
     lcd.puts("Hello =)");
     lcd.setCursorShow(1);
     lcd.setCursorBlink(1);
@@ -41,15 +41,16 @@ int main(void) {
     lcd.puts("Temp:");
     lcd.setCursor(0, 3);
 
-    // I2c i2cPort(1/*, 400000*/);     // I2C parallel converter. Address is 0x3C << 1
-    // Font_7x10 font;
-    // Ssd1306 lcd(i2cPort, wait, font);   // LCD on I2C adaptor
-    // lcd.fill(0);
-    // lcd.puts("Hello =)");
-    // lcd.update();
-    // lcd.puts("Hello =)");
-    // lcd.update();
-    // lcd.scroll();
+    Ssd1306 oled(i2cPort, wait);
+    Font_7x10 font;
+    TextRender textRender(oled, font);
+    oled.fill(0);
+    textRender.puts("Hello =)");
+    oled.update();
+    textRender.puts("Hello =)");
+    oled.update();
+    oled.setScroll(1,1,0);
+    oled.startScroll();
 
     // uint8_t rom[8] = {0x28, 0x82, 0x65, 0x5B, 0x05, 0x00, 0x00, 0x20};
     // OneWire oneWire(wait, GPIOA, GPIO_Pin_8);

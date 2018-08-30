@@ -39,8 +39,8 @@ public:
     void update(void);
     void updatePage(uint8_t pageNumber, uint8_t startColumn);
 
-    virtual uint8_t getWidth(void) const = 0;
-    virtual uint8_t getHeight(void) const = 0;
+    uint8_t getWidth(void) const { return width; };
+    uint8_t getHeight(void) const { return height; };
 
     // Specific settings
     void setOnOff(uint8_t value);
@@ -66,9 +66,9 @@ private:
     IDelayer& wait;
     const uint8_t address;
 
-    static const uint8_t width = 128;
-    static const uint8_t height = 64;
-    static const uint8_t pagesNum = height / 8;
+    inline static const uint8_t width = 128;
+    inline static const uint8_t height = 64;
+    inline static const uint8_t pagesNum = height / 8;
 
     uint8_t displayBuffer[pagesNum][width];
 

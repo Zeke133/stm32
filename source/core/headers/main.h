@@ -18,6 +18,7 @@
 #include <delay.h>
 #include <_storage.h>
 
+#include <textRender.h>
 #include <pixelFont7x10.h>
 
 #include <convertation.h>

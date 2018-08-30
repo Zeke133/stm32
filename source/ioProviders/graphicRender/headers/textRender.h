@@ -14,23 +14,23 @@ class TextRender : public ITextOutput {
 
 public:
 
-    void puts(const char* str);
-    void putc(char symb);
-
-    void setCursor(uint8_t x, uint8_t y);
+    TextRender(Ssd1306& display, IPixelFont& defaultFont);
 
     // delete copy constructor and assignment operator
     TextRender(const TextRender&) = delete;
     TextRender& operator=(const TextRender&) = delete;
 
-private:
+    void puts(const char* str);
+    void putc(char symb);
 
-    TextRender(Ssd1306& display, IPixelFont& defaultFont);
+    void setCursor(uint8_t x, uint8_t y);
+
+private:
 
     Ssd1306& display;
     IPixelFont& defaultFont;
 
-    static const uint8_t width = 128;
+    static const uint8_t width = 128;   //!!! 777
     static const uint8_t height = 64;
     static const uint8_t pagesNum = height / 8;
 

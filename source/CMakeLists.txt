@@ -69,3 +69,8 @@ target_compile_options(
     PRIVATE -fno-rtti
     PRIVATE -fno-use-cxa-atexit             # Teardown code (including global destructors) can be omitted
 )
+
+# target_compile_features(
+#     modules
+#     PUBLIC cxx_std_17
+# )
