@@ -66,9 +66,9 @@ private:
     IDelayer& wait;
     const uint8_t address;
 
-    static const uint8_t width = 128;
-    static const uint8_t height = 64;
-    static const uint8_t pagesNum = height / 8;
+    inline static const uint8_t width = 128;
+    inline static const uint8_t height = 64;
+    inline static const uint8_t pagesNum = height / 8;
 
     uint8_t displayBuffer[pagesNum][width];
 
