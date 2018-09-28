@@ -27,6 +27,8 @@ class Ssd1306 : public IGraphicOutput {
 
 public:
 
+    // DMA I2C
+
     Ssd1306(I2c& i2c, IDelayer& delay, uint8_t address = (0x3C << 1));
 
     // delete copy constructor and assignment operator
@@ -66,9 +68,9 @@ private:
     IDelayer& wait;
     const uint8_t address;
 
-    inline static const uint8_t width = 128;
-    inline static const uint8_t height = 64;
-    inline static const uint8_t pagesNum = height / 8;
+    static const uint8_t width = 128;
+    static const uint8_t height = 64;
+    static const uint8_t pagesNum = height / 8;
 
     uint8_t displayBuffer[pagesNum][width];
 

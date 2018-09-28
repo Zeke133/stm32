@@ -2,19 +2,19 @@
 #define _TEXT_RENDER_H
 
 // implements
-#include <ITextOutput.h>
+#include <ITerminal.h>
 // using
 #include <IPixelFont.h>
-#include <ssd1306.h>
+#include <IGraphicOutput.h>
 
 /*
 API for rendering text on graphic displays
 */
-class TextRender : public ITextOutput {
+class TextRender : public ITerminal {
 
 public:
 
-    TextRender(Ssd1306& display, IPixelFont& defaultFont);
+    TextRender(IGraphicOutput& display, IPixelFont& defaultFont);
 
     // delete copy constructor and assignment operator
     TextRender(const TextRender&) = delete;
@@ -23,19 +23,32 @@ public:
     void puts(const char* str);
     void putc(char symb);
 
-    void setCursor(uint8_t x, uint8_t y);
+    uint8_t getWidth(void) const { return width; };
+    uint8_t getHeight(void) const { return height; };
+
+    void clearRow(uint8_t row);
+    void setCursor(uint8_t row, uint8_t column);
+
+    // FLUSH!!!
 
 private:
 
-    Ssd1306& display;
-    IPixelFont& defaultFont;
+    void draw8bitSymbol(uint8_t asciiCode, uint8_t invertedColor, uint8_t x, uint8_t y) const;
+    void draw16bitSymbol(uint8_t asciiCode, uint8_t invertedColor, uint8_t x, uint8_t y) const;
 
-    static const uint8_t width = 128;   //!!! 777
-    static const uint8_t height = 64;
-    static const uint8_t pagesNum = height / 8;
+    IGraphicOutput& display;
+    IPixelFont& font;
 
-    uint8_t cursorX = 0;
-    uint8_t cursorY = 0;
+    // Text terminal parameters
+    uint8_t width;              // rows
+    uint8_t height;             // lines
+    uint8_t cursorRow = 0;
+    uint8_t cursorColumn = 0;
+
+    // Font parameters
+    uint8_t fontWidth;
+    uint8_t fontHeight;
+    uint8_t fontInversion;
 
 };
 

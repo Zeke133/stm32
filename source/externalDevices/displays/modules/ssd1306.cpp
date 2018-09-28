@@ -33,8 +33,9 @@ void Ssd1306::writeData(const uint8_t * buffer, uint16_t size) {
     i2c.startTransmit(address);
     // Control bit to 0 and D/C# to 0: means command followed with data will be transmited
     i2c.write(0x40);
-    for(uint8_t i = 0; i < size; i++) {
-        i2c.write(buffer[i]);
+    uint8_t * end = (uint8_t*)buffer + size;
+    while (buffer < end) {
+        i2c.write(*buffer++);
     }
     i2c.stopTransmit();
 }
@@ -119,7 +120,7 @@ void Ssd1306::initialization(void) {
     writeCommand(static_cast<uint8_t>(DisplayCmd::SetCOMOutScanDirRemap));
 
     writeCommand(static_cast<uint8_t>(DisplayCmd::SetCOMPinsHWConf));
-    writeCommand(static_cast<uint8_t>(DisplayCmd::SetCOMSeq) | static_cast<uint8_t>(DisplayCmd::SetCOMNoRemap));
+    writeCommand(static_cast<uint8_t>(DisplayCmd::SetCOMAlt) | static_cast<uint8_t>(DisplayCmd::SetCOMNoRemap));
 
     // default values
     // setInversion(0);

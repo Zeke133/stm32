@@ -128,7 +128,7 @@ void Hd44780::home() {
 void Hd44780::setCursor(uint8_t row, uint8_t column) {
 
     row = (row < height) ? row : (height - 1);
-    column = (column < width) ? column : (column -1);
+    column = (column < width) ? column : (width - 1);
     sendInstruction(static_cast<uint8_t>(InstructionsBits::SetDDRAMADDR) | (column + (row ? 0x40 : 0x00)));
 }
 
@@ -234,12 +234,12 @@ void Hd44780::putc(char symb) {
     sendData(symb);
 }
 
-uint8_t Hd44780::getWidth(void) {
+uint8_t Hd44780::getWidth(void) const {
 
     return width;
 }
 
-uint8_t Hd44780::getHeight(void) {
+uint8_t Hd44780::getHeight(void) const {
 
     return height;
 }

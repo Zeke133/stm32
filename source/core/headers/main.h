@@ -20,6 +20,8 @@
 
 #include <textRender.h>
 #include <pixelFont7x10.h>
+#include <pixelFont11x18.h>
+#include <pixelFont16x26.h>
 
 #include <convertation.h>
 #include <strings.h>

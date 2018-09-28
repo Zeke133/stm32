@@ -4,6 +4,11 @@
 // implements
 #include <IPixelFont.h>
 
+/*
+Data representation of pixel font.
+Each symbol is array of lines.
+MSB is right pixel.
+*/
 class Font_7x10 : public IPixelFont {
 
 public:
@@ -12,15 +17,15 @@ public:
     uint8_t getHeight(void) const { return height; };
 
     const void * getData(uint8_t asciiCode) const {
-        if (asciiCode > numberOfSymbols) return data[0];
-        return data[asciiCode];
+        // If symbol is out if range - put '!' sign
+        return asciiCode < numberOfSymbols ? data[asciiCode] : data[1];
     };
 
 private:
 
-    inline static const uint8_t width = 7;
-    inline static const uint8_t height = 10;
-    inline static const uint8_t numberOfSymbols = 95;
+    static const uint8_t width = 7;
+    static const uint8_t height = 10;
+    static const uint8_t numberOfSymbols = 95;
 
     inline static const uint8_t data[numberOfSymbols][height] = {
         { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },     // sp
@@ -119,6 +124,7 @@ private:
         { 0x30, 0x10, 0x10, 0x10, 0x08, 0x08, 0x10, 0x10, 0x10, 0x30 },     // }
         { 0x00, 0x00, 0x00, 0x74, 0x4C, 0x00, 0x00, 0x00, 0x00, 0x00 },     // ~
     };
+
 };
 
 #endif

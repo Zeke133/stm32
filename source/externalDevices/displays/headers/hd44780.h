@@ -2,7 +2,7 @@
 #define _HD44780_H
 
 // implements
-#include <ITextOutput.h>
+#include <ITerminal.h>
 // using
 #include <IDelayer.h>
 #include <i2c.h>
@@ -13,7 +13,7 @@ Supports connection trought I2C adapter, based for example on PCF85741,
 or 4bit/8bit parallel port (not implemented).
 Implements simple text output interface.
 */
-class Hd44780 : public ITextOutput {
+class Hd44780 : public ITerminal {
 
 public:
 
@@ -27,8 +27,8 @@ public:
     void putc(char symb);
     void puts(const char* str);
 
-    uint8_t getWidth(void);
-    uint8_t getHeight(void);
+    uint8_t getWidth(void) const;
+    uint8_t getHeight(void) const;
 
     void clearRow(uint8_t row);
     void setCursor(uint8_t row, uint8_t column);

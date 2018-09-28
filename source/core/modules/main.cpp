@@ -33,24 +33,30 @@ int main(void) {
     cout << "\nReload after ERASING: " << OStream::OutSet::dec << flash.data.var1;
 
     I2c i2cPort(1);
-    Hd44780 lcd(i2cPort, wait, 1, 16);
-    lcd.puts("Hello =)");
-    lcd.setCursorShow(1);
-    lcd.setCursorBlink(1);
-    lcd.setCursor(1, 0);
-    lcd.puts("Temp:");
-    lcd.setCursor(0, 3);
+    // Hd44780 lcd(i2cPort, wait, 1, 16);
+    // lcd.puts("Hello =)");
+    // lcd.setCursorShow(1);
+    // lcd.setCursorBlink(1);
+    // lcd.setCursor(1, 0);
+    // lcd.puts("Temp:");
+    // lcd.setCursor(0, 3);
 
     Ssd1306 oled(i2cPort, wait);
-    Font_7x10 font;
-    TextRender textRender(oled, font);
-    oled.fill(0);
-    textRender.puts("Hello =)");
+    oled.fill(1);
+
+    Font_7x10 fontS;
+    Font_11x18 fontM;
+    Font_16x26 fontL;
+    TextRender textRender(oled, fontS);
+    textRender.puts("Hello;)ABCDEFGH");
+    TextRender textRender2(oled, fontM);
+    textRender2.setCursor(1,0);
+    textRender2.puts("Hello;)AB");
+    TextRender textRender3(oled, fontL);
+    textRender3.setCursor(2,0);
+    textRender3.puts("Hello;)");
+
     oled.update();
-    textRender.puts("Hello =)");
-    oled.update();
-    oled.setScroll(1,1,0);
-    oled.startScroll();
 
     // uint8_t rom[8] = {0x28, 0x82, 0x65, 0x5B, 0x05, 0x00, 0x00, 0x20};
     // OneWire oneWire(wait, GPIOA, GPIO_Pin_8);
