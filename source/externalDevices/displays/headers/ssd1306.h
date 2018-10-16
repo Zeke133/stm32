@@ -29,7 +29,7 @@ public:
 
     // DMA I2C
 
-    Ssd1306(I2c& i2c, IDelayer& delay, uint8_t address = (0x3C << 1));
+    Ssd1306(I2c& i2c, IDelayer& delay, uint8_t address = defaultAddress);
 
     // delete copy constructor and assignment operator
     Ssd1306(const Ssd1306&) = delete;
@@ -39,7 +39,6 @@ public:
     void drawPixel(uint8_t x, uint8_t y, uint8_t pixelVal);
     void fill(uint8_t bit);
     void update(void);
-    void updatePage(uint8_t pageNumber, uint8_t startColumn);
 
     uint8_t getWidth(void) const { return width; };
     uint8_t getHeight(void) const { return height; };
@@ -68,6 +67,7 @@ private:
     IDelayer& wait;
     const uint8_t address;
 
+    static const uint8_t defaultAddress = 0x3C << 1;
     static const uint8_t width = 128;
     static const uint8_t height = 64;
     static const uint8_t pagesNum = height / 8;
@@ -165,7 +165,7 @@ private:
         SetMemAdrModeInvalid = 0x03,            // Set Memory Addressing Mode. 11b, Invalid
 
         SetColAddr = 0x21,                      // Set Column Address Setup column start and end address.
-        // start byte                           // Column start address, range : 0-127d, (RESET=0d) 
+        // start byte                           // Column start address, range : 0-127d, (RESET=0d)
         // end byte                             // Column end address, range : 0-127d,   (RESET =127d)
                                                 // Note (1) This command is only for horizontal or vertical addressing mode.
 

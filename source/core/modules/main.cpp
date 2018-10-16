@@ -46,15 +46,11 @@ int main(void) {
 
     Font_7x10 fontS;
     Font_11x18 fontM;
-    Font_16x26 fontL;
     TextRender textRender(oled, fontS);
     textRender.puts("Hello;)ABCDEFGH");
     TextRender textRender2(oled, fontM);
     textRender2.setCursor(1,0);
     textRender2.puts("Hello;)AB");
-    TextRender textRender3(oled, fontL);
-    textRender3.setCursor(2,0);
-    textRender3.puts("Hello;)");
 
     oled.update();
 

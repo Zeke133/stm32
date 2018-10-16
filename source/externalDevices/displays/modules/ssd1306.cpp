@@ -21,6 +21,8 @@ The GDDRAM column address pointer will be increased by one automatically after e
 
 void Ssd1306::writeCommand(uint8_t byte) {
 
+    // !!! 777 can make commands in one session?
+
     i2c.startTransmit(address);
     // Control bit to 1 and D/C# to 0: means command will be transmited
     i2c.write(0x80);
@@ -30,14 +32,23 @@ void Ssd1306::writeCommand(uint8_t byte) {
 
 void Ssd1306::writeData(const uint8_t * buffer, uint16_t size) {
 
-    i2c.startTransmit(address);
-    // Control bit to 0 and D/C# to 0: means command followed with data will be transmited
-    i2c.write(0x40);
-    uint8_t * end = (uint8_t*)buffer + size;
-    while (buffer < end) {
-        i2c.write(*buffer++);
+    uint8_t buf2[129];
+    // here we need to fix in some way!!! 777
+
+    buf2[0] = 0x40;
+    for (int i = 0; i < 128; ++i) {
+
+        buf2[i+1] = buffer[i];
     }
-    i2c.stopTransmit();
+    i2c.writeDMA(address, buf2, size+1);
+    // i2c.startTransmit(address);
+    // Control bit to 0 and D/C# to 0: means command followed with data will be transmited
+    // i2c.write(0x40);
+    // uint8_t * end = (uint8_t*)buffer + size;
+    // while (buffer < end) {
+    //     i2c.write(*buffer++);
+    // }
+    // i2c.stopTransmit();
 }
 
 // Fill the whole screen with the given bit, color depends of display settings
@@ -52,36 +63,18 @@ void Ssd1306::fill(uint8_t bit) {
     }
 }
 
-// Flush page of display-buffer to GDDRAM
-void Ssd1306::updatePage(uint8_t pageNumber, uint8_t startColumn) {
-
-    // 10.1.13 Set Page Start Address for Page Addressing Mode (B0h~B7h).
-    // This command positions the page start address from 0 to 7 in GDDRAM under Page Addressing Mode.
-    // Please refer to Table 9-1 and Section 10.1.3 for details.
-    writeCommand(static_cast<uint8_t>(DisplayCmd::SetPageStartAddr) | (pageNumber & 0x07));
-
-    // 10.1.1 Set Lower Column Start Address for Page Addressing Mode (00h~0Fh).
-    // This command specifies the lower nibble of the 8-bit column start address for
-    // the display data RAM under Page Addressing Mode.
-    // The column address will be incremented by each data access.
-    // Please refer to Section Table 9-1 and Section 10.1.3 for details.
-    writeCommand(static_cast<uint8_t>(DisplayCmd::SetLowColStartAddr) | (startColumn & 0x0F));
-
-    // 10.1.2 Set Higher Column Start Address for Page Addressing Mode (10h~1Fh).
-    // This command specifies the higher nibble of the 8-bit column start address for
-    // the display data RAM under Page Addressing Mode.
-    // The column address will be incremented by each data access.
-    // Please refer to Section Table 9-1 and Section 10.1.3 for details.
-    writeCommand(static_cast<uint8_t>(DisplayCmd::SetHighColStartAddr) | ((startColumn >> 4) & 0x0F));
-    writeData(&displayBuffer[pageNumber][startColumn], width - startColumn);
-}
-
-// Write display-buffer to the GDDRAM
+// Flush display-buffer to GDDRAM
 void Ssd1306::update(void) {
 
-    for (uint8_t page = 0; page < pagesNum; page++) {
-        updatePage(page, 0);
-    }
+    writeCommand(static_cast<uint8_t>(DisplayCmd::SetColAddr));
+    writeCommand(0);        // Column start address
+    writeCommand(127);      // Column end address
+
+    writeCommand(static_cast<uint8_t>(DisplayCmd::SetPageAddr));
+    writeCommand(0);        // Page start address
+    writeCommand(7);        // Page end address
+
+    writeData(&displayBuffer[0][0], width*pagesNum);
 }
 
 void Ssd1306::setOnOff(uint8_t value) {
@@ -136,7 +129,7 @@ void Ssd1306::initialization(void) {
 
     // GDDRAM access mode
     writeCommand(static_cast<uint8_t>(DisplayCmd::SetMemAdrMode));
-    writeCommand(static_cast<uint8_t>(DisplayCmd::SetMemAdrModePage));
+    writeCommand(static_cast<uint8_t>(DisplayCmd::SetMemAdrModeHoriz));
 
     setOnOff(1);
 

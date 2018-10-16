@@ -64,7 +64,7 @@ Usart::Usart(int usartN, uint32_t bauld, uint16_t dataBits, uint16_t stopBits, u
         RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
         RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
         // DMA enable
-        RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA2, ENABLE);
+        RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
 
         irqChannel = USART2_IRQn;
         port = GPIOA;
@@ -79,7 +79,7 @@ Usart::Usart(int usartN, uint32_t bauld, uint16_t dataBits, uint16_t stopBits, u
     setDMA();
     
     // Set UART interupt
-    setNvic(irqChannel);
+    setNvic(irqChannel);    // what for??? global usart irq enable
 
     /* Configure the GPIOs */
     /* Configure Tx as alternate function push-pull */
