@@ -72,10 +72,11 @@ private:
     static const uint8_t height = 64;
     static const uint8_t pagesNum = height / 8;
 
+    uint8_t writeDataCmd;
     uint8_t displayBuffer[pagesNum][width];
 
     void initialization(void);
-    void writeCommand(uint8_t byte);
+    void writeCommand(const uint8_t * byte, uint16_t size = 1);
     void writeData(const uint8_t * buffer, uint16_t size);
 
     enum class DisplayCmd : unsigned char {

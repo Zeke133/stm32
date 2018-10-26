@@ -19,36 +19,22 @@ If the D/C# bit is set to logic “1”, it defines the following data byte as a
 The GDDRAM column address pointer will be increased by one automatically after each data write.
 */
 
-void Ssd1306::writeCommand(uint8_t byte) {
-
-    // !!! 777 can make commands in one session?
+void Ssd1306::writeCommand(const uint8_t * byte, uint16_t size) {
 
     i2c.startTransmit(address);
     // Control bit to 1 and D/C# to 0: means command will be transmited
-    i2c.write(0x80);
-    i2c.write(byte);
+    for (uint8_t i = 0; i < size; ++i) {
+        i2c.write(0x80);
+        i2c.write(byte[i]);
+    }
     i2c.stopTransmit();
 }
 
 void Ssd1306::writeData(const uint8_t * buffer, uint16_t size) {
 
-    uint8_t buf2[129];
-    // here we need to fix in some way!!! 777
-
-    buf2[0] = 0x40;
-    for (int i = 0; i < 128; ++i) {
-
-        buf2[i+1] = buffer[i];
-    }
-    i2c.writeDMA(address, buf2, size+1);
-    // i2c.startTransmit(address);
     // Control bit to 0 and D/C# to 0: means command followed with data will be transmited
-    // i2c.write(0x40);
-    // uint8_t * end = (uint8_t*)buffer + size;
-    // while (buffer < end) {
-    //     i2c.write(*buffer++);
-    // }
-    // i2c.stopTransmit();
+    writeDataCmd = 0x40;
+    i2c.writeDMA(address, &writeDataCmd, size+1);
 }
 
 // Fill the whole screen with the given bit, color depends of display settings
@@ -66,31 +52,43 @@ void Ssd1306::fill(uint8_t bit) {
 // Flush display-buffer to GDDRAM
 void Ssd1306::update(void) {
 
-    writeCommand(static_cast<uint8_t>(DisplayCmd::SetColAddr));
-    writeCommand(0);        // Column start address
-    writeCommand(127);      // Column end address
+    uint8_t cmdBuf[3];
 
-    writeCommand(static_cast<uint8_t>(DisplayCmd::SetPageAddr));
-    writeCommand(0);        // Page start address
-    writeCommand(7);        // Page end address
+    cmdBuf[0] = static_cast<uint8_t>(DisplayCmd::SetColAddr);
+    cmdBuf[1] = 0;     // Column start address
+    cmdBuf[2] = 127;   // Column end address
+    writeCommand(cmdBuf, sizeof cmdBuf);
+
+    cmdBuf[0] = static_cast<uint8_t>(DisplayCmd::SetPageAddr);
+    cmdBuf[1] = 0;     // Page start address
+    cmdBuf[2] = 7;     // Page end address
+    writeCommand(cmdBuf, sizeof cmdBuf);
 
     writeData(&displayBuffer[0][0], width*pagesNum);
 }
 
 void Ssd1306::setOnOff(uint8_t value) {
 
-    writeCommand(static_cast<uint8_t>(value ? DisplayCmd::SetDispOn : DisplayCmd::SetDispOff));
+    uint8_t cmd = static_cast<uint8_t>(value ? DisplayCmd::SetDispOn : DisplayCmd::SetDispOff);
+
+    writeCommand(&cmd);
 }
 
 void Ssd1306::setContrast(uint8_t value) {
 
-    writeCommand(static_cast<uint8_t>(DisplayCmd::SetContrastCtrl));
-    writeCommand(value);
+    uint8_t cmdBuf[2];
+
+    cmdBuf[0] = static_cast<uint8_t>(DisplayCmd::SetContrastCtrl);
+    cmdBuf[1] = value;
+
+    writeCommand(cmdBuf, sizeof cmdBuf);
 }
 
 void Ssd1306::setInversion(uint8_t value) {
 
-    writeCommand(static_cast<uint8_t>(value ? DisplayCmd::SetInverseDisp : DisplayCmd::SetNormalDisp));
+    uint8_t cmd = static_cast<uint8_t>(value ? DisplayCmd::SetInverseDisp : DisplayCmd::SetNormalDisp);
+
+    writeCommand(&cmd);
 }
 
 void Ssd1306::initialization(void) {
@@ -98,38 +96,50 @@ void Ssd1306::initialization(void) {
     // Wait for the screen to boot
     wait.ms(100);
 
+    uint8_t cmdBuf[2];
+
     // Depends of lines number - 64 usually
-    writeCommand(static_cast<uint8_t>(DisplayCmd::SetMultiplexRatio));
-    writeCommand(0x3F);
+    cmdBuf[0] = static_cast<uint8_t>(DisplayCmd::SetMultiplexRatio);
+    cmdBuf[1] = 0x3F;
+    writeCommand(cmdBuf, sizeof cmdBuf);
 
     // No offset
-    writeCommand(static_cast<uint8_t>(DisplayCmd::SetDispOffset));
-    writeCommand(0x00);
+    cmdBuf[0] = static_cast<uint8_t>(DisplayCmd::SetDispOffset);
+    cmdBuf[1] = 0x00;
+    writeCommand(cmdBuf, sizeof cmdBuf);
 
-    writeCommand(static_cast<uint8_t>(DisplayCmd::SetDispStartLine) | 0);
+    cmdBuf[0] = static_cast<uint8_t>(DisplayCmd::SetDispStartLine) | 0;
+    writeCommand(cmdBuf);
 
-    writeCommand(static_cast<uint8_t>(DisplayCmd::SetSegmentRemapOn));
+    cmdBuf[0] = static_cast<uint8_t>(DisplayCmd::SetSegmentRemapOn);
+    writeCommand(cmdBuf);
 
-    writeCommand(static_cast<uint8_t>(DisplayCmd::SetCOMOutScanDirRemap));
+    cmdBuf[0] = static_cast<uint8_t>(DisplayCmd::SetCOMOutScanDirRemap);
+    writeCommand(cmdBuf);
 
-    writeCommand(static_cast<uint8_t>(DisplayCmd::SetCOMPinsHWConf));
-    writeCommand(static_cast<uint8_t>(DisplayCmd::SetCOMAlt) | static_cast<uint8_t>(DisplayCmd::SetCOMNoRemap));
+    cmdBuf[0] = static_cast<uint8_t>(DisplayCmd::SetCOMPinsHWConf);
+    cmdBuf[1] = static_cast<uint8_t>(DisplayCmd::SetCOMAlt) | static_cast<uint8_t>(DisplayCmd::SetCOMNoRemap);
+    writeCommand(cmdBuf, sizeof cmdBuf);
 
     // default values
     // setInversion(0);
     // setContrast(0x3F);
 
-    writeCommand(static_cast<uint8_t>(DisplayCmd::EntireDispResume));
+    cmdBuf[0] = static_cast<uint8_t>(DisplayCmd::EntireDispResume);
+    writeCommand(cmdBuf);
 
-    writeCommand(static_cast<uint8_t>(DisplayCmd::SetDispClckDiv));
-    writeCommand(0x80);
+    cmdBuf[0] = static_cast<uint8_t>(DisplayCmd::SetDispClckDiv);
+    cmdBuf[1] = 0x80;
+    writeCommand(cmdBuf, sizeof cmdBuf);
 
-    writeCommand(static_cast<uint8_t>(DisplayCmd::ChargePumpSet));
-    writeCommand(static_cast<uint8_t>(DisplayCmd::EnableChargePump));
+    cmdBuf[0] = static_cast<uint8_t>(DisplayCmd::ChargePumpSet);
+    cmdBuf[1] = static_cast<uint8_t>(DisplayCmd::EnableChargePump);
+    writeCommand(cmdBuf, sizeof cmdBuf);
 
     // GDDRAM access mode
-    writeCommand(static_cast<uint8_t>(DisplayCmd::SetMemAdrMode));
-    writeCommand(static_cast<uint8_t>(DisplayCmd::SetMemAdrModeHoriz));
+    cmdBuf[0] = static_cast<uint8_t>(DisplayCmd::SetMemAdrMode);
+    cmdBuf[1] = static_cast<uint8_t>(DisplayCmd::SetMemAdrModeHoriz);
+    writeCommand(cmdBuf, sizeof cmdBuf);
 
     setOnOff(1);
 
@@ -162,39 +172,52 @@ void Ssd1306::setScroll(uint8_t leftRight,
                         uint8_t endPage,
                         uint8_t verticalOffset) {
 
-    if (allowVertical) {
-        writeCommand(static_cast<uint8_t>(leftRight ? DisplayCmd::SetScrollVerRightHoriz : DisplayCmd::SetScrollVerLeftHoriz));
-    } else {
-        writeCommand(static_cast<uint8_t>(leftRight ? DisplayCmd::SetScrollRightHoriz : DisplayCmd::SetScrollLeftHoriz));
-    }
-
-    writeCommand(0x00);
-    writeCommand(startPage & 0x07);
-    writeCommand("\x07\x04\x05\x00\x06\x01\x02\x03"[speed & 0x07]);
-    writeCommand(endPage & 0x07);
+    uint8_t cmdBuf[7];
+    uint8_t i = 0;
 
     if (allowVertical) {
-        writeCommand(verticalOffset & 0x3F);
+        cmdBuf[i] = static_cast<uint8_t>(leftRight ? DisplayCmd::SetScrollVerRightHoriz : DisplayCmd::SetScrollVerLeftHoriz);
     } else {
-        writeCommand(0x00);
-        writeCommand(0xFF);
+        cmdBuf[i] = static_cast<uint8_t>(leftRight ? DisplayCmd::SetScrollRightHoriz : DisplayCmd::SetScrollLeftHoriz);
     }
+
+    cmdBuf[++i] = 0x00;
+    cmdBuf[++i] = startPage & 0x07;
+    cmdBuf[++i] = "\x07\x04\x05\x00\x06\x01\x02\x03"[speed & 0x07];   // constants mapping according to datasheet
+    cmdBuf[++i] = endPage & 0x07;
+
+    if (allowVertical) {
+        cmdBuf[++i] = verticalOffset & 0x3F;
+    } else {
+        cmdBuf[++i] = 0x00;
+        cmdBuf[++i] = 0xFF;
+    }
+
+    writeCommand(cmdBuf, i);
 }
 
 void Ssd1306::setScrollVerticalArea(uint8_t rowsFixedOnTopNumber, uint8_t rowsScrolledNumber) {
 
-    writeCommand(static_cast<uint8_t>(DisplayCmd::SetScrollVertArea));
-    writeCommand(rowsFixedOnTopNumber & 0x3F);  // [reset] = 0
+    uint8_t cmdBuf[3];
+
+    cmdBuf[0] = static_cast<uint8_t>(DisplayCmd::SetScrollVertArea);
+    cmdBuf[1] = rowsFixedOnTopNumber & 0x3F;    // [reset] = 0
     // here could be a lot of values validations according to reference
-    writeCommand(rowsScrolledNumber & 0x7F);    // [reset] = 64
+    cmdBuf[2] = rowsScrolledNumber & 0x7F;      // [reset] = 64
+
+    writeCommand(cmdBuf, sizeof cmdBuf);
 }
 
 void Ssd1306::startScroll(void) {
 
-    writeCommand(static_cast<uint8_t>(DisplayCmd::SetScrollActivate));
+    uint8_t cmdBuf = static_cast<uint8_t>(DisplayCmd::SetScrollActivate);
+
+    writeCommand(&cmdBuf);
 }
 
 void Ssd1306::stopScroll(void) {
 
-    writeCommand(static_cast<uint8_t>(DisplayCmd::SetScrollDeactivate));
+    uint8_t cmdBuf = static_cast<uint8_t>(DisplayCmd::SetScrollDeactivate);
+
+    writeCommand(&cmdBuf);
 }
