@@ -64,7 +64,7 @@ public:
 private:
 
     I2c& i2c;
-    IDelayer& wait;
+    IDelayer& delayer;
     const uint8_t address;
 
     static const uint8_t defaultAddress = 0x3C << 1;

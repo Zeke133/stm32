@@ -27,8 +27,8 @@ public:
         external = 1
     };
 
-    Ds18b20(IOneWire& oneWire, IDelayer& wait, enum Resolution res = Resolution::_12bit);
-    Ds18b20(IOneWire& oneWire, IDelayer& wait, uint8_t * ROM, enum Resolution res = Resolution::_12bit);
+    Ds18b20(IOneWire& oneWire, IDelayer& delayer, enum Resolution res = Resolution::_12bit);
+    Ds18b20(IOneWire& oneWire, IDelayer& delayer, uint8_t * ROM, enum Resolution res = Resolution::_12bit);
 
     // delete copy constructor and assignment operator
     Ds18b20(const Ds18b20&) = delete;
@@ -71,7 +71,7 @@ private:
 
     // -
     IOneWire& oneWire;
-    IDelayer& wait;
+    IDelayer& delayer;
     uint8_t errorState;
     uint8_t useROM = 0;
     uint8_t ROM[8];

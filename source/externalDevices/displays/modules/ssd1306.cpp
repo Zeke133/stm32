@@ -1,8 +1,8 @@
 #include <ssd1306.h>
 
-Ssd1306::Ssd1306(I2c& i2c, IDelayer& delay, uint8_t address)
+Ssd1306::Ssd1306(I2c& i2c, IDelayer& delayer, uint8_t address)
     :   i2c(i2c),
-        wait(delay),
+        delayer(delayer),
         address(address) {
 
     initialization();
@@ -94,7 +94,7 @@ void Ssd1306::setInversion(uint8_t value) {
 void Ssd1306::initialization(void) {
 
     // Wait for the screen to boot
-    wait.ms(100);
+    delayer.ms(100);
 
     uint8_t cmdBuf[2];
 

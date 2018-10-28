@@ -17,7 +17,7 @@ class RealTimeClock {
 
 public:
 
-    RealTimeClock(IDelayer& wait);
+    RealTimeClock(IDelayer& delayer);
 
     // delete copy constructor and assignment operator
     RealTimeClock(const RealTimeClock&) = delete;

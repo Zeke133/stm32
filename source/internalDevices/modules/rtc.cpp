@@ -1,6 +1,6 @@
 #include <rtc.h>
 
-RealTimeClock::RealTimeClock(IDelayer& wait) {
+RealTimeClock::RealTimeClock(IDelayer& delayer) {
 
     if (init()) {
 
@@ -17,7 +17,7 @@ RealTimeClock::RealTimeClock(IDelayer& wait) {
         };
 
         // Must have a delay after RTC initialization to set a time
-        wait.ms(500);
+        delayer.ms(500);
         setTime(time);
     }
 }

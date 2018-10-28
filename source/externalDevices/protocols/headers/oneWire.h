@@ -43,7 +43,7 @@ public:
 
 protected:
 
-    IDelayer &wait;             // timer
+    IDelayer &delayer;             // timer
 
 private:
 

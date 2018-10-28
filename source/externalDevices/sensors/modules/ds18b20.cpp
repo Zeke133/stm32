@@ -1,15 +1,15 @@
 #include <ds18b20.h>
 
-Ds18b20::Ds18b20(IOneWire& oneWire, IDelayer& wait, enum Resolution res)
-    : oneWire(oneWire), wait(wait) {
+Ds18b20::Ds18b20(IOneWire& oneWire, IDelayer& delayer, enum Resolution res)
+    : oneWire(oneWire), delayer(delayer) {
 
     useROM = 0;
 
     initialization(res);
 }
 
-Ds18b20::Ds18b20(IOneWire& oneWire, IDelayer& wait, uint8_t * _ROM, enum Resolution res)
-    : oneWire(oneWire), wait(wait) {
+Ds18b20::Ds18b20(IOneWire& oneWire, IDelayer& delayer, uint8_t * _ROM, enum Resolution res)
+    : oneWire(oneWire), delayer(delayer) {
 
     useROM = 1;
     for (int i = 0; i < 8; i++) {
@@ -170,13 +170,13 @@ uint8_t Ds18b20::copyScratchpad(void) {
 
     // Pull-Up for parasite powered on delay
     if (powerMode == PowerMode::parasite) {
-        wait.ms(10);
+        delayer.ms(10);
     } else {
         // If the Ds18b20 is powered by an external supply,
         // the master can issue read time slots after the command and the Ds18b20 
         // will respond by transmitting a 0 while in progress and a 1 when done.
         for (uint16_t i = 20; i > 0; i--) {
-            wait.us(500);
+            delayer.us(500);
             if (oneWire.ReadTimeslot()) break;
         }
     }
@@ -191,7 +191,7 @@ uint8_t Ds18b20::recallEE(void) {
     oneWire.WriteByte(0xB8);
 
     for (uint16_t i = 20; i > 0; i--) {
-        wait.us(500);
+        delayer.us(500);
         if (oneWire.ReadTimeslot()) break;
     }
 
@@ -224,30 +224,32 @@ void Ds18b20::waitConvertionEnd(void) {
     if (powerMode == PowerMode::parasite) {
         // Bus is pulled to Vsup by every Read/Write command
         // Wait max convertion time
+        uint32_t timeout;
         switch (getResolution()) {
 
-            case Resolution::_9bit: wait.ms(94);
+            case Resolution::_9bit: timeout = 94;
                 break;
 
-            case Resolution::_10bit: wait.ms(188);
+            case Resolution::_10bit: timeout = 188;
                 break;
 
-            case Resolution::_11bit: wait.ms(375);
+            case Resolution::_11bit: timeout = 375;
                 break;
 
-            case Resolution::_12bit: wait.ms(750);
+            case Resolution::_12bit: timeout = 750;
                 break;
 
-            default:
+            default: timeout = 0;
                 break;
         }
+        delayer.ms(timeout);
     } else {
         // If the Ds18b20 is powered by an external supply,
         // the master can issue read time slots after the Convert T command and the Ds18b20 
         // will respond by transmitting a 0 while the temperature conversion is in progress
         // and a 1 when the conversion is done.
         for (uint16_t i = 150; i > 0; i --) {
-            wait.ms(5);
+            delayer.ms(5);
             if (oneWire.ReadTimeslot()) break;
         }
     }

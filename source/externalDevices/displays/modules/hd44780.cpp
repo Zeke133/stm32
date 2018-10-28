@@ -1,8 +1,8 @@
 #include <hd44780.h>
 
-Hd44780::Hd44780(I2c& i2c, IDelayer& delay, uint8_t lines, uint8_t columns, uint8_t address)
+Hd44780::Hd44780(I2c& i2c, IDelayer& delayer, uint8_t lines, uint8_t columns, uint8_t address)
     :   i2c(i2c),
-        wait(delay),
+        delayer(delayer),
         address(address),
         width(columns) {
 
@@ -31,14 +31,14 @@ Hd44780::Hd44780(I2c& i2c, IDelayer& delay, uint8_t lines, uint8_t columns, uint
     // SEE PAGE 45/46 FOR INITIALIZATION SPECIFICATION!
     // according to datasheet, we need at least 40ms after power rises above 2.7V
     // before sending commands. Arduino can turn on way befer 4.5V so we'll wait 50
-    wait.ms(50);
+    delayer.ms(50);
 
     // Now we pull both RS and R/W low to begin commands
     i2c.startTransmit(address);
     i2c.write(0);
     i2c.stopTransmit();
     // reset expander and turn backlight off (Bit 8 = 1)
-    wait.ms(100);
+    delayer.ms(100);
 
     // put the LCD into 4 bit mode
     // this is according to the hitachi HD44780 datasheet
@@ -46,13 +46,13 @@ Hd44780::Hd44780(I2c& i2c, IDelayer& delay, uint8_t lines, uint8_t columns, uint
 
     // we start in 8bit mode, try to set 4 bit mode
     write4bits(0x30);
-    wait.ms(5);         // wait min 4.1ms
+    delayer.ms(5);         // wait min 4.1ms
 
     // write4bits(0x30);
-    // wait.ms(5);         // wait min 4.1ms
+    // delayer.ms(5);         // wait min 4.1ms
 
     write4bits(0x30);
-    wait.us(150);
+    delayer.us(150);
 
     // finally, set to 4-bit interface
     write4bits(0x20);
@@ -87,11 +87,11 @@ void Hd44780::write4bits(uint8_t data) {
     // pulse EN signal
     i2c.write(data | static_cast<uint8_t>(CmdBusBits::En));     // En high
     // enable pulse must be >450ns
-    wait.us(1);
+    delayer.us(1);
 
     i2c.write(data & ~static_cast<uint8_t>(CmdBusBits::En));    // En low
     // commands need >37us to settle
-    wait.us(50);
+    delayer.us(50);
 
     i2c.stopTransmit();
 }
@@ -115,14 +115,14 @@ inline void Hd44780::sendData(uint8_t value) {
 void Hd44780::clear() {
 
     sendInstruction(static_cast<uint8_t>(InstructionsBits::ClearDisplay));
-    wait.ms(2);
+    delayer.ms(2);
 }
 
 void Hd44780::home() {
 
     sendInstruction(static_cast<uint8_t>(InstructionsBits::ReturnHome));
     // 1.52 ms
-    wait.ms(2);
+    delayer.ms(2);
 }
 
 void Hd44780::setCursor(uint8_t row, uint8_t column) {

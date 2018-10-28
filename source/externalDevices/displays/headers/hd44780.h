@@ -57,7 +57,7 @@ private:
     void sendData(uint8_t value);
 
     I2c& i2c;
-    IDelayer& wait;
+    IDelayer& delayer;
     const uint8_t address;
     uint8_t width;
     uint8_t height;
