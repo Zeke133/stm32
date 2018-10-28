@@ -43,16 +43,16 @@ int main(void) {
     // lcd.setCursor(0, 3);
 
     Ssd1306 oled(i2cPort, delayer);
-    oled.fill(1);
-
+    oled.fill(0);
     Font_7x10 fontS;
     Font_11x18 fontM;
     TextRender textRender(oled, fontS);
     textRender.puts("Hello;)ABCDEFGH");
+    oled.update();
+    delayer.ms(1000);
     TextRender textRender2(oled, fontM);
     textRender2.setCursor(1,0);
     textRender2.puts("Hello;)AB");
-
     oled.update();
 
     // uint8_t rom[8] = {0x28, 0x82, 0x65, 0x5B, 0x05, 0x00, 0x00, 0x20};

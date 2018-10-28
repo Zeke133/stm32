@@ -14,7 +14,7 @@ class TextRender : public ITerminal {
 
 public:
 
-    TextRender(IGraphicOutput& display, IPixelFont& defaultFont);
+    TextRender(IGraphicOutput& display, IPixelFont& defaultFont, uint8_t fontInversion = 0);
 
     // delete copy constructor and assignment operator
     TextRender(const TextRender&) = delete;
@@ -28,8 +28,6 @@ public:
 
     void clearRow(uint8_t row);
     void setCursor(uint8_t row, uint8_t column);
-
-    // FLUSH!!!
 
 private:
 

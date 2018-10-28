@@ -30,22 +30,16 @@ void Ssd1306::writeCommand(const uint8_t * byte, uint16_t size) {
     i2c.stopTransmit();
 }
 
-void Ssd1306::writeData(const uint8_t * buffer, uint16_t size) {
-
-    // Control bit to 0 and D/C# to 0: means command followed with data will be transmited
-    writeDataCmd = 0x40;
-    i2c.writeDMA(address, &writeDataCmd, size+1);
-}
-
 // Fill the whole screen with the given bit, color depends of display settings
 void Ssd1306::fill(uint8_t bit) {
 
     uint8_t filler = (bit) ? 0xFF : 0x00;
 
-    for(int page = 0; page < pagesNum; page++) {
-        for(int segment = 0; segment < width; segment++) {
-            displayBuffer[page][segment] = filler;
-        }
+    uint8_t * displayBufferEnd = (uint8_t *)displayBuffer + pagesNum * width;
+    uint8_t * displayBufferPtr = (uint8_t *)displayBuffer;
+
+    while (displayBufferPtr != displayBufferEnd) {
+        *displayBufferPtr++ = filler;
     }
 }
 
@@ -64,7 +58,10 @@ void Ssd1306::update(void) {
     cmdBuf[2] = 7;     // Page end address
     writeCommand(cmdBuf, sizeof cmdBuf);
 
-    writeData(&displayBuffer[0][0], width*pagesNum);
+    // Control bit to 0 and D/C# to 0: means command followed with data will be transmited
+    writeDataCmd = 0x40;
+    // located in memory right before "displayBuffer" for optimisation
+    i2c.writeDMA(address, &writeDataCmd, width*pagesNum + 1);
 }
 
 void Ssd1306::setOnOff(uint8_t value) {
@@ -94,7 +91,7 @@ void Ssd1306::setInversion(uint8_t value) {
 void Ssd1306::initialization(void) {
 
     // Wait for the screen to boot
-    delayer.ms(100);
+    delayer.ms(10/*100*/);
 
     uint8_t cmdBuf[2];
 

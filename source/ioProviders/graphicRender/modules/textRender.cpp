@@ -1,11 +1,11 @@
 #include <textRender.h>
 
-TextRender::TextRender(IGraphicOutput& display, IPixelFont& defaultFont)
+TextRender::TextRender(IGraphicOutput& display, IPixelFont& defaultFont, uint8_t fontInversion)
     :   display(display),
-        font(defaultFont) {
+        font(defaultFont),
+        fontInversion(fontInversion) {
 
     // initialisation
-    fontInversion = 0;
     fontWidth = font.getWidth();
     fontHeight = font.getHeight();
     width = display.getWidth() / fontWidth;

@@ -73,7 +73,7 @@ Usart::Usart(int usartN, DMA& dma, uint32_t bauld, uint16_t dataBits, uint16_t s
     USART_Cmd(usart, ENABLE);
     USART_DMACmd(usart, USART_DMAReq_Tx, ENABLE);
 
-    dmaController.turnOnCallback();
+    // dmaController.turnOnCallback();
 
     /* Enable the usart Receive interrupt: this interrupt is generated when the
         usart receive data register is not empty */

@@ -20,17 +20,12 @@ extern "C" {
 
 /*
 Direct Memory Access controller driver.
-DMA2 - is not implemented, please add if needed
+DMA2 - is not implemented, please add if needed.
+Device is chosed in constructor. No device usage protection,
+so you can not use same device for different instanses.
+Use interrupts and execute user-defined callback functions for specific actions.
 */
 class DMA {
-
-friend void DMA1_Channel1_IRQHandler(void);
-friend void DMA1_Channel2_IRQHandler(void);
-friend void DMA1_Channel3_IRQHandler(void);
-friend void DMA1_Channel4_IRQHandler(void);
-friend void DMA1_Channel5_IRQHandler(void);
-friend void DMA1_Channel6_IRQHandler(void);
-friend void DMA1_Channel7_IRQHandler(void);
 
 public:
 
@@ -122,8 +117,10 @@ public:
     DMA(const DMA&) = delete;
     DMA& operator=(const DMA&) = delete;
 
-    void setCallbackOnIrq(void (*func)(void));
-    void turnOnCallback(void);
+    // interface
+    void setCallbackOnIrq(void (*func)(void));  // set function for callback on interrupt
+    void turnOnCallback(void);                  // turns ON interrupt on DMA transmition complete
+
     void runDMA(void * destPtr, const uint8_t * data, uint32_t size) const;
 
 private:

@@ -3,27 +3,38 @@
 // atribute for C compatibility
 // pointers to callback functions to be executed on interrupts, for each channel
 typedef void (*CallbackFunc)();
-CallbackFunc callbacksOnIRQ[7];
+CallbackFunc callbacksOnIRQ[7] = {
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr
+};
 
+// interrupt handlers
 void DMA1_Channel4_IRQHandler(void) {
 
     DMA_ClearITPendingBit(DMA1_IT_TC4);
     DMA_Cmd(DMA1_Channel4, DISABLE);
-    callbacksOnIRQ[4]();
+    if (callbacksOnIRQ[3] != nullptr) callbacksOnIRQ[3]();
 }
 void DMA1_Channel6_IRQHandler(void) {
 
     DMA_ClearITPendingBit(DMA1_IT_TC6);
     DMA_Cmd(DMA1_Channel6, DISABLE);
-    callbacksOnIRQ[6]();
+    if (callbacksOnIRQ[5] != nullptr) callbacksOnIRQ[5]();
 }
 void DMA1_Channel7_IRQHandler(void) {
 
     DMA_ClearITPendingBit(DMA1_IT_TC7);
     DMA_Cmd(DMA1_Channel7, DISABLE);
-    callbacksOnIRQ[7]();                    // maybe needs for nullptr check !!! ??? 777
+    if (callbacksOnIRQ[6] != nullptr) callbacksOnIRQ[6]();
 }
 
+// mapping of devices to DMA channels
+// controllerNumber : 2bits; channelNumber : 3bits; inputOutput : 1bit;
 const DMA::ChannelMap DMA::channelsMap[(uint8_t)Device::LAST_ELEMENT] {
     {1, 1, 0},                          // ADC,
     {1, 2, 0},                          // SPI1_RX,

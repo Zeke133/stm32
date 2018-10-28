@@ -27,8 +27,6 @@ class Ssd1306 : public IGraphicOutput {
 
 public:
 
-    // DMA I2C
-
     Ssd1306(I2c& i2c, IDelayer& delay, uint8_t address = defaultAddress);
 
     // delete copy constructor and assignment operator
@@ -72,12 +70,11 @@ private:
     static const uint8_t height = 64;
     static const uint8_t pagesNum = height / 8;
 
-    uint8_t writeDataCmd;
+    uint8_t writeDataCmd;                               // needed here for DMA transmition optimisation
     uint8_t displayBuffer[pagesNum][width];
 
     void initialization(void);
     void writeCommand(const uint8_t * byte, uint16_t size = 1);
-    void writeData(const uint8_t * buffer, uint16_t size);
 
     enum class DisplayCmd : unsigned char {
 
