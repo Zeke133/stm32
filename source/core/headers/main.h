@@ -6,6 +6,7 @@
 
 #include <SysClock.h>
 #include <led.h>
+#include <dma.h>
 #include <usart.h>
 #include <oneWire.h>
 #include <_oneWireSearch.h>

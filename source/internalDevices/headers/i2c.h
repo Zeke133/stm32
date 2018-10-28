@@ -4,14 +4,9 @@
 // using
 extern "C" {
 #include <stm32f10x_i2c.h>
-#include <stm32f10x_dma.h>
 }
 #include <gpio.h>
-
-// IRQ handler, extern "C" function, because of c++ bad names
-extern "C" {
-    void DMA1_Channel6_IRQHandler(void);
-}
+#include <dma.h>
 
 /*
 I2C driver.
@@ -21,7 +16,8 @@ class I2c {
 
 public:
 
-    I2c(uint8_t portNumber, uint32_t speedClk = 100000, uint8_t ownAddress = 0x15);
+    // 777 !!! better if will create instanse of DMA itself
+    I2c(uint8_t portNumber, DMA& dmaController, uint32_t speedClk = 100000, uint8_t ownAddress = 0x15);
 
     // delete copy constructor and assignment operator
     I2c(const I2c&) = delete;
@@ -38,13 +34,14 @@ public:
 
 private:
 
+    static void callbackI2C1OnDmaIrq(void);
+    static void callbackI2C2OnDmaIrq(void);
+
     void setI2c(uint32_t speedClk, uint8_t ownAddress);
-    void setDMA(const uint8_t * data, uint32_t size) const;
 
     I2C_TypeDef* port;      // Hardware port used for communication by this instanse
     uint8_t ownAddress;
-
-    DMA_Channel_TypeDef * dmaChannel;
+    DMA& dmaController;
 
 };
 

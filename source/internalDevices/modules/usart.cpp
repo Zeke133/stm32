@@ -20,24 +20,14 @@ void USART2_IRQHandler(void) {
         else USART_ReceiveData(USART2);
     }
 }
-void DMA1_Channel4_IRQHandler(void) {
-
-    DMA_ClearITPendingBit(DMA1_IT_TC4);
-    DMA_Cmd(DMA1_Channel4, DISABLE);
-}
-void DMA1_Channel7_IRQHandler(void) {
-
-    DMA_ClearITPendingBit(DMA1_IT_TC7);
-    DMA_Cmd(DMA1_Channel7, DISABLE);
-}
 
 // Class implementation
-Usart::Usart(int usartN, uint32_t bauld, uint16_t dataBits, uint16_t stopBits, uint16_t parity) {
+Usart::Usart(int usartN, DMA& dma, uint32_t bauld, uint16_t dataBits, uint16_t stopBits, uint16_t parity)
+    : dmaController(dma) {
 
     uint8_t irqChannel;
     GPIO_TypeDef * port;
     uint16_t txPin, rxPin;
-    IRQn_Type dmaIrq;
 
     if (usartN == 1) {
         uart1bufPtr = inputBuffer;
@@ -45,16 +35,12 @@ Usart::Usart(int usartN, uint32_t bauld, uint16_t dataBits, uint16_t stopBits, u
 
         /* Enable USART1 and GPIOA clock */
         RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1 | RCC_APB2Periph_GPIOA, ENABLE);
-        // DMA enable
-        RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
 
         irqChannel = USART1_IRQn;
         port = GPIOA;
         txPin = GPIO_Pin_9;
         rxPin = GPIO_Pin_10;
         usart = USART1;
-        dmaChannel = DMA1_Channel4;
-        dmaIrq = DMA1_Channel4_IRQn;
     }
     else /*if (usartN == 2)*/ {
         uart2bufPtr = inputBuffer;
@@ -63,23 +49,16 @@ Usart::Usart(int usartN, uint32_t bauld, uint16_t dataBits, uint16_t stopBits, u
         /* Enable USART1 and GPIOA clock */
         RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
         RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
-        // DMA enable
-        RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
 
         irqChannel = USART2_IRQn;
         port = GPIOA;
         txPin = GPIO_Pin_2;
         rxPin = GPIO_Pin_3;
         usart = USART2;
-        dmaChannel = DMA1_Channel7;
-        dmaIrq = DMA1_Channel7_IRQn;
     }
 
-    /* DMA for Transmiting*/
-    setDMA();
-    
     // Set UART interupt
-    setNvic(irqChannel);    // what for??? global usart irq enable
+    setNvic(irqChannel);    // global usart irq enable
 
     /* Configure the GPIOs */
     /* Configure Tx as alternate function push-pull */
@@ -94,8 +73,7 @@ Usart::Usart(int usartN, uint32_t bauld, uint16_t dataBits, uint16_t stopBits, u
     USART_Cmd(usart, ENABLE);
     USART_DMACmd(usart, USART_DMAReq_Tx, ENABLE);
 
-    DMA_ITConfig(dmaChannel, DMA_IT_TC, ENABLE);
-    NVIC_EnableIRQ(dmaIrq);
+    dmaController.turnOnCallback();
 
     /* Enable the usart Receive interrupt: this interrupt is generated when the
         usart receive data register is not empty */
@@ -127,25 +105,6 @@ void Usart::setUart(uint32_t bauld, uint16_t dataBits, uint16_t stopBits, uint16
 
 }
 
-void Usart::setDMA(void) {
-
-    DMA_InitTypeDef DMA_InitStruct;
-
-    DMA_InitStruct.DMA_PeripheralBaseAddr = (uint32_t)&(usart->DR);
-    DMA_InitStruct.DMA_MemoryBaseAddr = (uint32_t)&outputBuffer[0];
-    DMA_InitStruct.DMA_DIR = DMA_DIR_PeripheralDST;
-    DMA_InitStruct.DMA_BufferSize = sizeof(outputBuffer);
-    DMA_InitStruct.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
-    DMA_InitStruct.DMA_MemoryInc = DMA_MemoryInc_Enable;
-    DMA_InitStruct.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
-    DMA_InitStruct.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
-    DMA_InitStruct.DMA_Mode = DMA_Mode_Normal;
-    DMA_InitStruct.DMA_Priority = DMA_Priority_Low;
-    DMA_InitStruct.DMA_M2M = DMA_M2M_Disable;
-
-    DMA_Init(dmaChannel, &DMA_InitStruct);
-}
-
 void Usart::setNvic(uint8_t irqChannel) {
 
     /* NVIC Configuration: Enable the USARTx Interrupt */
@@ -171,36 +130,20 @@ void Usart::puts(const char *str) {
     }
 }
 
-void Usart::putcFast(char byte) {
+void Usart::putsDMA(const char * data, uint32_t len) {
 
-    outputBuffer[0] = byte;
-    /* Restart DMA Channel*/
-    DMA_Cmd(dmaChannel, DISABLE);
-    dmaChannel->CNDTR = 1;
-    DMA_Cmd(dmaChannel, ENABLE);
-}
-
-void Usart::putsFast(const char * str) {
-
-    uint32_t i = 0;
-    for( ; str[i] != 0; i++) {
-        outputBuffer[i] = str[i];
+    // copy data to output buffer. otherwise can be corrupted be parallel thread during transmition
+    if (len == 0) {
+        for( ; data[len] != 0; ++len) {
+            outputBuffer[len] = data[len];
+        }
+    } else {
+        for(uint32_t i = 0; i < len; ++i) {
+            outputBuffer[i] = data[i];
+        }
     }
-    /* Restart DMA Channel*/
-    DMA_Cmd(dmaChannel, DISABLE);
-    dmaChannel->CNDTR = i;
-    DMA_Cmd(dmaChannel, ENABLE);
-}
 
-void Usart::putsFast(const char * data, uint32_t len) {
-
-    for(uint32_t i = 0; i < len; i++) {
-        outputBuffer[i] = data[i];
-    }
-    /* Restart DMA Channel*/
-    DMA_Cmd(dmaChannel, DISABLE);
-    dmaChannel->CNDTR = len;
-    DMA_Cmd(dmaChannel, ENABLE);
+    dmaController.runDMA((void*)&usart->DR, outputBuffer, len);
 }
 
 inline void Usart::clear() {

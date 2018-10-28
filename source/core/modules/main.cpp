@@ -9,16 +9,16 @@ int main(void) {
 
     SetSysClockTo72();
 
-    // Init resourses
-    Usart usart1(1, 115200);        // USART1
+    DMA dmaForUsart(DMA::Device::USART1_TX);
+    Usart usart1(1, dmaForUsart, 115200);
     OStream cout(usart1);
 
     cout << "\nSTM32F103C8T6. USART1 is ready.\nFirmware: ";
     cout << __DATE__ << ' ' << __TIME__;
 
-    Delay wait;                     // Delay based on SysTickTimer
-    LED led(GPIOC, GPIO_Pin_13);    // LED on gpio
-    RealTimeClock rtc(wait);        // RealTime Clock
+    Delay delayer;
+    LED led(GPIOC, GPIO_Pin_13);
+    RealTimeClock rtc(delayer);
 
     DateTime dt;
     rtc.getTime(dt);
@@ -26,14 +26,15 @@ int main(void) {
     cout << "\nRTC: " << dt.date << "." << dt.month << "." << dt.year;
     cout << " " << dt.hours << ":" << dt.minutes << "." << dt.seconds;
 
-    Storage flash;                  // Flash storage
+    Storage flash;
     flash.data.var1 ++;
     flash.writeToFlash();
     flash.readToRam();
     cout << "\nReload after ERASING: " << OStream::OutSet::dec << flash.data.var1;
 
-    I2c i2cPort(1);
-    // Hd44780 lcd(i2cPort, wait, 1, 16);
+    DMA dmaForI2c1(DMA::Device::I2C1_TX);
+    I2c i2cPort(1, dmaForI2c1);
+    // Hd44780 lcd(i2cPort, delayer, 1, 16);
     // lcd.puts("Hello =)");
     // lcd.setCursorShow(1);
     // lcd.setCursorBlink(1);
@@ -41,7 +42,7 @@ int main(void) {
     // lcd.puts("Temp:");
     // lcd.setCursor(0, 3);
 
-    Ssd1306 oled(i2cPort, wait);
+    Ssd1306 oled(i2cPort, delayer);
     oled.fill(1);
 
     Font_7x10 fontS;
@@ -55,8 +56,8 @@ int main(void) {
     oled.update();
 
     // uint8_t rom[8] = {0x28, 0x82, 0x65, 0x5B, 0x05, 0x00, 0x00, 0x20};
-    // OneWire oneWire(wait, GPIOA, GPIO_Pin_8);
-    // Ds18b20 tempSensor(oneWire, wait, rom);   // 1-Wire DS18B20 temperature sensor
+    // OneWire oneWire(delayer, GPIOA, GPIO_Pin_8);
+    // Ds18b20 tempSensor(oneWire, delayer, rom);   // 1-Wire DS18B20 temperature sensor
     // cout << "\nDs18b20 stateIs " << (tempSensor.isErrorState() ? "err" : "ok");
 
     uint8_t channels[] = {16, 17};
@@ -93,7 +94,7 @@ int main(void) {
     while (1) {
 
         // Delay metering check
-        wait.us(1000000);
+        delayer.us(1000000);
         led.invert();
         cout << "\nADC test: ";
         cout << OStream::OutSet::dec;
