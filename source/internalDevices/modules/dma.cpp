@@ -3,7 +3,7 @@
 // atribute for C compatibility
 // pointers to callback functions to be executed on interrupts, for each channel
 typedef void (*CallbackFunc)();
-CallbackFunc callbacksOnIRQ[7] = {
+static CallbackFunc callbacksOnIRQ[7] = {
     nullptr,
     nullptr,
     nullptr,

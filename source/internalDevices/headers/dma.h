@@ -3,9 +3,9 @@
 
 // using
 extern "C" {
+#include <stm32f10x_rcc.h>
 #include <stm32f10x_dma.h>
 }
-#include <gpio.h>
 
 // IRQ handler, extern "C" function, because of c++ bad names
 extern "C" {

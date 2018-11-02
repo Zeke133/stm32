@@ -19,6 +19,9 @@ void TIM2_IRQHandler(void) {
             TIM_ClearFlag(TIM2, TIM_FLAG_CC2OF);
             // ...
         }
+
+        if (GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_13)) GPIO_ResetBits(GPIOC, GPIO_Pin_13);
+        else GPIO_SetBits(GPIOC, GPIO_Pin_13);
     }
 }
 
@@ -61,7 +64,7 @@ Tacho::Tacho() {
 
 uint32_t Tacho::getRpm(void) {
 
-    return 6000000/ticks;
+    return /*6000000/*/ticks;
 }
 
 uint32_t Tacho::getSpeed(void) {

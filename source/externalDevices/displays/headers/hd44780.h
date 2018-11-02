@@ -17,7 +17,7 @@ class Hd44780 : public ITerminal {
 
 public:
 
-    Hd44780(I2c& i2c, IDelayer& delay, uint8_t lines, uint8_t columns, uint8_t address = (0x27 << 1));
+    Hd44780(I2c& i2c, IDelayer& delayer, uint8_t lines, uint8_t columns, uint8_t address = (0x27 << 1));
 
     // delete copy constructor and assignment operator
     Hd44780(const Hd44780&) = delete;

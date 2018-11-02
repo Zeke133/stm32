@@ -27,7 +27,7 @@ class Ssd1306 : public IGraphicOutput {
 
 public:
 
-    Ssd1306(I2c& i2c, IDelayer& delay, uint8_t address = defaultAddress);
+    Ssd1306(I2c& i2c, IDelayer& delayer, uint8_t address = defaultAddress);
 
     // delete copy constructor and assignment operator
     Ssd1306(const Ssd1306&) = delete;

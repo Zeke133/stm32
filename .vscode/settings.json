@@ -13,6 +13,7 @@
         "ios": "cpp",
         "system_error": "cpp",
         "xtr1common": "cpp",
-        "xmemory0": "cpp"
+        "xmemory0": "cpp",
+        "iosfwd": "cpp"
     },
 }

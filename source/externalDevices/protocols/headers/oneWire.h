@@ -18,6 +18,7 @@ extern "C"
 
 /*
 Software driver for Dallas 1-Wire interface based on GPIO
+Data line must be pulled to V+ with 4.7kOhm resistor according Dallas datasheet.
 */
 class OneWire : public IOneWire {
 
