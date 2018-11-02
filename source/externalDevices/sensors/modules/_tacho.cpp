@@ -64,7 +64,12 @@ Tacho::Tacho() {
 
 uint32_t Tacho::getRpm(void) {
 
-    return /*6000000/*/ticks;
+    return 60 * 100000 / ticks;
+}
+
+uint32_t Tacho::getTicksPerRotation(void) {
+
+    return ticks;
 }
 
 uint32_t Tacho::getSpeed(void) {

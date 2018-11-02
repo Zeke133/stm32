@@ -27,6 +27,7 @@ public:
     Tacho& operator=(const Tacho&) = delete;
 
     uint32_t getRpm(void);
+    uint32_t getTicksPerRotation(void);
     uint32_t getSpeed(void);
 
     void setRotationLength(uint32_t len);

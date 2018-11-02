@@ -86,15 +86,16 @@ int main(void) {
         textRender.clearRow(3);
         textRender.setCursor(3,0);
         textRender.puts("Ticks:");
-        textRender.puts(itoa(tacho.getRpm(),10));
-        
+        textRender.puts(itoa(tacho.getTicksPerRotation(),10));
+
         textRender.clearRow(4);
         textRender.setCursor(4,0);
-        textRender.puts("p:");
-        textRender.puts(tempSensor.getPowerMode() == Ds18b20::PowerMode::external ? "E" : "P");
-        textRender.puts(" s:");
-        textRender.puts(tempSensor.isErrorState() ? "E" : "N");
-        textRender.puts(" t:");
+        textRender.puts("RPM:");
+        textRender.puts(itoa(tacho.getRpm(),10));
+
+        textRender.clearRow(5);
+        textRender.setCursor(5,0);
+        textRender.puts("Temp:");
         textRender.puts(itoa(tempSensor.getLastTemperature(),10));
         textRender.puts("C");
 
