@@ -48,9 +48,9 @@
             "type": "shell",
             "windows": {
                 "options": {
-                    "cwd": "${workspaceRoot}\\utils\\win"
+                    "cwd": "${workspaceRoot}\\scripts\\win"
                 },
-                "command": "${workspaceRoot}\\utils\\win\\openOCDConnect.bat"
+                "command": "${workspaceRoot}\\scripts\\win\\openOCDConnect.bat"
             },
             "problemMatcher": [],
             "dependsOn": "stLinkFlash",
@@ -63,9 +63,9 @@
             "type": "shell",
             "windows": {
                 "options": {
-                    "cwd": "${workspaceRoot}\\utils\\win"
+                    "cwd": "${workspaceRoot}\\scripts\\win"
                 },
-                "command": "${workspaceRoot}\\utils\\win\\openOCDFlash.bat"
+                "command": "${workspaceRoot}\\scripts\\win\\openOCDFlash.bat"
             },
             "problemMatcher": []
         },

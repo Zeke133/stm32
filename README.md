@@ -11,7 +11,7 @@ Aim is to make quick and easy use of any hardware devices like objects and build
 - Easy developement of any light automation.
 - No need in dozens of huge libraries - based just on STM Std Peripherial Driver and CMSIS.
 - Object oriented - C++ 17.
-- Easy developement on any OS you like - Console -> CMake -> Make -> GCC(arm-none-eabi-g++ toolchain).
+- Easy developement on any OS you like includes only free and open source software.
 - IDE free - can use any IDE or Editors you like. I prefered Visual Studio Code.
 
 **Internal peripheral drivers implemented:**
@@ -36,11 +36,9 @@ Aim is to make quick and easy use of any hardware devices like objects and build
 - DS18B20 temperature sensor
 - RPM sensors
 
-Project structure:
+**Recomended software developement tools stack**
+Console >> CMake >> Make >> GCC (arm-none-eabi toolchain) >> OpenOCD / stmDemoLoader >> DevBoard
 
-[link on github](https://github.com/Zeke133/stm32/blob/master/docs/shemes/SoftwareDiagram.xml "draw.io format")
-
-![Alt-текст](https://github.com/Zeke133/stm32/blob/master/docs/datasheets/mcu/STM32F103C8.png "Заголовок изображения")
 
 Example of SSD1306 OLED display use:
 
@@ -55,3 +53,9 @@ Example of SSD1306 OLED display use:
     textRender.putc(' ');
     textRender.puts(__TIME__);
     oled.update();                                          // display buffer flush: image appears on screen
+
+Project structure:
+
+[link on github](https://github.com/Zeke133/stm32/blob/master/docs/shemes/SoftwareDiagram.xml "draw.io format")
+
+![Developement board](https://github.com/Zeke133/stm32/blob/master/docs/datasheets/mcu/STM32F103C8.png "Blue pill board")

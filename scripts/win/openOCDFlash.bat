@@ -1,0 +1,11 @@
+..\..\..\OpenOCD\bin\openocd.exe^
+	-s ../share/openocd/scripts^
+    -c "adapter_khz 3000"^
+    -f interface/stlink.cfg^
+    -c "transport select hla_swd"^
+    -f target/stm32f1x.cfg^
+	-c init^
+	-c "reset init"^
+	-c "flash write_image erase ../../bin/app.hex"^
+	-c reset^
+	-c shutdown
