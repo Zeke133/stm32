@@ -1,9 +1,6 @@
 #ifndef _MAIN_H
 #define _MAIN_H
 
-#include <ITextOutput.h>
-#include <ITerminal.h>
-
 #include <SysClock.h>
 #include <delay.h>
 #include <led.h>
@@ -29,8 +26,6 @@
 #include <pixelFont11x18.h>
 #include <pixelFont16x26.h>
 
-#include <convertation.h>
-#include <strings.h>
 #include <oStream.h>
 
 

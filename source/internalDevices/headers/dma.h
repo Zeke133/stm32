@@ -20,7 +20,7 @@ extern "C" {
 
 /*
 Direct Memory Access controller driver.
-DMA2 - is not implemented, please add if needed.
+! DMA2 - is not implemented, please add if needed.
 Device is chosed in constructor. No device usage protection,
 so you can not use same device for different instanses.
 Use interrupts and execute user-defined callback functions for specific actions.

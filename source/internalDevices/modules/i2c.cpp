@@ -1,6 +1,7 @@
 #include <i2c.h>
 
-uint8_t I2c::dmaTransmitionInProgress;
+uint8_t I2c::port1dmaTransmitionInProgress = 0;
+uint8_t I2c::port2dmaTransmitionInProgress = 0;
 
 I2c::I2c(uint8_t portNumber, DMA& dma, uint32_t speedClk, uint8_t ownAddress)
     : ownAddress(ownAddress),
@@ -18,6 +19,7 @@ I2c::I2c(uint8_t portNumber, DMA& dma, uint32_t speedClk, uint8_t ownAddress)
         RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1, ENABLE);
 
         dmaController.setCallbackOnIrq(&callbackI2C1OnDmaIrq);
+        dmaTransmitionInProgressFlagPtr = &port1dmaTransmitionInProgress;
     }
     else /*if (portNumber == 2)*/ {
 
@@ -28,6 +30,7 @@ I2c::I2c(uint8_t portNumber, DMA& dma, uint32_t speedClk, uint8_t ownAddress)
         RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C2, ENABLE);
 
         dmaController.setCallbackOnIrq(&callbackI2C2OnDmaIrq);
+        dmaTransmitionInProgressFlagPtr = &port2dmaTransmitionInProgress;
     }
 
     // Turn needed modules tacting
@@ -88,31 +91,30 @@ void I2c::write(uint8_t data) const {
 
 void I2c::callbackI2C1OnDmaIrq(void) {
 
-    // EV8_2: Woyt until BTF is set before programming the STOP
+    // EV8_2: Wait until BTF is set before programming the STOP
     while ((I2C1->SR1 & 0x00004) != 0x000004);
     I2C_GenerateSTOP(I2C1, ENABLE);
     while (!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_TRANSMITTED));
 
-    I2c::dmaTransmitionInProgress = 0;
+    I2c::port1dmaTransmitionInProgress = 0;
 }
 
 void I2c::callbackI2C2OnDmaIrq(void) {
 
-    // EV8_2: Woyt until BTF is set before programming the STOP
+    // EV8_2: Wait until BTF is set before programming the STOP
     while ((I2C2->SR1 & 0x00004) != 0x000004);
     I2C_GenerateSTOP(I2C2, ENABLE);
     while (!I2C_CheckEvent(I2C2, I2C_EVENT_MASTER_BYTE_TRANSMITTED));
 
-    I2c::dmaTransmitionInProgress = 0;
+    I2c::port2dmaTransmitionInProgress = 0;
 }
 
-void I2c::writeDMA(uint8_t slaveAddress, const uint8_t * data, uint32_t size) const {
+void I2c::writeBufferized(uint8_t slaveAddress, const uint8_t * data, uint32_t size) const {
 
-    while (dmaTransmitionInProgress) {}
+    while (*dmaTransmitionInProgressFlagPtr) {}
+    *dmaTransmitionInProgressFlagPtr = 1;
 
     startTransmit(slaveAddress, I2C_Direction_Transmitter);
-
-    dmaTransmitionInProgress = 1;
 
     dmaController.runDMA((void*)&port->DR, data, size);
 

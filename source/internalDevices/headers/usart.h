@@ -15,16 +15,15 @@ extern "C" {
 extern "C" {
     void USART1_IRQHandler(void);
     void USART2_IRQHandler(void);
+    void USART3_IRQHandler(void);
 }
 
 /*
-USART driver API. Possibility of using blocking and non-blocking DMA based methods.
+USART driver API.
 Implements ITextOutput interface.
+Possibility of using loop and DMA based output methods.
 */
 class Usart : public ITextOutput {
-
-    friend void USART1_IRQHandler(void);
-    friend void USART2_IRQHandler(void);
 
 public:
 
@@ -40,9 +39,7 @@ public:
     Usart& operator=(const Usart&) = delete;
 
     // --- SEND DATA
-    // not blocking! so if called without a delay for delivery data in output buffer will be overwriten
-    void putsDMA(const char * string, uint32_t len = 0);
-    // Usual blocking methods - are slow, without DMA
+    void putsBufferized(const char * string, uint32_t len = 0);     // repeat call will wait first data transmition complete
     void putc(char byte);
     void puts(const char *str);
 
@@ -65,6 +62,15 @@ private:
     uint8_t outputBuffer[100];
     uint8_t inputBuffer[100];
     uint8_t inputBufferCnt = 0;
+
+    // race condition protection on DMA transmition
+    static uint8_t port1DmaTransmitionInProgress;   // flags indicatong transmition process
+    static uint8_t port2DmaTransmitionInProgress;
+    static uint8_t port3DmaTransmitionInProgress;
+    static void callbackUsart1OnDmaIrq(void);       // callbacks on DMA transmition complete interrupt
+    static void callbackUsart2OnDmaIrq(void);
+    static void callbackUsart3OnDmaIrq(void);
+    uint8_t * dmaTransmitionInProgressFlagPtr;      // pointer to flag used with current instance
 
 };
 

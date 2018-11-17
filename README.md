@@ -39,7 +39,6 @@ Aim is to make quick and easy use of any hardware devices like objects and build
 **Recomended software developement tools stack**
 Console >> CMake >> Make >> GCC (arm-none-eabi toolchain) >> OpenOCD / stmDemoLoader >> DevBoard
 
-
 Example of SSD1306 OLED display use:
 
     DMA dmaForI2c1(DMA::Device::I2C1_TX);                   // dma object for I2c quck data transmition

@@ -71,8 +71,8 @@ void ADC::init() {
             else if (channel == 9) pinsB |= GPIO_Pin_1;
         }
         // May be need another speed sestting - must be checked
-        if (pinsA) GPIO_Init_My(GPIOA, pinsA, GPIO_Mode_AIN, GPIO_Speed_50MHz /*777*/);
-        if (pinsB) GPIO_Init_My(GPIOB, pinsB, GPIO_Mode_AIN, GPIO_Speed_50MHz /*777*/);
+        if (pinsA) GPIO_Init_My(GPIOA, pinsA, GPIO_Mode_AIN, GPIO_Speed_50MHz /*???*/);
+        if (pinsB) GPIO_Init_My(GPIOB, pinsB, GPIO_Mode_AIN, GPIO_Speed_50MHz /*???*/);
     }
 
     // define ADC config
@@ -115,9 +115,6 @@ void ADC::init() {
     while(ADC_GetResetCalibrationStatus(adcUsed));
     ADC_StartCalibration(adcUsed);                      // Start new calibration (ADC must be off at that time)
     while(ADC_GetCalibrationStatus(adcUsed));
-
-    // start conversion need or not???
-    ADC_Cmd(ADC1,ENABLE);                               // enable ADC
 
     if (channelsType == ResultStoreMode::Injected) ADC_AutoInjectedConvCmd(adcUsed, ENABLE);
 

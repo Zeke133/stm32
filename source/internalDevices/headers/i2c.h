@@ -27,7 +27,7 @@ public:
     void startTransmit(uint8_t slaveAddress, uint8_t transmissionDirection = I2C_Direction_Transmitter) const;
     void stopTransmit(void) const;
 
-    void writeDMA(uint8_t slaveAddress, const uint8_t * data, uint32_t size) const;
+    void writeBufferized(uint8_t slaveAddress, const uint8_t * data, uint32_t size) const;
     void write(uint8_t byte) const;
     uint8_t read(void) const;
 
@@ -40,9 +40,11 @@ private:
     DMA& dmaController;
 
     // race condition protection on DMA transmition
-    static uint8_t dmaTransmitionInProgress;
+    static uint8_t port1dmaTransmitionInProgress;
+    static uint8_t port2dmaTransmitionInProgress;
     static void callbackI2C1OnDmaIrq(void);
     static void callbackI2C2OnDmaIrq(void);
+    uint8_t * dmaTransmitionInProgressFlagPtr;
 
 };
 

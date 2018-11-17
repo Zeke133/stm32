@@ -61,7 +61,7 @@ void Ssd1306::update(void) {
     // Control bit to 0 and D/C# to 0: means command followed with data will be transmited
     writeDataCmd = 0x40;
     // located in memory right before "displayBuffer" for optimisation
-    i2c.writeDMA(address, &writeDataCmd, width*pagesNum + 1);
+    i2c.writeBufferized(address, &writeDataCmd, width*pagesNum + 1);
 }
 
 void Ssd1306::setOnOff(uint8_t value) {

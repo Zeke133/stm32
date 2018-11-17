@@ -11,6 +11,7 @@ extern "C" {
 
 /*
 ADC driver class
+Regular channels use DMA controller
 ADC is 12 bit so max val = 4095
 Vref = 3.3V - ?
 */

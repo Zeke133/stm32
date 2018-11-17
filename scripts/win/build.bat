@@ -1,1 +1,1 @@
-cmake --build ..\..\build -j 5
+cmake --build build -j 5

@@ -2,10 +2,12 @@
 
 static uint8_t * uart1bufPtr;
 static uint8_t * uart2bufPtr;
+static uint8_t * uart3bufPtr;
 static uint8_t * uart1bufCntPtr;
 static uint8_t * uart2bufCntPtr;
+static uint8_t * uart3bufCntPtr;
 
-// Interrypt handler
+// Interrypt handlers
 void USART1_IRQHandler(void) {
 
     if ((USART1->SR & USART_FLAG_RXNE) != (u16)RESET) {
@@ -20,8 +22,20 @@ void USART2_IRQHandler(void) {
         else USART_ReceiveData(USART2);
     }
 }
+void USART3_IRQHandler(void) {
+
+    if ((USART3->SR & USART_FLAG_RXNE) != (u16)RESET) {
+        if (*uart3bufCntPtr < 100) uart3bufPtr[(*uart3bufCntPtr)++] = USART_ReceiveData(USART3);
+        else USART_ReceiveData(USART3);
+    }
+}
+
+uint8_t Usart::port1DmaTransmitionInProgress = 0;
+uint8_t Usart::port2DmaTransmitionInProgress = 0;
+uint8_t Usart::port3DmaTransmitionInProgress = 0;
 
 // Class implementation
+// default settings 8 N 1
 Usart::Usart(int usartN, DMA& dma, uint32_t bauld, uint16_t dataBits, uint16_t stopBits, uint16_t parity)
     : dmaController(dma) {
 
@@ -33,7 +47,6 @@ Usart::Usart(int usartN, DMA& dma, uint32_t bauld, uint16_t dataBits, uint16_t s
         uart1bufPtr = inputBuffer;
         uart1bufCntPtr = &inputBufferCnt;
 
-        /* Enable USART1 and GPIOA clock */
         RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1 | RCC_APB2Periph_GPIOA, ENABLE);
 
         irqChannel = USART1_IRQn;
@@ -41,12 +54,13 @@ Usart::Usart(int usartN, DMA& dma, uint32_t bauld, uint16_t dataBits, uint16_t s
         txPin = GPIO_Pin_9;
         rxPin = GPIO_Pin_10;
         usart = USART1;
-    }
-    else /*if (usartN == 2)*/ {
+        dmaTransmitionInProgressFlagPtr = &port1DmaTransmitionInProgress;
+        dmaController.setCallbackOnIrq(&callbackUsart1OnDmaIrq);
+    } else
+    if (usartN == 2) {
         uart2bufPtr = inputBuffer;
         uart2bufCntPtr = &inputBufferCnt;
 
-        /* Enable USART1 and GPIOA clock */
         RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
         RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
 
@@ -55,45 +69,56 @@ Usart::Usart(int usartN, DMA& dma, uint32_t bauld, uint16_t dataBits, uint16_t s
         txPin = GPIO_Pin_2;
         rxPin = GPIO_Pin_3;
         usart = USART2;
+        dmaTransmitionInProgressFlagPtr = &port2DmaTransmitionInProgress;
+        dmaController.setCallbackOnIrq(&callbackUsart2OnDmaIrq);
+    } else
+    if (usartN == 3) {
+        uart3bufPtr = inputBuffer;
+        uart3bufCntPtr = &inputBufferCnt;
+
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+        RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
+
+        irqChannel = USART3_IRQn;
+        port = GPIOB;
+        txPin = GPIO_Pin_10;
+        rxPin = GPIO_Pin_11;
+        usart = USART3;
+        dmaTransmitionInProgressFlagPtr = &port3DmaTransmitionInProgress;
+        dmaController.setCallbackOnIrq(&callbackUsart3OnDmaIrq);
     }
 
-    // Set UART interupt
-    setNvic(irqChannel);    // global usart irq enable
-
-    /* Configure the GPIOs */
-    /* Configure Tx as alternate function push-pull */
+    // Configure the GPIOs
+    // Configure Tx as alternate function push-pull
     GPIO_Init_My(port, txPin, GPIO_Mode_AF_PP, GPIO_Speed_50MHz);
-    /* Configure Rx as input floating */
+    // Configure Rx as input floating
     GPIO_Init_My(port, rxPin, GPIO_Mode_IN_FLOATING, GPIO_Speed_50MHz);
 
     // Configure UART
     setUart(bauld, dataBits, stopBits, parity);
-    
-    /* Enable usart */
     USART_Cmd(usart, ENABLE);
+
+    // Configure DMA
     USART_DMACmd(usart, USART_DMAReq_Tx, ENABLE);
+    dmaController.turnOnCallback();
 
-    // dmaController.turnOnCallback();
-
-    /* Enable the usart Receive interrupt: this interrupt is generated when the
-        usart receive data register is not empty */
+    // Global usart irq enable
+    setNvic(irqChannel);
+    // Enable the usart Receive interrupt: on usart receive data register is not empty
     USART_ITConfig(usart, USART_IT_RXNE, ENABLE);
 }
 
 void Usart::setUart(uint32_t bauld, uint16_t dataBits, uint16_t stopBits, uint16_t parity) {
 
-    /* Configure the usart */
     USART_InitTypeDef USART_InitStructure;
 
-    /* USART configured as follow:
-        - Hardware flow control disabled (RTS and CTS signals)
-        - Receive and transmit enabled
-        - USART Clock disabled
-        - USART CPOL: Clock is active low
-        - USART CPHA: Data is captured on the middle
-        - USART LastBit: The clock pulse of the last data bit is not output to
-            the SCLK pin
-     */
+    // USART configured as follow:
+    // - Hardware flow control disabled (RTS and CTS signals)
+    // - Receive and transmit enabled
+    // - USART Clock disabled
+    // - USART CPOL: Clock is active low
+    // - USART CPHA: Data is captured on the middle
+    // - USART LastBit: The clock pulse of the last data bit is not output to the SCLK pin
     USART_InitStructure.USART_BaudRate = bauld;
     USART_InitStructure.USART_WordLength = dataBits;
     USART_InitStructure.USART_StopBits = stopBits;
@@ -102,18 +127,30 @@ void Usart::setUart(uint32_t bauld, uint16_t dataBits, uint16_t stopBits, uint16
     USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
 
     USART_Init(usart, &USART_InitStructure);
-
 }
 
 void Usart::setNvic(uint8_t irqChannel) {
 
-    /* NVIC Configuration: Enable the USARTx Interrupt */
+    // NVIC Configuration: Enable the USARTx Interrupt
     NVIC_InitTypeDef NVIC_InitStructure;
     NVIC_InitStructure.NVIC_IRQChannel = irqChannel;
     NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
     NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
+}
+
+void Usart::callbackUsart1OnDmaIrq(void) {
+
+    Usart::port1DmaTransmitionInProgress = 0;
+}
+void Usart::callbackUsart2OnDmaIrq(void) {
+
+    Usart::port2DmaTransmitionInProgress = 0;
+}
+void Usart::callbackUsart3OnDmaIrq(void) {
+
+    Usart::port3DmaTransmitionInProgress = 0;
 }
 
 void Usart::putc(char byte) {
@@ -130,9 +167,12 @@ void Usart::puts(const char *str) {
     }
 }
 
-void Usart::putsDMA(const char * data, uint32_t len) {
+void Usart::putsBufferized(const char * data, uint32_t len) {
 
-    // copy data to output buffer. otherwise can be corrupted be parallel thread during transmition
+    while (*dmaTransmitionInProgressFlagPtr) {}
+    *dmaTransmitionInProgressFlagPtr = 1;
+
+    // copy data to temporary buffer
     if (len == 0) {
         for( ; data[len] != 0; ++len) {
             outputBuffer[len] = data[len];
@@ -146,17 +186,17 @@ void Usart::putsDMA(const char * data, uint32_t len) {
     dmaController.runDMA((void*)&usart->DR, outputBuffer, len);
 }
 
-inline void Usart::clear() {
+void Usart::clear() {
 
     inputBufferCnt = 0;
 }
 
-inline uint32_t Usart::getCount() {
+uint32_t Usart::getCount() {
 
     return inputBufferCnt;
 }
 
-inline uint8_t * Usart::getData() {
+uint8_t * Usart::getData() {
 
     return inputBuffer;
 }

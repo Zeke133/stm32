@@ -36,7 +36,7 @@ Tacho::Tacho() {
     /* Timer TIM2 settings */
     TIM_TimeBaseInitTypeDef timer_base;
     TIM_TimeBaseStructInit(&timer_base);
-    timer_base.TIM_Prescaler = 720;         // 72000000 / 720 = 100000 = 10uS for tick
+    timer_base.TIM_Prescaler = timerPrescaler;
     TIM_TimeBaseInit(TIM2, &timer_base);
 
     /* Signal capture settings:
@@ -47,7 +47,6 @@ Tacho::Tacho() {
     - Filter: Disable */
     TIM_ICInitTypeDef timer_ic;
     timer_ic.TIM_Channel = TIM_Channel_2;
-    //timer_ic.TIM_ICPolarity = TIM_ICPolarity_BothEdge; # !!! BothEdge not supported
     timer_ic.TIM_ICPolarity = TIM_ICPolarity_Rising;
     timer_ic.TIM_ICSelection = TIM_ICSelection_DirectTI;
     timer_ic.TIM_ICPrescaler = TIM_ICPSC_DIV1;
@@ -64,7 +63,7 @@ Tacho::Tacho() {
 
 uint32_t Tacho::getRpm(void) {
 
-    return 60 * 100000 / ticks;
+    return 60 * timerClk / ticks;
 }
 
 uint32_t Tacho::getTicksPerRotation(void) {

@@ -14,11 +14,35 @@ static CallbackFunc callbacksOnIRQ[7] = {
 };
 
 // interrupt handlers
+void DMA1_Channel1_IRQHandler(void) {
+
+    DMA_ClearITPendingBit(DMA1_IT_TC1);
+    DMA_Cmd(DMA1_Channel1, DISABLE);
+    if (callbacksOnIRQ[0] != nullptr) callbacksOnIRQ[0]();
+}
+void DMA1_Channel2_IRQHandler(void) {
+
+    DMA_ClearITPendingBit(DMA1_IT_TC2);
+    DMA_Cmd(DMA1_Channel2, DISABLE);
+    if (callbacksOnIRQ[1] != nullptr) callbacksOnIRQ[1]();
+}
+void DMA1_Channel3_IRQHandler(void) {
+
+    DMA_ClearITPendingBit(DMA1_IT_TC3);
+    DMA_Cmd(DMA1_Channel3, DISABLE);
+    if (callbacksOnIRQ[2] != nullptr) callbacksOnIRQ[2]();
+}
 void DMA1_Channel4_IRQHandler(void) {
 
     DMA_ClearITPendingBit(DMA1_IT_TC4);
     DMA_Cmd(DMA1_Channel4, DISABLE);
     if (callbacksOnIRQ[3] != nullptr) callbacksOnIRQ[3]();
+}
+void DMA1_Channel5_IRQHandler(void) {
+
+    DMA_ClearITPendingBit(DMA1_IT_TC5);
+    DMA_Cmd(DMA1_Channel5, DISABLE);
+    if (callbacksOnIRQ[4] != nullptr) callbacksOnIRQ[4]();
 }
 void DMA1_Channel6_IRQHandler(void) {
 

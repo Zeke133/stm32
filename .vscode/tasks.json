@@ -7,7 +7,7 @@
             "identifier": "build",
             "type": "shell",
             "windows": {
-                "command": "./build.bat"
+                "command": "${workspaceRoot}\\scripts\\win\\build.bat"
             },
             "problemMatcher": "$gcc",
             "group": {
@@ -23,7 +23,7 @@
             "identifier": "cmakeGenBuildTest",
             "type": "shell",
             "windows": {
-                "command": "./generateBuildTest.bat"
+                "command": "${workspaceRoot}\\scripts\\win\\generateBuildTest.bat"
             },
             "problemMatcher": "$gcc"
         },
@@ -32,7 +32,7 @@
             "label": "test",
             "type": "shell",
             "windows": {
-                "command": "./test.bat"
+                "command": "${workspaceRoot}\\scripts\\win\\test.bat"
             },
             "problemMatcher": "$gcc",
             "group": {
