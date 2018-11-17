@@ -1,18 +1,18 @@
 # stm32
 
 Here project of light OOP framework for STM32F103C8T6.
-A main cause of developement was to create easy and extandable platform for classic motorcycle board computer.
+A main cause of developement was to create easy and extandable platform for custom motorcycle board computer.
 
 Aim is to make quick and easy use of any hardware devices like objects and build using this base functional modules.
 
 **Advantages:**
 
-- Cheap and widely used developement board - "Blue Pill".
-- Easy developement of any light automation.
-- No need in dozens of huge libraries - based just on STM Std Peripherial Driver and CMSIS.
-- Object oriented - C++ 17.
-- Easy developement on any OS you like includes only free and open source software.
-- IDE free - can use any IDE or Editors you like. I prefered Visual Studio Code.
+- *Widely available.* Cheap and widely used developement board - "Blue Pill".
+- *Easy to use.* Easy developement of any light automation.
+- *All in one.* No need in dozens of huge linked libraries - based just on STM Std Peripherial Driver and CMSIS.
+- *Modern.* Object oriented - C++ 17.
+- *Crossplatform.* Easy developement on any OS you like includes only free and open source software.
+- *Free toolchain.* IDE free - can use any IDE or Editors you like. I prefered Visual Studio Code.
 
 **Internal peripheral drivers implemented:**
 
@@ -36,10 +36,10 @@ Aim is to make quick and easy use of any hardware devices like objects and build
 - DS18B20 temperature sensor
 - RPM sensors
 
-**Recomended software developement tools stack**
+**Example of software developement tools stack**
 Console >> CMake >> Make >> GCC (arm-none-eabi toolchain) >> OpenOCD / stmDemoLoader >> DevBoard
 
-Example of SSD1306 OLED display use:
+**Code example of SSD1306 OLED display use:**
 
     DMA dmaForI2c1(DMA::Device::I2C1_TX);                   // dma object for I2c quck data transmition
     I2c i2cPort(1, dmaForI2c1);                             // i2c object for connection with display
@@ -47,10 +47,7 @@ Example of SSD1306 OLED display use:
     oled.fill(0);                                           // filling display buffer with black pixels
     Font_7x10 fontS;                                        // object of small font
     TextRender textRender(oled, fontS);                     // object of render to draw font on display
-    textRender.puts("\nSTM32F103C8T6. \nFirmware: ");
     textRender.puts(__DATE__);
-    textRender.putc(' ');
-    textRender.puts(__TIME__);
     oled.update();                                          // display buffer flush: image appears on screen
 
 Project structure:
