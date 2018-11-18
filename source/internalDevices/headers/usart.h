@@ -64,13 +64,13 @@ private:
     uint8_t inputBufferCnt = 0;
 
     // race condition protection on DMA transmition
-    static uint8_t port1DmaTransmitionInProgress;   // flags indicatong transmition process
-    static uint8_t port2DmaTransmitionInProgress;
-    static uint8_t port3DmaTransmitionInProgress;
-    static void callbackUsart1OnDmaIrq(void);       // callbacks on DMA transmition complete interrupt
+    static volatile uint8_t port1DmaTransmitionInProgress;  // flags indicatong transmition process
+    static volatile uint8_t port2DmaTransmitionInProgress;
+    static volatile uint8_t port3DmaTransmitionInProgress;
+    static void callbackUsart1OnDmaIrq(void);               // callbacks on DMA transmition complete interrupt
     static void callbackUsart2OnDmaIrq(void);
     static void callbackUsart3OnDmaIrq(void);
-    uint8_t * dmaTransmitionInProgressFlagPtr;      // pointer to flag used with current instance
+    volatile uint8_t * dmaTransmitionInProgressFlagPtr;     // pointer to flag used with current instance
 
 };
 

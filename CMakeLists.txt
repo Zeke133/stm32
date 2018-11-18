@@ -37,7 +37,7 @@ set(MAP_FILE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin/app.map)
 set(LINKER_SCRIPT_PATH ${PROJECT_SOURCE_DIR}/linkScripts/link.ld)
 set(PLATFORM_LINK_FLAGS "-mcpu=cortex-m3 -mthumb")
 set(EMBEDDED_LINK_FLAGS "--specs=nano.specs --specs=nosys.specs -nostartfiles")
-set(USER_LINK_FLAG "-O0 -g -Wl,-Map=${MAP_FILE_OUTPUT_PATH} -Wl,-cref -Wl,--gc-sections")
+set(USER_LINK_FLAG "-Os -g -Wl,-Map=${MAP_FILE_OUTPUT_PATH} -Wl,-cref -Wl,--gc-sections")
 set_property(
     TARGET app.elf
     PROPERTY
@@ -87,7 +87,7 @@ set_property(
             -mcpu=cortex-m3
             -mthumb
             -g                              # debug mode
-            -O0                             # optimisation
+            -Os                             # optimisation
             -Wall                           # show all warnings
             # Bare metal specific flags
             --specs=nano.specs              # To use newlib-nano

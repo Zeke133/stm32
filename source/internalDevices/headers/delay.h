@@ -44,9 +44,9 @@ private:
 
     uint32_t getDWTTicksValue(void) const;
 
-    static uint32_t sysTicksPerUs;
-    static uint32_t msCount;                // For store tick counts in ms
-    uint32_t profilingStart;                // Start value of DWT
+    volatile static uint32_t sysTicksPerUs;
+    volatile static uint32_t msCount;                // For store tick counts in ms
+    volatile uint32_t profilingStart;                // Start value of DWT
 
 };
 

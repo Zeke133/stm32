@@ -30,9 +30,9 @@ void USART3_IRQHandler(void) {
     }
 }
 
-uint8_t Usart::port1DmaTransmitionInProgress = 0;
-uint8_t Usart::port2DmaTransmitionInProgress = 0;
-uint8_t Usart::port3DmaTransmitionInProgress = 0;
+volatile uint8_t Usart::port1DmaTransmitionInProgress = 0;
+volatile uint8_t Usart::port2DmaTransmitionInProgress = 0;
+volatile uint8_t Usart::port3DmaTransmitionInProgress = 0;
 
 // Class implementation
 // default settings 8 N 1
@@ -72,7 +72,7 @@ Usart::Usart(int usartN, DMA& dma, uint32_t bauld, uint16_t dataBits, uint16_t s
         dmaTransmitionInProgressFlagPtr = &port2DmaTransmitionInProgress;
         dmaController.setCallbackOnIrq(&callbackUsart2OnDmaIrq);
     } else
-    if (usartN == 3) {
+    /*if (usartN == 3)*/ {
         uart3bufPtr = inputBuffer;
         uart3bufCntPtr = &inputBufferCnt;
 

@@ -11,8 +11,7 @@ int main(void) {
     DMA dmaUsart3Tx(DMA::Device::USART3_TX);
     Usart usartRadio(3, dmaUsart3Tx, 300);      // 300 8n1
     OStream cout(usartPC);
-    cout << "\nSTM32F103C8T6. USART1 is ready.\nFirmware: ";
-    cout << __DATE__ << ' ' << __TIME__;
+    cout << "\r\n\r\nFirmware: " << __DATE__ << ' ' << __TIME__;
 
     RealTimeClock rtc(delayer);
     {
@@ -38,7 +37,7 @@ int main(void) {
     TextRender textRender(oled, fontS);
     textRender.puts("Fw: ");
     textRender.puts(__DATE__);
-    textRender.putc(' ');
+    textRender.setCursor(1,0);
     textRender.puts(__TIME__);
     oled.update();
 
@@ -47,7 +46,7 @@ int main(void) {
     uint8_t rom[8] = {0x28, 0x82, 0x65, 0x5B, 0x05, 0x00, 0x00, 0x20};
     OneWire oneWire(delayer, GPIOA, GPIO_Pin_8);
     Ds18b20 tempSensor(oneWire, delayer, rom);
-    cout << "\nDs18b20 stateIs " << (tempSensor.isErrorState() ? "err" : "ok");
+    cout << "\nDs18b20 state - " << (tempSensor.isErrorState() ? "ERR" : "OK");
     cout << "\nTemp: " << (tempSensor.getTemperature());
 
     uint8_t channels[] = {16, 17};
@@ -62,7 +61,7 @@ int main(void) {
     cout << adc1.getValue(0) << ", ";    // temp
     cout << adc1.getValue(1);            // Vref
 
-    uint8_t key = 0;
+    uint8_t key;
 
     while (1) {
 
@@ -82,8 +81,8 @@ int main(void) {
             usartRadio.clear();
         }
 
-        usartPC.putsBufferized("\nTextOutput using USART and DMA");
-        usartPC.putsBufferized("\nIn case of problems previous line will be corrupted!");
+        usartPC.putsBufferized("\nIn case of problems next line will be corrupted!");
+        usartPC.putsBufferized("\n2nd line. TextOutput using USART and DMA.");
 
         textRender.clearRow(2);
         textRender.setCursor(2,0);

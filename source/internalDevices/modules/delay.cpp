@@ -7,8 +7,8 @@ void SysTick_Handler() {
 }
 
 // Class implementation
-uint32_t Delay::msCount;
-uint32_t Delay::sysTicksPerUs;
+volatile uint32_t Delay::msCount;
+volatile uint32_t Delay::sysTicksPerUs;
 
 Delay::Delay() {
 
