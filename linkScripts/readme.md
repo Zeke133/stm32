@@ -1,3 +1,3 @@
-# Here are linker scripts
+# Folder with linker scripts
 
-Scripts tell to GCC linker how to create binnary executables.
+Scripts tell to GCC linker how place sections to binary executables.
