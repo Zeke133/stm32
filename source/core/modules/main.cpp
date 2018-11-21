@@ -13,6 +13,10 @@ int main(void) {
     OStream cout(usartPC);
     cout << "\r\n\r\nFirmware: " << __DATE__ << ' ' << __TIME__;
 
+    usartPC.putsBufferized("\nIn case of problems this line will be corrupted123456789");
+    usartPC.putsBufferized("\r\n2nd line. TextOutput using USART and DMA.");
+    usartPC.putsBufferized("\r\n2nd line. TextOutput using USART and DMA.");
+
     RealTimeClock rtc(delayer);
     {
         DateTime dt;
@@ -80,9 +84,6 @@ int main(void) {
             }
             usartRadio.clear();
         }
-
-        usartPC.putsBufferized("\nIn case of problems next line will be corrupted!");
-        usartPC.putsBufferized("\n2nd line. TextOutput using USART and DMA.");
 
         textRender.clearRow(2);
         textRender.setCursor(2,0);
