@@ -13,7 +13,7 @@ project (
 set(CMAKE_CXX_COMPILER g++)
 
 # Path to GoogleTest Framework - change if needed
-set(GOOGLE_TEST_DIR "D:/Projects/googleTest")
+set(GOOGLE_TEST_DIR ${PROJECT_SOURCE_DIR}/../../googleTest)
 # Path to Unit Test sources
 set(TEST_SOURCE_DIR ${PROJECT_SOURCE_DIR}/testSuit)
 # Path to tested functionality

@@ -1,6 +1,6 @@
-# Here are sources of project on C++
+# Sources of project on C++
 
-All files are divided to categories for more comfort.
+All files are divided to categories:
 
 - startup
 - core

@@ -1,5 +1,19 @@
-# Here are external tools scripts
+# Folder with automation scripts for external tools
 
-Scripts for external tools usage.
+Scripts must be executed from **${projectRoot}** directory.
 
-- OpenOCD is used for Debug issues and uploading/downloading firmaware on developement board
+Used tools:
+
+- **cmake/ctest**. Build generation system. Building and testing automation.
+- **OpenOCD**. Debug issues and uploading/downloading firmaware on developement board.
+- **stm32flash**. Communication with default stm32 bootloader.
+
+**OpenOCD** and **stm32flash** must be placed in same directory like this project.
+
+    ... projectsDir / ${projectRoot} / scripts / nix / ...
+                                               / win / ...
+                                               / googleTest / ...
+                                               / stm32flash / ...
+                                               / OpenOCD / ...
+
+**cmake** must be added to **PATH**

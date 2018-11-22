@@ -1,4 +1,6 @@
-Here is two basic libraries which a used on project.
-CMSIS by ARM and StdPeripherial by STM.
+# 3rd party libraries which are used on project.
 
-CMakeList.txt - script to build this libraties to static libs for usage in a project.
+- **CMSIS** by ARM
+- **StdPeripherial** by STM.
+
+**CMakeList.txt** - build script for CMake. Defines static libs targets for usage in a project.
