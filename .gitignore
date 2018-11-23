@@ -1,9 +1,12 @@
+# Binaries folder content
 /bin/*
-
+# Excluding README
 !/bin/readme.md
 
+# CMake BUILD directory
 /build
-
+# CTest directory
 /Testing
 
+# MacOS trash
 .DS_Store
