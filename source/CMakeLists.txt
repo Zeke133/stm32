@@ -53,6 +53,7 @@ target_sources(
     PRIVATE ${INT_DEVICES_DIR}/${SRC_DIR}/usart
     PRIVATE ${INT_DEVICES_DIR}/${SRC_DIR}/rtc
     PRIVATE ${EXT_SENSORS_DIR}/${SRC_DIR}/ds18b20
+    PRIVATE ${EXT_SENSORS_DIR}/${SRC_DIR}/bmp280
     PRIVATE ${INT_DEVICES_DIR}/${SRC_DIR}/_storage
     PRIVATE ${EXT_SENSORS_DIR}/${SRC_DIR}/_tacho
     PRIVATE ${INT_DEVICES_DIR}/${SRC_DIR}/_analogTempSensor

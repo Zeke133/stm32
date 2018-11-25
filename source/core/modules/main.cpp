@@ -65,6 +65,8 @@ int main(void) {
     cout << adc1.getValue(0) << ", ";    // temp
     cout << adc1.getValue(1);            // Vref
 
+    Bmp280 bmp280(i2cPort, delayer, cout);
+
     uint8_t key;
 
     while (1) {

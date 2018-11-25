@@ -10,6 +10,7 @@
 #include <i2c.h>
 #include <hd44780.h>
 #include <ssd1306.h>
+#include <bmp280.h>
 
 #include <rtc.h>
 #include <adc.h>

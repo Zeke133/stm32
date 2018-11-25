@@ -83,10 +83,35 @@ void I2c::startTransmit(uint8_t slaveAddress, uint8_t transmissionDirection) con
     }
 }
 
+void I2c::stopTransmit(void) const {
+
+    I2C_GenerateSTOP(port, ENABLE);
+    while (!I2C_CheckEvent(port, I2C_EVENT_MASTER_BYTE_TRANSMITTED));
+}
+
 void I2c::write(uint8_t data) const {
 
     I2C_SendData(port, data);
     while (!I2C_CheckEvent(port, I2C_EVENT_MASTER_BYTE_TRANSMITTED));
+}
+
+uint8_t I2c::read(void) const {
+
+    while (!I2C_CheckEvent(port, I2C_EVENT_MASTER_BYTE_RECEIVED));
+    return I2C_ReceiveData(port);
+}
+
+void I2c::writeBufferized(uint8_t slaveAddress, const uint8_t * data, uint32_t size) const {
+
+    while (*dmaTransmitionInProgressFlagPtr) {}
+    *dmaTransmitionInProgressFlagPtr = 1;
+
+    startTransmit(slaveAddress, I2C_Direction_Transmitter);
+
+    dmaController.runDMA((void*)&port->DR, data, size);
+
+    // on transmition complete DMA triggers callback
+    // and executes i2c stop
 }
 
 void I2c::callbackI2C1OnDmaIrq(void) {
@@ -107,29 +132,4 @@ void I2c::callbackI2C2OnDmaIrq(void) {
     while (!I2C_CheckEvent(I2C2, I2C_EVENT_MASTER_BYTE_TRANSMITTED));
 
     I2c::port2dmaTransmitionInProgress = 0;
-}
-
-void I2c::writeBufferized(uint8_t slaveAddress, const uint8_t * data, uint32_t size) const {
-
-    while (*dmaTransmitionInProgressFlagPtr) {}
-    *dmaTransmitionInProgressFlagPtr = 1;
-
-    startTransmit(slaveAddress, I2C_Direction_Transmitter);
-
-    dmaController.runDMA((void*)&port->DR, data, size);
-
-    // on transmition complete DMA triggers callback
-    // and executes i2c stop
-}
-
-uint8_t I2c::read(void) const {
-
-    while (!I2C_CheckEvent(port, I2C_EVENT_MASTER_BYTE_RECEIVED));
-    return I2C_ReceiveData(port);
-}
-
-void I2c::stopTransmit(void) const {
-
-    I2C_GenerateSTOP(port, ENABLE);
-    while (!I2C_CheckEvent(port, I2C_EVENT_MASTER_BYTE_TRANSMITTED));
 }
