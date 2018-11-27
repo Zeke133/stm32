@@ -9,14 +9,13 @@ set(STDPERIPH_DIR STM32F10x_StdPeriph_Driver)
 # ---
 add_library(cmsis STATIC)
 
-set(HEADERS_CMSIS_DIR ${CMSIS_DIR}/CM3)
+set(HEADERS_CMSIS_DIR ${CMSIS_DIR})
 target_include_directories(
     cmsis
-    PUBLIC ${HEADERS_CMSIS_DIR}/CoreSupport
-    PUBLIC ${HEADERS_CMSIS_DIR}/DeviceSupport/ST/STM32F10x
+    PUBLIC ${HEADERS_CMSIS_DIR}
 )
 
-set(SOURCE_CMSIS_DIR ${CMSIS_DIR}/CM3/DeviceSupport/ST/STM32F10x)
+set(SOURCE_CMSIS_DIR ${CMSIS_DIR})
 target_sources(
     cmsis
     PRIVATE ${SOURCE_CMSIS_DIR}/system_stm32f10x

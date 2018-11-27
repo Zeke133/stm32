@@ -1,7 +1,7 @@
 #ifndef _MAIN_H
 #define _MAIN_H
 
-#include <SysClock.h>
+#include <sysClock.h>
 #include <delay.h>
 #include <led.h>
 

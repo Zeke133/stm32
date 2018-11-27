@@ -1,4 +1,4 @@
-#include <SysClock.h>
+#include <sysClock.h>
 
 void SetSysClockTo72(void) {
 
