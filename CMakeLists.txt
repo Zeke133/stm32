@@ -20,12 +20,12 @@ add_subdirectory(libs)
 # User Modules library
 add_subdirectory(source)
 # Startup procedure
-set(SOURCE_STARTUP_DIR source/startup)
+set(SOURCE_STARTUP_DIR libs/cmsis/startup)
 add_library(startup OBJECT)
+target_link_libraries(startup PRIVATE cmsis)
 target_sources(
     startup
-    PRIVATE ${SOURCE_STARTUP_DIR}/startup_stm32f10x_md.S        # ASM startup init
-    # PRIVATE ${SOURCE_STARTUP_DIR}/startup_stm32f10x_md.c        # ANSI C startup init // not checked!
+    PRIVATE ${SOURCE_STARTUP_DIR}/startup_ARMCM3
 )
 
 # ---
@@ -34,7 +34,7 @@ add_executable(app.elf)
 target_link_libraries(app.elf PRIVATE startup modules)
 # Link properties
 set(MAP_FILE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin/app.map)
-set(LINKER_SCRIPT_PATH ${PROJECT_SOURCE_DIR}/linkScripts/link.ld)
+set(LINKER_SCRIPT_PATH ${PROJECT_SOURCE_DIR}/libs/cmsis/linker/gcc_arm.ld)
 set(PLATFORM_LINK_FLAGS "-mcpu=cortex-m3 -mthumb")
 set(EMBEDDED_LINK_FLAGS "--specs=nano.specs --specs=nosys.specs -nostartfiles")
 set(USER_LINK_FLAG "-Os -g -Wl,-Map=${MAP_FILE_OUTPUT_PATH} -Wl,-cref -Wl,--gc-sections")

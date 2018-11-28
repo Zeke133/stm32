@@ -12,13 +12,14 @@ add_library(cmsis STATIC)
 set(HEADERS_CMSIS_DIR ${CMSIS_DIR})
 target_include_directories(
     cmsis
-    PUBLIC ${HEADERS_CMSIS_DIR}
+    PUBLIC ${HEADERS_CMSIS_DIR}/arm
+    PUBLIC ${HEADERS_CMSIS_DIR}/ST
 )
 
-set(SOURCE_CMSIS_DIR ${CMSIS_DIR})
+set(SOURCE_CMSIS_DIR ${CMSIS_DIR}/arm)
 target_sources(
     cmsis
-    PRIVATE ${SOURCE_CMSIS_DIR}/system_stm32f10x
+    PRIVATE ${SOURCE_CMSIS_DIR}/system_ARMCM3
 )
 
 target_compile_definitions(
