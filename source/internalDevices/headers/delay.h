@@ -19,7 +19,7 @@ Supports delays in Miliseconds and Microseconds.
 */
 class Delay : public IProfiler, public IDelayer {
 
-    // Interrypt handler
+    /// Interrypt handler
     friend void SysTick_Handler();
 
 public:

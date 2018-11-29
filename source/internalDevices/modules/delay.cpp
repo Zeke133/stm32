@@ -10,12 +10,10 @@ void SysTick_Handler() {
 volatile uint32_t Delay::msCount;
 volatile uint32_t Delay::sysTicksPerUs;
 
+/**
+ * Configuring SysTick timer for implementation of 1ms delays by timer interrupt
+ */
 Delay::Delay() {
-
-    /* Configuring SysTick timer for implementation of 1ms delays by timer interrupt */
-
-    // Update SystemCoreClock value
-    SystemCoreClockUpdate();
 
     // Configure the SysTick timer to overflow every 1 ms
     SysTick_Config(SystemCoreClock / 1000);

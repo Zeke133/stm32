@@ -25,6 +25,11 @@ Possibility of using loop and DMA based output methods.
 */
 class Usart : public ITextOutput {
 
+/// Interrupt handlers
+friend void USART1_IRQHandler(void);
+friend void USART2_IRQHandler(void);
+friend void USART3_IRQHandler(void);
+
 public:
 
     Usart(int usartN,
@@ -62,6 +67,14 @@ private:
     uint8_t outputBuffer[100];
     uint8_t inputBuffer[100];
     uint8_t inputBufferCnt = 0;
+
+    // static pointers for interrupt handlers
+    static volatile uint8_t * buf1Ptr;
+    static volatile uint8_t * buf2Ptr;
+    static volatile uint8_t * buf3Ptr;
+    static volatile uint8_t * buf1CntPtr;
+    static volatile uint8_t * buf2CntPtr;
+    static volatile uint8_t * buf3CntPtr;
 
     // race condition protection on DMA transmition
     static volatile uint8_t port1DmaTransmitionInProgress;  // flags indicatong transmition process

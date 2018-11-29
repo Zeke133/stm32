@@ -1,38 +1,37 @@
 #include <usart.h>
 
-static uint8_t * uart1bufPtr;
-static uint8_t * uart2bufPtr;
-static uint8_t * uart3bufPtr;
-static uint8_t * uart1bufCntPtr;
-static uint8_t * uart2bufCntPtr;
-static uint8_t * uart3bufCntPtr;
+volatile uint8_t * Usart::buf1Ptr = 0;
+volatile uint8_t * Usart::buf2Ptr = 0;
+volatile uint8_t * Usart::buf3Ptr = 0;
+volatile uint8_t * Usart::buf1CntPtr = 0;
+volatile uint8_t * Usart::buf2CntPtr = 0;
+volatile uint8_t * Usart::buf3CntPtr = 0;
+volatile uint8_t Usart::port1DmaTransmitionInProgress = 0;
+volatile uint8_t Usart::port2DmaTransmitionInProgress = 0;
+volatile uint8_t Usart::port3DmaTransmitionInProgress = 0;
 
 // Interrypt handlers
 void USART1_IRQHandler(void) {
 
     if ((USART1->SR & USART_FLAG_RXNE) != (u16)RESET) {
-        if (*uart1bufCntPtr < 100) uart1bufPtr[(*uart1bufCntPtr)++] = USART_ReceiveData(USART1);
+        if (*Usart::buf1CntPtr < 100) Usart::buf1Ptr[(*Usart::buf1CntPtr)++] = USART_ReceiveData(USART1);
         else USART_ReceiveData(USART1);
     }
 }
 void USART2_IRQHandler(void) {
 
     if ((USART2->SR & USART_FLAG_RXNE) != (u16)RESET) {
-        if (*uart2bufCntPtr < 100) uart2bufPtr[(*uart2bufCntPtr)++] = USART_ReceiveData(USART2);
+        if (*Usart::buf2CntPtr < 100) Usart::buf2Ptr[(*Usart::buf2CntPtr)++] = USART_ReceiveData(USART2);
         else USART_ReceiveData(USART2);
     }
 }
 void USART3_IRQHandler(void) {
 
     if ((USART3->SR & USART_FLAG_RXNE) != (u16)RESET) {
-        if (*uart3bufCntPtr < 100) uart3bufPtr[(*uart3bufCntPtr)++] = USART_ReceiveData(USART3);
+        if (*Usart::buf3CntPtr < 100) Usart::buf3Ptr[(*Usart::buf3CntPtr)++] = USART_ReceiveData(USART3);
         else USART_ReceiveData(USART3);
     }
 }
-
-volatile uint8_t Usart::port1DmaTransmitionInProgress = 0;
-volatile uint8_t Usart::port2DmaTransmitionInProgress = 0;
-volatile uint8_t Usart::port3DmaTransmitionInProgress = 0;
 
 // Class implementation
 // default settings 8 N 1
@@ -44,8 +43,8 @@ Usart::Usart(int usartN, DMA& dma, uint32_t bauld, uint16_t dataBits, uint16_t s
     uint16_t txPin, rxPin;
 
     if (usartN == 1) {
-        uart1bufPtr = inputBuffer;
-        uart1bufCntPtr = &inputBufferCnt;
+        buf1Ptr = inputBuffer;
+        buf1CntPtr = &inputBufferCnt;
 
         RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1 | RCC_APB2Periph_GPIOA, ENABLE);
 
@@ -58,8 +57,8 @@ Usart::Usart(int usartN, DMA& dma, uint32_t bauld, uint16_t dataBits, uint16_t s
         dmaController.setCallbackOnIrq(&callbackUsart1OnDmaIrq);
     } else
     if (usartN == 2) {
-        uart2bufPtr = inputBuffer;
-        uart2bufCntPtr = &inputBufferCnt;
+        buf2Ptr = inputBuffer;
+        buf2CntPtr = &inputBufferCnt;
 
         RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
         RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
@@ -73,8 +72,8 @@ Usart::Usart(int usartN, DMA& dma, uint32_t bauld, uint16_t dataBits, uint16_t s
         dmaController.setCallbackOnIrq(&callbackUsart2OnDmaIrq);
     } else
     /*if (usartN == 3)*/ {
-        uart3bufPtr = inputBuffer;
-        uart3bufCntPtr = &inputBufferCnt;
+        buf3Ptr = inputBuffer;
+        buf3CntPtr = &inputBufferCnt;
 
         RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
         RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
