@@ -13,16 +13,16 @@ int main(void) {
     OStream cout(usartPC);
     cout << "\r\n\r\nFirmware: " << __DATE__ << ' ' << __TIME__;
 
-    usartPC.putsBufferized("\nIn case of problems this line will be corrupted123456789");
-    usartPC.putsBufferized("\r\n2nd line. TextOutput using USART and DMA.");
-    usartPC.putsBufferized("\r\n2nd line. TextOutput using USART and DMA.");
+    usartPC.putsBufferized("\r\nIn case of problems this line will be corrupted123456789");
+    usartPC.putsBufferized("2nd line. TextOutput using USART and DMA.");    // instead of '.' '0x0a' put out
+    usartPC.putsBufferized("2nd line. TextOutput using USART and DMA.");
 
     RealTimeClock rtc(delayer);
     {
         DateTime dt;
         rtc.getTime(dt);
         cout << OStream::OutSet::dec;
-        cout << "\nRTC: " << dt.date << "." << dt.month << "." << dt.year;
+        cout << "\r\nRTC: " << dt.date << "." << dt.month << "." << dt.year;
         cout << " " << dt.hours << ":" << dt.minutes << "." << dt.seconds;
     }
 
@@ -30,7 +30,7 @@ int main(void) {
     flash.data.var1 ++;
     flash.writeToFlash();
     flash.readToRam();
-    cout << "\nReload after ERASING: " << OStream::OutSet::dec << flash.data.var1;
+    cout << "\r\nReload after ERASING: " << OStream::OutSet::dec << flash.data.var1;
 
     DMA dmaForI2c1(DMA::Device::I2C1_TX);
     I2c i2cPort(1, dmaForI2c1);
@@ -50,8 +50,8 @@ int main(void) {
     uint8_t rom[8] = {0x28, 0x82, 0x65, 0x5B, 0x05, 0x00, 0x00, 0x20};
     OneWire oneWire(delayer, GPIOA, GPIO_Pin_8);
     Ds18b20 tempSensor(oneWire, delayer, rom);
-    cout << "\nDs18b20 state - " << (tempSensor.isErrorState() ? "ERR" : "OK");
-    cout << "\nTemp: " << (tempSensor.getTemperature());
+    cout << "\r\nDs18b20 state - " << (tempSensor.isErrorState() ? "ERR" : "OK");
+    cout << "\r\nTemp: " << (tempSensor.getTemperature());
 
     uint8_t channels[] = {16, 17};
     ADC adc1(   1, 
@@ -60,11 +60,12 @@ int main(void) {
                 2, 
                 channels);          // ADC setup
 
-    cout << "\nADC test: ";
+    cout << "\r\nADC test: ";
     cout << OStream::OutSet::dec;
     cout << adc1.getValue(0) << ", ";    // temp
     cout << adc1.getValue(1);            // Vref
 
+    cout << "\r\nBmp280 pre 1";
     Bmp280 bmp280(i2cPort, delayer, cout);
 
     uint8_t key;

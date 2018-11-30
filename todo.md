@@ -2,12 +2,14 @@
 
 1. bpe280 >> **stuck on i2c startTransmit()**
 2. move C-style static vars to class internal statics
-3. doxygen
-4. voltmeter
-5. tasks
-6. resourceControl
-7. timer tacho/ign
-8. strobescope
-9. ninja
-10. esp8266 >> RIOT
-11. **bit-banding**
+3. issue with last symbol in USART DMA transmition
+4. loop in i2c start - while()
+5. doxygen
+6. voltmeter
+7. tasks
+8. resourceControl
+9. timer tacho/ign
+10. strobescope
+11. ninja
+12. esp8266 >> RIOT
+13. **bit-banding**

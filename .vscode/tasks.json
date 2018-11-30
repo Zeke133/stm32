@@ -7,7 +7,7 @@
             "identifier": "build",
             "type": "shell",
             "windows": {
-                "command": "${workspaceRoot}\\scripts\\win\\build.bat"
+                "command": "${workspaceRoot}\\scripts\\cmd\\build.bat"
             },
             "problemMatcher": "$gcc",
             "group": {
@@ -23,7 +23,7 @@
             "identifier": "cmakeGenBuildTest",
             "type": "shell",
             "windows": {
-                "command": "${workspaceRoot}\\scripts\\win\\generateBuildTest.bat"
+                "command": "${workspaceRoot}\\scripts\\cmd\\generateBuildTest.bat"
             },
             "problemMatcher": "$gcc"
         },
@@ -32,7 +32,7 @@
             "label": "test",
             "type": "shell",
             "windows": {
-                "command": "${workspaceRoot}\\scripts\\win\\test.bat"
+                "command": "${workspaceRoot}\\scripts\\cmd\\test.bat"
             },
             "problemMatcher": "$gcc",
             "group": {
@@ -48,9 +48,9 @@
             "type": "shell",
             "windows": {
                 "options": {
-                    "cwd": "${workspaceRoot}\\scripts\\win"
+                    "cwd": "${workspaceRoot}\\scripts\\cmd"
                 },
-                "command": "${workspaceRoot}\\scripts\\win\\openOCDConnect.bat"
+                "command": "${workspaceRoot}\\scripts\\cmd\\openOCDConnect.bat"
             },
             "problemMatcher": [],
             "dependsOn": "stLinkFlash",
@@ -63,9 +63,9 @@
             "type": "shell",
             "windows": {
                 "options": {
-                    "cwd": "${workspaceRoot}\\scripts\\win"
+                    "cwd": "${workspaceRoot}\\scripts\\cmd"
                 },
-                "command": "${workspaceRoot}\\scripts\\win\\openOCDFlash.bat"
+                "command": "${workspaceRoot}\\scripts\\cmd\\openOCDFlash.bat"
             },
             "problemMatcher": []
         },
