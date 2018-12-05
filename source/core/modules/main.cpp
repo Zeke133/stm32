@@ -13,9 +13,9 @@ int main(void) {
     OStream cout(usartPC);
     cout << "\r\n\r\nFirmware: " << __DATE__ << ' ' << __TIME__;
 
-    usartPC.putsBufferized("\r\nIn case of problems this line will be corrupted123456789");
-    usartPC.putsBufferized("2nd line. TextOutput using USART and DMA.");    // instead of '.' '0x0a' put out
-    usartPC.putsBufferized("2nd line. TextOutput using USART and DMA.");
+    usartPC.putsBufferized("\r\n0123456789");
+    usartPC.putsBufferized("0123456789");    // instead of '.' '0x0a' put out
+    usartPC.putsBufferized("0123456789");
 
     RealTimeClock rtc(delayer);
     {
@@ -44,7 +44,7 @@ int main(void) {
     textRender.setCursor(1,0);
     textRender.puts(__TIME__);
     oled.update();
-
+    
     Tacho tacho;
 
     uint8_t rom[8] = {0x28, 0x82, 0x65, 0x5B, 0x05, 0x00, 0x00, 0x20};
