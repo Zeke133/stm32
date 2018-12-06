@@ -43,13 +43,8 @@ void Bmp280::initialization() {
     else
         cout << "\n!I2C_EVENT_MASTER_BYTE_TRANSMITTED";
     
-    // maybe not needed
-    // I2C_GenerateSTOP(I2C1, ENABLE);
-    // cout << "\nGenSTOP";
-    
-    // this stuck
-    // while (!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_TRANSMITTED));
-    
+    // --- restart
+
     I2C_GenerateSTART(I2C1, ENABLE);
     cout << "\nI2C_GenerateSTART";
     
@@ -61,12 +56,8 @@ void Bmp280::initialization() {
     I2C_Send7bitAddress(I2C1, 0x76 << 1, I2C_Direction_Receiver);
     cout << "\nI2C_Send7bitAddress";
     
-    /*
-    cout << "\nI2C_GetLastEvent";
-    cout << "\n" << itoa(I2C_GetLastEvent(I2C1), 16, 8);
-    cout << "\n" << itoa(I2C_GetLastEvent(I2C1), 16, 8);
-    cout << "\n" << itoa(I2C_GetLastEvent(I2C1), 16, 8);
-    */
+    //I2C_NACKPositionConfig(I2C1, I2C_NACKPosition_Current); // check with I2C_NACKPosition_Next
+    I2C_AcknowledgeConfig(I2C1, DISABLE);
     
     while (1) {
         if (I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED)) {
@@ -75,8 +66,7 @@ void Bmp280::initialization() {
         }
     }
     
-    I2C_NACKPositionConfig(I2C1, I2C_NACKPosition_Next);
-    I2C_AcknowledgeConfig(I2C1, DISABLE);
+    I2C_GenerateSTOP(I2C1, ENABLE);
     
     while (!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_RECEIVED));
     uint8_t buf = I2C_ReceiveData(I2C1);
@@ -86,11 +76,6 @@ void Bmp280::initialization() {
     //while (I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_RECEIVED)) {
     //    cout << "\n" << itoa(I2C_ReceiveData(I2C1),16,2);
     //}
-    I2C_NACKPositionConfig(I2C1, I2C_NACKPosition_Next);
-    I2C_AcknowledgeConfig(I2C1, DISABLE);
-
-    I2C_GenerateSTOP(I2C1, ENABLE);
-    cout << "\nI2C_GenerateSTOP";
     
     cout << "\nI2C_GetLastEvent";
     cout << "\n" << itoa(I2C_GetLastEvent(I2C1), 16, 8);
@@ -101,11 +86,13 @@ void Bmp280::initialization() {
     cout << "\n" << itoa(I2C_GetLastEvent(I2C1), 16, 8);
     cout << "\n" << itoa(I2C_GetLastEvent(I2C1), 16, 8);
     
-    if (I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_TRANSMITTED))
-        cout << "\nI2C_EVENT_MASTER_BYTE_TRANSMITTED";
-    else
-        cout << "\n!I2C_EVENT_MASTER_BYTE_TRANSMITTED";
+    // if (I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_TRANSMITTED))
+    //     cout << "\nI2C_EVENT_MASTER_BYTE_TRANSMITTED";
+    // else
+    //     cout << "\n!I2C_EVENT_MASTER_BYTE_TRANSMITTED";
     
-    
+    // case with Bytes to rec N>2
+    // EV7_2: BTF = 1, DataN-2 in DR and DataN-1 in shift register, program ACK = 0, Read DataN-2 in DR.
+    // Program STOP = 1, read DataN-1.
     
 }
