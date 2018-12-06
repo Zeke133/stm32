@@ -5,7 +5,7 @@
 #include <delay.h>
 #include <led.h>
 
-#include <dma.h>
+#include <dma.hpp>
 #include <usart.h>
 #include <i2c.h>
 #include <hd44780.h>

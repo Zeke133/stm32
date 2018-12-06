@@ -1,9 +1,17 @@
-#include <dma.h>
+/*******************************************************************************
+  * @file    dma.cpp
+  * @author  Denis Homutovski
+  * @version V0.9.0
+  * @date    06-12-2018
+  * @brief   Source of DMA driver for STM32F10x
+  */
+  
+#include <dma.hpp>
 
-// atribute for C compatibility
-// pointers to callback functions to be executed on interrupts, for each channel
-typedef void (*CallbackFunc)();
-static CallbackFunc callbacksOnIRQ[7] = {
+/** Pointers to callback functions to be executed on interrupts
+  * for each DMA channel
+  */
+static DMA::CallbackFunc DMA::callbacks[7] = {
     nullptr,
     nullptr,
     nullptr,
@@ -13,121 +21,129 @@ static CallbackFunc callbacksOnIRQ[7] = {
     nullptr
 };
 
-// interrupt handlers
+/** DMA interrupt handlers */
 void DMA1_Channel1_IRQHandler(void) {
 
     DMA_ClearITPendingBit(DMA1_IT_TC1);
     DMA_Cmd(DMA1_Channel1, DISABLE);
-    if (callbacksOnIRQ[0] != nullptr) callbacksOnIRQ[0]();
+    if (DMA::callbacks[0] != nullptr) DMA::callbacks[0]();
 }
 void DMA1_Channel2_IRQHandler(void) {
 
     DMA_ClearITPendingBit(DMA1_IT_TC2);
     DMA_Cmd(DMA1_Channel2, DISABLE);
-    if (callbacksOnIRQ[1] != nullptr) callbacksOnIRQ[1]();
+    if (DMA::callbacks[1] != nullptr) DMA::callbacks[1]();
 }
 void DMA1_Channel3_IRQHandler(void) {
 
     DMA_ClearITPendingBit(DMA1_IT_TC3);
     DMA_Cmd(DMA1_Channel3, DISABLE);
-    if (callbacksOnIRQ[2] != nullptr) callbacksOnIRQ[2]();
+    if (DMA::callbacks[2] != nullptr) DMA::callbacks[2]();
 }
 void DMA1_Channel4_IRQHandler(void) {
 
     DMA_ClearITPendingBit(DMA1_IT_TC4);
     DMA_Cmd(DMA1_Channel4, DISABLE);
-    if (callbacksOnIRQ[3] != nullptr) callbacksOnIRQ[3]();
+    if (DMA::callbacks[3] != nullptr) DMA::callbacks[3]();
 }
 void DMA1_Channel5_IRQHandler(void) {
 
     DMA_ClearITPendingBit(DMA1_IT_TC5);
     DMA_Cmd(DMA1_Channel5, DISABLE);
-    if (callbacksOnIRQ[4] != nullptr) callbacksOnIRQ[4]();
+    if (DMA::callbacks[4] != nullptr) DMA::callbacks[4]();
 }
 void DMA1_Channel6_IRQHandler(void) {
 
     DMA_ClearITPendingBit(DMA1_IT_TC6);
     DMA_Cmd(DMA1_Channel6, DISABLE);
-    if (callbacksOnIRQ[5] != nullptr) callbacksOnIRQ[5]();
+    if (DMA::callbacks[5] != nullptr) DMA::callbacks[5]();
 }
 void DMA1_Channel7_IRQHandler(void) {
 
     DMA_ClearITPendingBit(DMA1_IT_TC7);
     DMA_Cmd(DMA1_Channel7, DISABLE);
-    if (callbacksOnIRQ[6] != nullptr) callbacksOnIRQ[6]();
+    if (DMA::callbacks[6] != nullptr) DMA::callbacks[6]();
 }
 
-// mapping of devices to DMA channels
-// controllerNumber : 2bits; channelNumber : 3bits; inputOutput : 1bit;
-const DMA::ChannelMap DMA::channelsMap[(uint8_t)Device::LAST_ELEMENT] {
-    {1, 1, 0},                          // ADC,
-    {1, 2, 0},                          // SPI1_RX,
-    {1, 3, 1},                          // SPI1_TX,
-    {1, 4, 0},                          // SPI2/I2S2_RX,
-    {1, 5, 1},                          // SPI2/I2S2_TX,
-    {1, 2, 1},                          // USART3_TX,
-    {1, 3, 0},                          // USART3_RX,
-    {1, 4, 1},                          // USART1_TX,
-    {1, 5, 0},                          // USART1_RX,
-    {1, 6, 0},                          // USART2_RX,
-    {1, 7, 1},                          // USART2_TX,
-    {1, 4, 1},                          // I2C2_TX,
-    {1, 5, 0},                          // I2C2_RX,
-    {1, 6, 1},                          // I2C1_TX,
-    {1, 7, 0},                          // I2C1_RX,
-    {1, 2, 0},                          // TIM1_CH1,
-    {1, 4, 0},                          // TIM1_CH4,
-    {1, 4, 0},                          // TIM1_TRIG,
-    {1, 4, 0},                          // TIM1_COM,
-    {1, 5, 0},                          // TIM1_UP,
-    {1, 6, 0},                          // TIM1_CH3,
-    {1, 1, 0},                          // TIM2_CH3,
-    {1, 2, 0},                          // TIM2_UP,
-    {1, 5, 0},                          // TIM2_CH1,
-    {1, 7, 0},                          // TIM2_CH2,
-    {1, 7, 0},                          // TIM2_CH4,
-    {1, 2, 0},                          // TIM3_CH3,
-    {1, 3, 0},                          // TIM3_CH4,
-    {1, 3, 0},                          // TIM3_UP,
-    {1, 6, 0},                          // TIM3_CH1,
-    {1, 6, 0},                          // TIM3_TRIG
-    {1, 1, 0},                          // TIM4_CH1,
-    {1, 4, 0},                          // TIM4_CH2,
-    {1, 5, 0},                          // TIM4_CH3,
-    {1, 7, 0},                          // TIM4_UP
-                                        // ADC3,
-    // {2, 1, 0}                        // SPI_I2S3_RX,
-    // {2, 2, 1}                        // SPI_I2S3_TX,
-    // {2, 3, 0}                        // UART4_RX,
-    // {2, 5, 1}                        // UART4_TX,
-                                        // SDIO
-    // {2, 1, 0}                        // TIM5_CH4,
-    // {2, 1, 0}                        // TIM5_TRIG,
-    // {2, 2, 0}                        // TIM5_CH3,
-    // {2, 2, 0}                        // TIM5_UP,
-    // {2, 4, 0}                        // TIM5_CH2,
-    // {2, 5, 0}                        // TIM5_CH1,
-    // {2, 3, 0}                        // TIM6_UP_DAC_Channel1,
-    // {2, 4, 0}                        // TIM7_UP_DAC_Channel2,
-                                        // TIM8_CH3,
-                                        // TIM8_UP,
-                                        // TIM8_CH4,
-                                        // TIM8_TRIG,
-                                        // TIM8_COM,
-                                        // TIM8_CH1,
-                                        // TIM8_CH2
+/** Table of master devices descriptors
+  * maps each 'enum DMA::MasterDevice' instance to 'MasterDeviceDescription'
+  * Bit-Field:
+  *             controllerNumber : 2bits;
+  *             channelNumber : 3bits;
+  *             inputOutput : 1bit;
+  */
+const DMA::MasterDeviceDescription DMA::descriptions[(uint8_t)MasterDevice::LAST_ELEMENT] {
+    {1, 1, 0},                          /// ADC,
+    {1, 2, 0},                          /// SPI1_RX,
+    {1, 3, 1},                          /// SPI1_TX,
+    {1, 4, 0},                          /// SPI2/I2S2_RX,
+    {1, 5, 1},                          /// SPI2/I2S2_TX,
+    {1, 2, 1},                          /// USART3_TX,
+    {1, 3, 0},                          /// USART3_RX,
+    {1, 4, 1},                          /// USART1_TX,
+    {1, 5, 0},                          /// USART1_RX,
+    {1, 6, 0},                          /// USART2_RX,
+    {1, 7, 1},                          /// USART2_TX,
+    {1, 4, 1},                          /// I2C2_TX,
+    {1, 5, 0},                          /// I2C2_RX,
+    {1, 6, 1},                          /// I2C1_TX,
+    {1, 7, 0},                          /// I2C1_RX,
+    {1, 2, 0},                          /// TIM1_CH1,
+    {1, 4, 0},                          /// TIM1_CH4,
+    {1, 4, 0},                          /// TIM1_TRIG,
+    {1, 4, 0},                          /// TIM1_COM,
+    {1, 5, 0},                          /// TIM1_UP,
+    {1, 6, 0},                          /// TIM1_CH3,
+    {1, 1, 0},                          /// TIM2_CH3,
+    {1, 2, 0},                          /// TIM2_UP,
+    {1, 5, 0},                          /// TIM2_CH1,
+    {1, 7, 0},                          /// TIM2_CH2,
+    {1, 7, 0},                          /// TIM2_CH4,
+    {1, 2, 0},                          /// TIM3_CH3,
+    {1, 3, 0},                          /// TIM3_CH4,
+    {1, 3, 0},                          /// TIM3_UP,
+    {1, 6, 0},                          /// TIM3_CH1,
+    {1, 6, 0},                          /// TIM3_TRIG
+    {1, 1, 0},                          /// TIM4_CH1,
+    {1, 4, 0},                          /// TIM4_CH2,
+    {1, 5, 0},                          /// TIM4_CH3,
+    {1, 7, 0},                          /// TIM4_UP
+                                        /// ADC3,
+    // {2, 1, 0}                        /// SPI_I2S3_RX,
+    // {2, 2, 1}                        /// SPI_I2S3_TX,
+    // {2, 3, 0}                        /// UART4_RX,
+    // {2, 5, 1}                        /// UART4_TX,
+                                        /// SDIO
+    // {2, 1, 0}                        /// TIM5_CH4,
+    // {2, 1, 0}                        /// TIM5_TRIG,
+    // {2, 2, 0}                        /// TIM5_CH3,
+    // {2, 2, 0}                        /// TIM5_UP,
+    // {2, 4, 0}                        /// TIM5_CH2,
+    // {2, 5, 0}                        /// TIM5_CH1,
+    // {2, 3, 0}                        /// TIM6_UP_DAC_Channel1,
+    // {2, 4, 0}                        /// TIM7_UP_DAC_Channel2,
+                                        /// TIM8_CH3,
+                                        /// TIM8_UP,
+                                        /// TIM8_CH4,
+                                        /// TIM8_TRIG,
+                                        /// TIM8_COM,
+                                        /// TIM8_CH1,
+                                        /// TIM8_CH2
 };
 
-DMA::DMA(Device device) {
+/**
+  * @brief  DMA driver constructor.
+  * @param  device: device which going to use this DMA driver instance.
+  */
+DMA::DMA(MasterDevice device)
+    : masterDevice(device) {
 
-    deviceConnected = device;
+    MasterDeviceDescription description = descriptions[static_cast<uint8_t>(masterDevice)];
 
-    uint8_t dmaChannelNumber = channelsMap[static_cast<uint32_t>(device)].channelNumber;
-
-    if (channelsMap[static_cast<uint32_t>(device)].controllerNumber == 1) {
+    if (description.controllerNumber == 1) {
 
         RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
-        switch (dmaChannelNumber)
+        switch (description.channelNumber)
         {
             case 1: dmaChannel = DMA1_Channel1;
                     dmaIrq = DMA1_Channel1_IRQn;
@@ -154,7 +170,9 @@ DMA::DMA(Device device) {
                 break;
         }
     } else {
-
+        
+        // assert ??? NOT IMPLEMENTED
+        
         // RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA2, ENABLE);
         // switch (dmaChannelNumber)
         // {
@@ -179,11 +197,20 @@ DMA::DMA(Device device) {
     }
 }
 
-void DMA::setCallbackOnIrq(void (*func)(void)) {
+/**
+  * @brief  Deinitializes the I2Cx peripheral registers to their default reset values.
+  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
+  * @retval None
+  */
+void DMA::setCallback(CallbackFunc func) {
 
-    callbacksOnIRQ[channelsMap[(uint8_t)deviceConnected].channelNumber - 1] = func;
+    callbacks[descriptions[static_cast<uint8_t>(masterDevice)].channelNumber - 1] = func;
 }
 
+/**
+  * @brief  Turns ON callback on DMA transfer complete event
+  * @retval None
+  */
 void DMA::turnOnCallback(void) {
 
     // Enables DMA interrupt on transmition complete
@@ -191,6 +218,11 @@ void DMA::turnOnCallback(void) {
     NVIC_EnableIRQ(dmaIrq);
 }
 
+/**
+  * @brief  Deinitializes the I2Cx peripheral registers to their default reset values.
+  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
+  * @retval None
+  */
 void DMA::runDMA(void * destPtr, const uint8_t * data, uint32_t size) const {
 
     DMA_InitTypeDef DMA_InitStruct;
@@ -214,12 +246,12 @@ void DMA::runDMA(void * destPtr, const uint8_t * data, uint32_t size) const {
     DMA_InitStruct.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
     DMA_InitStruct.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
 
-    DMA_InitStruct.DMA_Mode = DMA_Mode_Normal;
+    DMA_InitStruct.DMA_Mode = DMA_Mode_Normal;  /// also DMA_Mode_Circular is
     DMA_InitStruct.DMA_Priority = DMA_Priority_Low;
     DMA_InitStruct.DMA_M2M = DMA_M2M_Disable;
 
     DMA_Init(dmaChannel, &DMA_InitStruct);
 
-    dmaChannel->CNDTR = size;       // exact size to transfer
+    dmaChannel->CNDTR = size;       /// exact size to transfer
     DMA_Cmd(dmaChannel, ENABLE);
 }

@@ -6,7 +6,7 @@ extern "C" {
 #include <stm32f10x_i2c.h>
 }
 #include <gpio.h>
-#include <dma.h>
+#include <dma.hpp>
 
 /*
 I2C driver.

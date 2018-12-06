@@ -45,7 +45,6 @@ I2c::I2c(uint8_t portNumber, DMA& dma, uint32_t speedClk, uint8_t ownAddress)
 
     // Enables the specified I2C peripheral.
     I2C_Cmd(port, ENABLE);
-    I2C_DMACmd(port, ENABLE);
 
     dmaController.turnOnCallback();
 }
@@ -105,7 +104,8 @@ void I2c::writeBufferized(uint8_t slaveAddress, const uint8_t * data, uint32_t s
 
     while (*dmaTransmitionInProgressFlagPtr) {}
     *dmaTransmitionInProgressFlagPtr = 1;
-
+    
+    I2C_DMACmd(port, ENABLE);
     startTransmit(slaveAddress, I2C_Direction_Transmitter);
 
     dmaController.runDMA((void*)&port->DR, data, size);
@@ -114,8 +114,12 @@ void I2c::writeBufferized(uint8_t slaveAddress, const uint8_t * data, uint32_t s
     // and executes i2c stop
 }
 
+/** Master transmitter: In the interrupt routine after the EOT interrupt,
+  * disable DMA requests then wait for a BTF event before programming the Stop condition.
+  */
 void I2c::callbackI2C1OnDmaIrq(void) {
 
+    I2C_DMACmd(port, DISABLE);
     // EV8_2: Wait until BTF is set before programming the STOP
     while ((I2C1->SR1 & 0x00004) != 0x000004);
     I2C_GenerateSTOP(I2C1, ENABLE);
@@ -126,6 +130,7 @@ void I2c::callbackI2C1OnDmaIrq(void) {
 
 void I2c::callbackI2C2OnDmaIrq(void) {
 
+    I2C_DMACmd(port, DISABLE);
     // EV8_2: Wait until BTF is set before programming the STOP
     while ((I2C2->SR1 & 0x00004) != 0x000004);
     I2C_GenerateSTOP(I2C2, ENABLE);
@@ -133,3 +138,11 @@ void I2c::callbackI2C2OnDmaIrq(void) {
 
     I2c::port2dmaTransmitionInProgress = 0;
 }
+
+/** Master receiver: when the number of bytes to be received is equal to or
+  * greater than two, the DMA controller sends a hardware signal, EOT_1,
+  * corresponding to the last but one data byte (number_of_bytes – 1).
+  * If, in the I2C_CR2 register, the LAST bit is set, I2C automatically sends a NACK
+  * after the next byte following EOT_1. The user can generate a
+  * Stop condition in the DMA Transfer Complete interrupt routine if enabled.
+  */

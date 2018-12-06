@@ -9,7 +9,7 @@ extern "C" {
 }
 #include <misc.h>
 #include <gpio.h>
-#include <dma.h>
+#include <dma.hpp>
 
 // IRQ handler, extern "C" function, because of c++ bad names
 extern "C" {
