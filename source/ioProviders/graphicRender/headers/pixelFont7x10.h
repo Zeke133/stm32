@@ -23,9 +23,9 @@ public:
 
 private:
 
-    static const uint8_t width = 7;
-    static const uint8_t height = 10;
-    static const uint8_t numberOfSymbols = 95;
+    static constexpr uint8_t width = 7;
+    static constexpr uint8_t height = 10;
+    static constexpr uint8_t numberOfSymbols = 95;
 
     static const uint8_t data[numberOfSymbols][height];
 

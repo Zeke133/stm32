@@ -51,9 +51,9 @@ private:
     GPIO_TypeDef *GPIOx;        // Port to run
     const uint16_t GPIO_Pin;    // Pin of port for communication
 
-    const uint8_t InitTOs[3] = {48, 7, 41}; // Timeouts in initialization - us
-    const uint8_t WriteTOs[3] = {3, 90, 5}; // Timeouts in write timeslot - us
-    const uint8_t ReadTOs[3] = {1, 7, 90};  // Timeouts in read timeslot - us
+    static constexpr uint8_t InitTOs[3] = {48, 7, 41}; // Timeouts in initialization - us
+    static constexpr uint8_t WriteTOs[3] = {3, 90, 5}; // Timeouts in write timeslot - us
+    static constexpr uint8_t ReadTOs[3] = {1, 7, 90};  // Timeouts in read timeslot - us
 
     // Timings from other libs
     // 48, 7, 41

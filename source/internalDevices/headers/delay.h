@@ -38,15 +38,15 @@ public:
     virtual void startProfiling(void);          // start counting of cpu ticks
     virtual uint32_t getExecutionTicks(void);   // get amount of CPU ticks from measuring start
 
-    static uint32_t sysTicks2us(uint32_t ticks);
+    uint32_t sysTicks2us(uint32_t ticks);
 
 private:
 
     uint32_t getDWTTicksValue(void) const;
 
-    volatile static uint32_t sysTicksPerUs;
-    volatile static uint32_t msCount;                // For store tick counts in ms
-    volatile uint32_t profilingStart;                // Start value of DWT
+    volatile uint32_t sysTicksPerUs;
+    volatile static uint32_t msCount;           // For store tick counts in ms
+    volatile uint32_t profilingStart;           // Start value of DWT
 
 };
 

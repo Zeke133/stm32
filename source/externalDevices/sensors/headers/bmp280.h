@@ -2,7 +2,7 @@
 #define _BMP280_H
 
 // using
-#include <i2c.h>
+#include <i2c.hpp>
 #include <IDelayer.h>
 #include <OStream.h>    // ??? debug
 #include <stm32f10x_i2c.h>
@@ -10,12 +10,12 @@
 /**
 Bosch BMP280 digital pressure / temperature sensor API
 
-## Connection in I2C or SPI mode
+### Connection in I2C or SPI mode
 Interface selection is done automatically based on CSB (chip select) status.
 If CSB is connected to V, the I²C interface is active.
 If CSB is pulled down, the SPI interface is activated.
 
-## Address in I2C mode
+### Address in I2C mode
 Connecting SDO to GND results in slave address 1110110 (0x76);
 connection it to V results in slave address 1110111 (0x77),
 which is the same as BMP180’s I²C address.
@@ -123,9 +123,9 @@ private:
     /// Ctrl_meas register bit-field
     /// Sets the data acquisition options of the device
     struct Ctrl_meas {
-        enum Osrs_mode osrs_t   : 3;    /// Controls oversampling of temperature data
-        enum Osrs_mode osrs_p   : 3;    /// Controls oversampling of pressure data
-        enum Power_mode mode    : 2;    /// Controls the power mode of device
+        unsigned int osrs_t     : 3;    /// enum Osrs_mode. Controls oversampling of temperature data
+        unsigned int osrs_p     : 3;    /// enum Osrs_mode. Controls oversampling of pressure data
+        unsigned int mode       : 2;    /// enum Power_mode. Controls the power mode of device
     };
 
     /// Standby time settings
@@ -157,8 +157,8 @@ private:
     /// Writes to the “config” register in normal mode may be ignored.
     /// In sleep mode writes are not ignored.
     struct Config {
-        enum T_standby t_sb     : 3;    /// Controls inactive duration t_standby in normal mode
-        enum Filter_mode filter : 3;    /// Controls the time constant of the IIR filter
+        unsigned int t_sb       : 3;    /// enum T_standby. Controls inactive duration t_standby in normal mode
+        unsigned int filter     : 3;    /// enum Filter_mode. Controls the time constant of the IIR filter
         unsigned int            : 1;    /// Unused
         unsigned int spi3w_en   : 1;    /// Enables 3-wire SPI interface when set to ‘1’
     };

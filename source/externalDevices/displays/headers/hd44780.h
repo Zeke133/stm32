@@ -5,7 +5,7 @@
 #include <ITerminal.h>
 // using
 #include <IDelayer.h>
-#include <i2c.h>
+#include <i2c.hpp>
 
 /*
 Hitachi HD44780 character LCD controllers API.

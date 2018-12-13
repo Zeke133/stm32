@@ -6,9 +6,10 @@ int main(void) {
     LED led(GPIOC, GPIO_Pin_13);
     Delay delayer;
 
-    DMA dmaUsart1Tx(DMA::Device::USART1_TX);
+    DMA dmaUsart1Tx(DMA::ServicedDevice::USART1_TX);
     Usart usartPC(1, dmaUsart1Tx, 115200);
-    DMA dmaUsart3Tx(DMA::Device::USART3_TX);
+
+    DMA dmaUsart3Tx(DMA::ServicedDevice::USART3_TX);        // DUMMY needed for USART ??? make not nesesary
     Usart usartRadio(3, dmaUsart3Tx, 300);      // 300 8n1
     OStream cout(usartPC);
     cout << "\r\n\r\nFirmware: " << __DATE__ << ' ' << __TIME__;
@@ -32,9 +33,11 @@ int main(void) {
     flash.readToRam();
     cout << "\r\nReload after ERASING: " << OStream::OutSet::dec << flash.data.var1;
 
-    DMA dmaForI2c1(DMA::Device::I2C1_TX);
-    I2c i2cPort(1, dmaForI2c1);
+    DMA dmaForI2c1tx(DMA::ServicedDevice::I2C1_TX);
+    DMA dmaForI2c1rx(DMA::ServicedDevice::I2C1_RX);
+    I2c i2cPort(1, dmaForI2c1tx, dmaForI2c1rx, cout);
     // Hd44780 lcd(i2cPort, delayer, 1, 16);
+    // lcd.puts("Hello!");
     Ssd1306 oled(i2cPort, delayer);
     oled.fill(0);
     Font_7x10 fontS;

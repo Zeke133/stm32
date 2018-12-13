@@ -33,7 +33,7 @@ friend void USART3_IRQHandler(void);
 public:
 
     Usart(int usartN,
-          DMA& dma,
+          DMA& txDMA,
           uint32_t bauld = 115200,
           uint16_t dataBits = USART_WordLength_8b,
           uint16_t stopBits = USART_StopBits_1,
@@ -62,7 +62,7 @@ private:
     void setNvic(uint8_t irqChannel);
 
     USART_TypeDef * usart;
-    DMA& dmaController;
+    DMA& txDMA;
 
     uint8_t outputBuffer[100];
     uint8_t inputBuffer[100];
@@ -83,7 +83,7 @@ private:
     static void callbackUsart1OnDmaIrq(void);               // callbacks on DMA transmition complete interrupt
     static void callbackUsart2OnDmaIrq(void);
     static void callbackUsart3OnDmaIrq(void);
-    volatile uint8_t * dmaTransmitionInProgressFlagPtr;     // pointer to flag used with current instance
+    volatile uint8_t * dmaTransferActiveFlagPtr;            // pointer to flag used with current instance
 
 };
 

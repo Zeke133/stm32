@@ -8,7 +8,6 @@ void SysTick_Handler() {
 
 // Class implementation
 volatile uint32_t Delay::msCount;
-volatile uint32_t Delay::sysTicksPerUs;
 
 /**
  * Configuring SysTick timer for implementation of 1ms delays by timer interrupt

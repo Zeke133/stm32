@@ -5,6 +5,10 @@
 
 # CMake BUILD directory
 /build
+
+# Doxygen documentation
+/docs/html
+
 # CTest directory
 /Testing
 

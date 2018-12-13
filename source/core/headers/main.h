@@ -1,13 +1,17 @@
 #ifndef _MAIN_H
 #define _MAIN_H
 
+/** Core OS functionality. */
+#include <bitBanding.hpp>
+
+
 #include <sysClock.h>
 #include <delay.h>
 #include <led.h>
 
 #include <dma.hpp>
 #include <usart.h>
-#include <i2c.h>
+#include <i2c.hpp>
 #include <hd44780.h>
 #include <ssd1306.h>
 #include <bmp280.h>

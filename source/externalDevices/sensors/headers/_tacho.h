@@ -34,6 +34,8 @@ Turn ON ignition coil charge on interrupt and turn OFF on next.
 */
 class Tacho {
 
+friend void TIM2_IRQHandler(void);
+
 public:
 
     Tacho();
@@ -52,6 +54,9 @@ private:
 
     const uint32_t timerClk = 100000;   // 10uS for tick
     const uint32_t timerPrescaler = SystemCoreClock / timerClk;
+
+    static uint16_t currentTicks;
+    static uint32_t ticks;
 
     uint32_t rotateLength;  // in mm km10-6
 

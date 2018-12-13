@@ -7,7 +7,7 @@
 // val - input value
 // base - 10 for decimal or 16 for HEX view
 // signs - fixed length of number, 0 - auto
-const char * itoa(unsigned int val, int base, uint8_t width = 0);
+const char * itoa(unsigned int val, int base = 10, uint8_t width = 0);
 
 // Convertation of Strings to Int
 int32_t atoi(const uint8_t * mas, uint8_t base = 10, uint8_t signs = 10);
@@ -25,7 +25,7 @@ struct DateTime {
 };
 
 // (UnixTime = 00:00:00 01.01.1970 = JD0 = 2440588)
-const uint32_t JULIAN_DATE_BASE = 2440588;
+constexpr uint32_t JULIAN_DATE_BASE = 2440588;      // appears like static / why not in class?
 
 uint32_t dateTime2Unix(const DateTime& dateTime);
 void unix2DateTime(DateTime& dateTimeRef, uint32_t unixTime);

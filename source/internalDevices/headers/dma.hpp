@@ -1,19 +1,16 @@
-/*******************************************************************************
-  * @file    dma.hpp
-  * @author  Denis Homutovski
-  * @version V0.9.0
-  * @date    06-12-2018
-  * @brief   Header of DMA driver for STM32F10x
-  ******************************************************************************
-  * Direct Memory Access controller driver.
-  * Attention! DMA2 - is not implemented, please add if needed.
-  * Master device which will use DMA controller instance chosen in constructor.
-  * Here is no any hardware resources sharing protection, so you must not create
-  * more than one instance for each physical DMA channel.
-  * This implementation uses interrupts and able to execute user-defined
-  * callback functions with specified actions.
-  */
-  
+/**
+ * @file    dma.hpp
+ * @author  Denis Homutovski
+ * @version V0.9.1
+ * @date    06-12-2018
+ * @brief   DMA class header.
+ * @details   Direct Memory Access controller driver for STM32F10x.
+ * @pre       -
+ * @bug       -
+ * @warning   DMA2 - is not implemented, please add if needed.
+ * @copyright GNU Public License.
+ */
+
 #ifndef _DMA_H
 #define _DMA_H
 
@@ -23,8 +20,7 @@ extern "C" {
 #include <stm32f10x_dma.h>
 }
 
-/** IRQ handlers. Extern "C" macro is needed for link procedure
-  */
+// IRQ handlers. Extern "C" macro is needed for correct link procedure.
 extern "C" {
     void DMA1_Channel1_IRQHandler(void);
     void DMA1_Channel2_IRQHandler(void);
@@ -35,16 +31,34 @@ extern "C" {
     void DMA1_Channel7_IRQHandler(void);
 }
 
-/** DMA driver class
-  */
+/**
+ * Direct Memory Access controller driver class.
+ * Instance represents DMA channel.
+ * Attention! DMA2 - is not implemented, please add if needed.
+ * Serviced device which will use DMA controller instance chosen in constructor.
+ * Here is no any hardware resources sharing protection,
+ * so you must not create more than one instance for each physical DMA channel.
+ * This implementation uses interrupts and able to execute user-defined
+ * callback functions with specified actions.
+ */
 class DMA {
+
+// Interrupt handlers need access to 'callbacks'.
+friend void DMA1_Channel1_IRQHandler(void);
+friend void DMA1_Channel2_IRQHandler(void);
+friend void DMA1_Channel3_IRQHandler(void);
+friend void DMA1_Channel4_IRQHandler(void);
+friend void DMA1_Channel5_IRQHandler(void);
+friend void DMA1_Channel6_IRQHandler(void);
+friend void DMA1_Channel7_IRQHandler(void);
 
 public:
 
-    /** Master devices available for work with DMA controller
-      * Another words - device which use exact DMA controller channel
-      */
-    enum class MasterDevice : uint8_t {
+    /**
+     * Serviced devices available for work with DMA controller.
+     * In another words - device which use exact DMA controller channel.
+     */
+    enum class ServicedDevice : uint8_t {
         // DMA1 devices
         ADC_1,
 
@@ -125,48 +139,44 @@ public:
         // end
         LAST_ELEMENT
     };
-    /* Callback function type */
-    typedef void (*CallbackFunc)();
 
-    /* Constructor */
-    DMA(MasterDevice device);
-    /* Delete copy constructor and assignment operator */
-    DMA(const DMA&) = delete;
-    DMA& operator=(const DMA&) = delete;
+    DMA(ServicedDevice device);
+    DMA(const DMA&) = delete;             /**< Delete copy constructor. */
+    DMA& operator=(const DMA&) = delete;  /**< Delete assignment operator. */
 
-    /* Driver interface */
-    /* Turns ON interrupt on DMA transmission complete */
+    typedef void (*CallbackFunc)();       /**< Callback function type. */
+    
     void turnOnCallback(void);
-    /* Set callback function on transmission complete interrupt */
     void setCallback(CallbackFunc func);
-    /* Run DMA controller */
-    void runDMA(void * destPtr, const uint8_t * data, uint32_t size) const;
+    void runDataTransfer(void * perephPtr, const uint8_t * memoryPtr, uint32_t size) const;
 
 private:
 
-    /** Description of master devices needed to configure
-      * specified DMA device and channel
-      */
-    struct MasterDeviceDescription {
-        uint32_t controllerNumber : 2;  /// 1 or 2
-        uint32_t channelNumber : 3;     /// 1 ... 7
-        uint32_t inputOutput : 1;       /// 0 - channel used for data input Rx
-                                        /// 1 - channel used for data output Tx
+    /**
+     * Configuration of devices serviced with DMA.
+     * Needed to configure driver instance accordingly.
+     */
+    struct ServicedDeviceConfig {
+
+        uint32_t controllerNumber : 2;
+        /**< DMA controller: 1 or 2 */
+
+        uint32_t channelNumber : 3;
+        /**< Controller channel number: 1 ... 7 */
+
+        uint32_t inputOutput : 1;
+        /**< Data transmission direction:
+         * - 0 - channel used for data input Rx
+         * - 1 - channel used for data output Tx
+         */
     };
     
-    /** Table of master devices descriptors
-      * maps each 'enum DMA::MasterDevice' instance to 'MasterDeviceDescription'
-      */
-    static const MasterDeviceDescription descriptions[(uint8_t)MasterDevice::LAST_ELEMENT];
-    
-    /** Pointers to callback functions to be executed on interrupts
-      * for each DMA channel
-      */
+    static const ServicedDeviceConfig descriptions[(uint8_t)ServicedDevice::LAST_ELEMENT];
     static CallbackFunc callbacks[7];
     
-    MasterDevice masterDevice;          /// master device index in 'MasterDevice' enum
-    DMA_Channel_TypeDef * dmaChannel;   /// configured DMA channel
-    IRQn_Type dmaIrq;                   /// configured interrupt
+    ServicedDevice servicedDevice;      /**< Device index in 'ServicedDevice' enum. */
+    DMA_Channel_TypeDef * dmaChannel;   /**< Configured DMA channel. */
+    IRQn_Type dmaIrq;                   /**< Configured interrupt. */
 
 };
 

@@ -19,15 +19,21 @@ If the D/C# bit is set to logic “1”, it defines the following data byte as a
 The GDDRAM column address pointer will be increased by one automatically after each data write.
 */
 
-void Ssd1306::writeCommand(const uint8_t * byte, uint16_t size) {
+void Ssd1306::writeCommand(const uint8_t * data, uint16_t size) {
 
-    i2c.startTransmit(address);
-    // Control bit to 1 and D/C# to 0: means command will be transmited
-    for (uint8_t i = 0; i < size; ++i) {
-        i2c.write(0x80);
-        i2c.write(byte[i]);
+    uint8_t output[10];     // max size of command must fit
+    uint8_t outCnt = 0, inCnt = 0;
+
+    // Create package to send
+    while (inCnt < size && outCnt < sizeof output) {
+
+        // Control bit to 1 and D/C# to 0: means command will be transmited
+        output[outCnt++] = 0x80;
+        // User data bytes
+        output[outCnt++] = data[inCnt++];
     }
-    i2c.stopTransmit();
+
+    i2c.send(address, output, outCnt);
 }
 
 // Fill the whole screen with the given bit, color depends of display settings
@@ -61,7 +67,7 @@ void Ssd1306::update(void) {
     // Control bit to 0 and D/C# to 0: means command followed with data will be transmited
     writeDataCmd = 0x40;
     // located in memory right before "displayBuffer" for optimisation
-    i2c.writeBufferized(address, &writeDataCmd, width*pagesNum + 1);
+    i2c.sendBufferized(address, &writeDataCmd, width*pagesNum + 1);
 }
 
 void Ssd1306::setOnOff(uint8_t value) {

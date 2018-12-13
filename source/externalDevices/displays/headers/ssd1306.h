@@ -5,7 +5,7 @@
 #include <IGraphicOutput.h>
 // using
 #include <IDelayer.h>
-#include <i2c.h>
+#include <i2c.hpp>
 
 /*
 API for OLED graphic displays based on SSD1306 controller.
@@ -65,10 +65,10 @@ private:
     IDelayer& delayer;
     const uint8_t address;
 
-    static const uint8_t defaultAddress = 0x3C << 1;
-    static const uint8_t width = 128;
-    static const uint8_t height = 64;
-    static const uint8_t pagesNum = height / 8;
+    static constexpr uint8_t defaultAddress = 0x3C << 1;
+    static constexpr uint8_t width = 128;
+    static constexpr uint8_t height = 64;
+    static constexpr uint8_t pagesNum = height / 8;
 
     uint8_t writeDataCmd;                               // needed here for DMA transmition optimisation
     uint8_t displayBuffer[pagesNum][width];

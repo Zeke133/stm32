@@ -34,8 +34,8 @@ public:
 
 private:
 
-    static const uint32_t MY_FLASH_PAGE_ADDR = 0x800FC00;
-    static const uint16_t SETTINGS_WORDS = sizeof(data)/4;
+    static constexpr uint32_t MY_FLASH_PAGE_ADDR = 0x800FC00;
+    static constexpr uint16_t SETTINGS_WORDS = sizeof(data)/4;
 
 };
 

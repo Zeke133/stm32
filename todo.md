@@ -1,22 +1,32 @@
 # TODO
 
 1. bpe280 driver
-    - dma receive mode
-    - use dma receive in i2c driver
-    - try bit-banding using
+    - ~~dma receive mode~~
+    - ~~use dma receive in i2c driver~~
+    - ~~try bit-banding using~~
     - main driver features
 2. refactoring
-    - move C-style static vars to class internal statics
+    - ~~cpp 17~~
+    - ~~-finline-small-functions~~
+    - ~~-findirect-inlining~~
+    - ~~move C-style static vars to class internal statics - check size~~ size doesn't matter
+    - ~~WHY CONST uint8_t appears as variables??? it's variables~~
+    - I2C restart in case of stuck - if device returned error. BMP280 likes to stuck. This bit can be used to reinitialize the peripheral after an error or a locked state. As an example, if the BUSY bit is set and remains locked due to a glitch on the bus, the SWRST bit can be used to exit from this state.
+    - if some device disconnected - doesn't work correct with next one
+    - *may be can use Busy FLAG check ???*
+    - const expr to create DMA channel instance
+    - i2c error handling to devices
     - issue with last symbol in USART DMA transmition
-    - loop in i2c::start - while() - make timeout and error indicator
     - optimize stdLib inline and so on
     - use bit-banding in perepherial drivers
+    - change to constexpr everything that's possible
+    - Try precompiled header for STD_PERIPH ???
 3. doxygen
 4. voltmeter
 5. os core
     - tasks
     - resourceControl
-7. timer tacho/ign
-8. strobescope
-9. ninja
-10. esp8266 >> RIOT
+6. timer tacho/ign
+7. strobescope
+8. ninja
+9. esp8266 >> RIOT

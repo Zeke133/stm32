@@ -1,17 +1,18 @@
-/*******************************************************************************
-  * @file    dma.cpp
-  * @author  Denis Homutovski
-  * @version V0.9.0
-  * @date    06-12-2018
-  * @brief   Source of DMA driver for STM32F10x
-  */
+/**
+ * @file    dma.cpp
+ * @author  Denis Homutovski
+ * @version V0.9.1
+ * @date    06-12-2018
+ * @brief   DMA class source
+ */
   
 #include <dma.hpp>
 
-/** Pointers to callback functions to be executed on interrupts
-  * for each DMA channel
-  */
-static DMA::CallbackFunc DMA::callbacks[7] = {
+/**
+ * Callback functions pointers being executed on interrupts
+ * for each DMA channel.
+ */
+DMA::CallbackFunc DMA::callbacks[7] = {
     nullptr,
     nullptr,
     nullptr,
@@ -21,7 +22,6 @@ static DMA::CallbackFunc DMA::callbacks[7] = {
     nullptr
 };
 
-/** DMA interrupt handlers */
 void DMA1_Channel1_IRQHandler(void) {
 
     DMA_ClearITPendingBit(DMA1_IT_TC1);
@@ -65,14 +65,12 @@ void DMA1_Channel7_IRQHandler(void) {
     if (DMA::callbacks[6] != nullptr) DMA::callbacks[6]();
 }
 
-/** Table of master devices descriptors
-  * maps each 'enum DMA::MasterDevice' instance to 'MasterDeviceDescription'
-  * Bit-Field:
-  *             controllerNumber : 2bits;
-  *             channelNumber : 3bits;
-  *             inputOutput : 1bit;
-  */
-const DMA::MasterDeviceDescription DMA::descriptions[(uint8_t)MasterDevice::LAST_ELEMENT] {
+/**
+ * Table of serviced devices descriptors.
+ * Maps each 'enum DMA::ServicedDevice' instance
+ * to 'ServicedDeviceConfig'.
+ */
+const DMA::ServicedDeviceConfig DMA::descriptions[(uint8_t)ServicedDevice::LAST_ELEMENT] {
     {1, 1, 0},                          /// ADC,
     {1, 2, 0},                          /// SPI1_RX,
     {1, 3, 1},                          /// SPI1_TX,
@@ -132,13 +130,13 @@ const DMA::MasterDeviceDescription DMA::descriptions[(uint8_t)MasterDevice::LAST
 };
 
 /**
-  * @brief  DMA driver constructor.
-  * @param  device: device which going to use this DMA driver instance.
-  */
-DMA::DMA(MasterDevice device)
-    : masterDevice(device) {
+ * @brief  Driver constructor.
+ * @param  device: Device which going to use this DMA driver instance.
+ */
+DMA::DMA(ServicedDevice device)
+    : servicedDevice(device) {
 
-    MasterDeviceDescription description = descriptions[static_cast<uint8_t>(masterDevice)];
+    ServicedDeviceConfig description = descriptions[(uint8_t)(servicedDevice)];
 
     if (description.controllerNumber == 1) {
 
@@ -198,19 +196,19 @@ DMA::DMA(MasterDevice device)
 }
 
 /**
-  * @brief  Deinitializes the I2Cx peripheral registers to their default reset values.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
-  * @retval None
-  */
+ * @brief  Set callback function on transmition complete interrupt.
+ * @param  func: Pointer to user callback function.
+ * @retval None
+ */
 void DMA::setCallback(CallbackFunc func) {
 
-    callbacks[descriptions[static_cast<uint8_t>(masterDevice)].channelNumber - 1] = func;
+    callbacks[descriptions[(uint8_t)(servicedDevice)].channelNumber - 1] = func;
 }
 
 /**
-  * @brief  Turns ON callback on DMA transfer complete event
-  * @retval None
-  */
+ * @brief  Turns ON interrupt on transmission complete.
+ * @retval None
+ */
 void DMA::turnOnCallback(void) {
 
     // Enables DMA interrupt on transmition complete
@@ -219,19 +217,21 @@ void DMA::turnOnCallback(void) {
 }
 
 /**
-  * @brief  Deinitializes the I2Cx peripheral registers to their default reset values.
-  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
-  * @retval None
-  */
-void DMA::runDMA(void * destPtr, const uint8_t * data, uint32_t size) const {
+ * @brief  Run data transmission.
+ * @param  perephPtr: Pointer to perepheral device data register.
+ * @param  memoryPtr: Pointer to memory buffer.
+ * @param  size: Size of data to be transmited.
+ * @retval None
+ */
+void DMA::runDataTransfer(void * perephPtr, const uint8_t * memoryPtr, uint32_t size) const {
 
     DMA_InitTypeDef DMA_InitStruct;
 
-    DMA_InitStruct.DMA_PeripheralBaseAddr = (uint32_t)destPtr;
-    DMA_InitStruct.DMA_MemoryBaseAddr = (uint32_t)data;
+    DMA_InitStruct.DMA_PeripheralBaseAddr = (uint32_t)perephPtr;
+    DMA_InitStruct.DMA_MemoryBaseAddr = (uint32_t)memoryPtr;
 
-    // if DMA put data to peripheral "output" flag value is 1
-    if (channelsMap[(uint8_t)deviceConnected].inputOutput) {
+    // if DMA transfers data to peripheral - "output" flag value is 1
+    if (descriptions[(uint8_t)servicedDevice].inputOutput) {
 
         DMA_InitStruct.DMA_DIR = DMA_DIR_PeripheralDST;
     } else {
@@ -246,12 +246,12 @@ void DMA::runDMA(void * destPtr, const uint8_t * data, uint32_t size) const {
     DMA_InitStruct.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
     DMA_InitStruct.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
 
-    DMA_InitStruct.DMA_Mode = DMA_Mode_Normal;  /// also DMA_Mode_Circular is
+    DMA_InitStruct.DMA_Mode = DMA_Mode_Normal;  // also DMA_Mode_Circular is
     DMA_InitStruct.DMA_Priority = DMA_Priority_Low;
     DMA_InitStruct.DMA_M2M = DMA_M2M_Disable;
 
     DMA_Init(dmaChannel, &DMA_InitStruct);
 
-    dmaChannel->CNDTR = size;       /// exact size to transfer
+    dmaChannel->CNDTR = size;   // exact size to transfer
     DMA_Cmd(dmaChannel, ENABLE);
 }

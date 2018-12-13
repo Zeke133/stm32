@@ -16,12 +16,14 @@ set(INTERFACES_DIR      interfaces)
 set(IO_GRAPH_DIR        ioProviders/graphicRender)
 set(IO_TEXT_DIR         ioProviders/textOutput)
 set(UTILS_DIR           utils)
+set(CODE_STYLE_DIR      examples/codeStyle)
 
 set(H_DIR               headers)
 set(SRC_DIR             modules)
 
 target_include_directories(
     modules
+    PRIVATE ${CODE_STYLE_DIR}
     PRIVATE ${INTERFACES_DIR}
     PRIVATE ${CORE_DIR}/${H_DIR}
     PRIVATE ${DEBUG_API_DIR}/${H_DIR}
@@ -37,6 +39,7 @@ target_include_directories(
 
 target_sources(
     modules
+    PRIVATE ${CODE_STYLE_DIR}/sourceCodeTemplate
     PRIVATE ${CORE_DIR}/${SRC_DIR}/main
     PRIVATE ${DEBUG_API_DIR}/${SRC_DIR}/_debugApi
     PRIVATE ${EXT_DISPLAYS_DIR}/${SRC_DIR}/hd44780
@@ -66,16 +69,3 @@ target_sources(
     PRIVATE ${UTILS_DIR}/${SRC_DIR}/crc
     PRIVATE ${UTILS_DIR}/${SRC_DIR}/strings
 )
-
-target_compile_options(
-    modules
-    PRIVATE -fno-exceptions                 # in libs
-    PRIVATE -fno-non-call-exceptions
-    PRIVATE -fno-rtti
-    PRIVATE -fno-use-cxa-atexit             # Teardown code (including global destructors) can be omitted
-)
-
-# target_compile_features(
-#     modules
-#     PUBLIC cxx_std_17
-# )

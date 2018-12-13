@@ -33,11 +33,7 @@ set(SOURCES_TO_BUILD
 include_directories (${GOOGLE_TEST_DIR}/googletest/include)
 include_directories (${MODULES_HEADER_DIR})
 
-#add_definitions(-DSOME_IMPORTANT_DEFINITION)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall")
-
 # Executable file
 add_executable(unitTests ${SOURCES_TO_BUILD})
 # Link with static library
 target_link_libraries(unitTests ${GOOGLE_TEST_DIR}/googletest/build/gtest_main.a)
-

@@ -1,8 +1,7 @@
 #include <_tacho.h>
 
-static uint16_t prevTicks;
-static uint16_t currentTicks;
-static uint32_t ticks;
+uint16_t Tacho::currentTicks;
+uint32_t Tacho::ticks;
 
 void TIM2_IRQHandler(void) {
 
@@ -10,9 +9,9 @@ void TIM2_IRQHandler(void) {
         /* Reset flag */
         TIM_ClearITPendingBit(TIM2, TIM_IT_CC2);
 
-        prevTicks = currentTicks;
-        currentTicks = TIM_GetCapture2(TIM2);
-        ticks = (currentTicks >= prevTicks) ? (currentTicks - prevTicks) : (UINT16_MAX - prevTicks + currentTicks);
+        uint16_t prevTicks = Tacho::currentTicks;
+        Tacho::currentTicks = TIM_GetCapture2(TIM2);
+        Tacho::ticks = (Tacho::currentTicks >= prevTicks) ? (Tacho::currentTicks - prevTicks) : (UINT16_MAX - prevTicks + Tacho::currentTicks);
         
         // over-capture: The counter value has been captured in TIMx_CCR1 register while CC1IF flag was already set
         if (TIM_GetFlagStatus(TIM2, TIM_FLAG_CC2OF) != RESET) {
@@ -20,8 +19,8 @@ void TIM2_IRQHandler(void) {
             // ...
         }
 
-        if (GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_13)) GPIO_ResetBits(GPIOC, GPIO_Pin_13);
-        else GPIO_SetBits(GPIOC, GPIO_Pin_13);
+        // if (GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_13)) GPIO_ResetBits(GPIOC, GPIO_Pin_13);
+        // else GPIO_SetBits(GPIOC, GPIO_Pin_13);
     }
 }
 

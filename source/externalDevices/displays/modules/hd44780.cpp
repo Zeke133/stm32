@@ -34,9 +34,8 @@ Hd44780::Hd44780(I2c& i2c, IDelayer& delayer, uint8_t lines, uint8_t columns, ui
     delayer.ms(50);
 
     // Now we pull both RS and R/W low to begin commands
-    i2c.startTransmit(address);
-    i2c.write(0);
-    i2c.stopTransmit();
+    i2c.send(address, 0);
+
     // reset expander and turn backlight off (Bit 8 = 1)
     delayer.ms(100);
 
@@ -79,21 +78,21 @@ void Hd44780::write4bits(uint8_t data) {
         data |= static_cast<uint8_t>(CmdBusBits::BackLight);    // Baclight enable
     }
 
-    i2c.startTransmit(address);
+    uint8_t buff[3];
 
     // set port data
-    i2c.write(data);
+    buff[0] = data;
 
-    // pulse EN signal
-    i2c.write(data | static_cast<uint8_t>(CmdBusBits::En));     // En high
-    // enable pulse must be >450ns
-    delayer.us(1);
+    // Enable pulse must be >450ns according to datasheet
+    // set pulse En signal to high
+    buff[1] = data | static_cast<uint8_t>(CmdBusBits::En);
 
-    i2c.write(data & ~static_cast<uint8_t>(CmdBusBits::En));    // En low
+    // set pulse En signal low
+    buff[2] = data & ~static_cast<uint8_t>(CmdBusBits::En);
+
     // commands need >37us to settle
-    delayer.us(50);
 
-    i2c.stopTransmit();
+    i2c.send(address, buff, sizeof buff);
 }
 
 inline void Hd44780::writeData(uint8_t value, uint8_t mode) {
@@ -207,9 +206,8 @@ void Hd44780::setBacklight(uint8_t mode /*1 - on, 0 - off*/) {
 
     backlightPin = mode ? 1 : 0;
 
-    i2c.startTransmit(address);
-    i2c.write(backlightPin ? static_cast<uint8_t>(CmdBusBits::BackLight) : 0);
-    i2c.stopTransmit();
+    uint8_t command = backlightPin ? static_cast<uint8_t>(CmdBusBits::BackLight) : 0;
+    i2c.send(address, command);
 }
 
 // Allows us to fill the first 8 CGRAM locations with custom characters

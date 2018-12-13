@@ -35,8 +35,8 @@ void USART3_IRQHandler(void) {
 
 // Class implementation
 // default settings 8 N 1
-Usart::Usart(int usartN, DMA& dma, uint32_t bauld, uint16_t dataBits, uint16_t stopBits, uint16_t parity)
-    : dmaController(dma) {
+Usart::Usart(int usartN, DMA& txDMA, uint32_t bauld, uint16_t dataBits, uint16_t stopBits, uint16_t parity)
+    : txDMA(txDMA) {
 
     uint8_t irqChannel;
     GPIO_TypeDef * port;
@@ -53,8 +53,8 @@ Usart::Usart(int usartN, DMA& dma, uint32_t bauld, uint16_t dataBits, uint16_t s
         txPin = GPIO_Pin_9;
         rxPin = GPIO_Pin_10;
         usart = USART1;
-        dmaTransmitionInProgressFlagPtr = &port1DmaTransmitionInProgress;
-        dmaController.setCallbackOnIrq(&callbackUsart1OnDmaIrq);
+        dmaTransferActiveFlagPtr = &port1DmaTransmitionInProgress;
+        txDMA.setCallback(&callbackUsart1OnDmaIrq);
     } else
     if (usartN == 2) {
         buf2Ptr = inputBuffer;
@@ -68,8 +68,8 @@ Usart::Usart(int usartN, DMA& dma, uint32_t bauld, uint16_t dataBits, uint16_t s
         txPin = GPIO_Pin_2;
         rxPin = GPIO_Pin_3;
         usart = USART2;
-        dmaTransmitionInProgressFlagPtr = &port2DmaTransmitionInProgress;
-        dmaController.setCallbackOnIrq(&callbackUsart2OnDmaIrq);
+        dmaTransferActiveFlagPtr = &port2DmaTransmitionInProgress;
+        txDMA.setCallback(&callbackUsart2OnDmaIrq);
     } else
     /*if (usartN == 3)*/ {
         buf3Ptr = inputBuffer;
@@ -83,8 +83,8 @@ Usart::Usart(int usartN, DMA& dma, uint32_t bauld, uint16_t dataBits, uint16_t s
         txPin = GPIO_Pin_10;
         rxPin = GPIO_Pin_11;
         usart = USART3;
-        dmaTransmitionInProgressFlagPtr = &port3DmaTransmitionInProgress;
-        dmaController.setCallbackOnIrq(&callbackUsart3OnDmaIrq);
+        dmaTransferActiveFlagPtr = &port3DmaTransmitionInProgress;
+        txDMA.setCallback(&callbackUsart3OnDmaIrq);
     }
 
     // Configure the GPIOs
@@ -99,7 +99,7 @@ Usart::Usart(int usartN, DMA& dma, uint32_t bauld, uint16_t dataBits, uint16_t s
 
     // Configure DMA
     USART_DMACmd(usart, USART_DMAReq_Tx, ENABLE);
-    dmaController.turnOnCallback();
+    txDMA.turnOnCallback();
 
     // Global usart irq enable
     setNvic(irqChannel);
@@ -168,8 +168,8 @@ void Usart::puts(const char *str) {
 
 void Usart::putsBufferized(const char * data, uint32_t len) {
 
-    while (*dmaTransmitionInProgressFlagPtr) {}
-    *dmaTransmitionInProgressFlagPtr = 1;
+    while (*dmaTransferActiveFlagPtr) {}
+    *dmaTransferActiveFlagPtr = 1;
 
     // copy data to temporary buffer
     if (len == 0) {
@@ -182,7 +182,7 @@ void Usart::putsBufferized(const char * data, uint32_t len) {
         }
     }
 
-    dmaController.runDMA((void*)&usart->DR, outputBuffer, len);
+    txDMA.runDataTransfer((void*)&usart->DR, outputBuffer, len);
 }
 
 void Usart::clear() {
