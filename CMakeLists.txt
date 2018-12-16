@@ -44,9 +44,8 @@ target_link_libraries(app.elf PRIVATE startup modules)
 # ---
 # Setup common compilation properties
 # ---
-# For libs and user modules
+# For UnitTests
 set_target_properties(
-        app.elf
         unitTests
     PROPERTIES
         COMPILE_FEATURES
@@ -60,7 +59,13 @@ set_target_properties(
 set_property(
     TARGET
         modules
-    APPEND
+    PROPERTY
+        COMPILE_FEATURES
+            cxx_std_17
+)
+set_property(
+    TARGET
+        modules
     PROPERTY
         COMPILE_OPTIONS
             -fno-exceptions         # in libs
@@ -83,6 +88,7 @@ set_property(
             -mthumb
             -g                      # debug mode
             -Os                     # optimisation
+            -Wall
             # Bare metal specific flags
             --specs=nano.specs      # To use newlib-nano
             -ffunction-sections     # which split functions and data into their own ELF sections.

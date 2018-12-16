@@ -60,9 +60,6 @@ target_sources(
     PRIVATE ${INT_DEVICES_DIR}/${SRC_DIR}/_storage
     PRIVATE ${EXT_SENSORS_DIR}/${SRC_DIR}/_tacho
     PRIVATE ${INT_DEVICES_DIR}/${SRC_DIR}/_analogTempSensor
-    PRIVATE ${IO_GRAPH_DIR}/${SRC_DIR}/pixelFont7x10
-    PRIVATE ${IO_GRAPH_DIR}/${SRC_DIR}/pixelFont11x18
-    PRIVATE ${IO_GRAPH_DIR}/${SRC_DIR}/pixelFont16x26
     PRIVATE ${IO_GRAPH_DIR}/${SRC_DIR}/textRender
     PRIVATE ${IO_TEXT_DIR}/${SRC_DIR}/oStream
     PRIVATE ${UTILS_DIR}/${SRC_DIR}/convertation
