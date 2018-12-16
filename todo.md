@@ -5,23 +5,20 @@
     - ~~use dma receive in i2c driver~~
     - ~~try bit-banding using~~
     - main driver features
+    
 2. refactoring
-    - ~~cpp 17~~
-    - ~~-finline-small-functions~~
-    - ~~-findirect-inlining~~
-    - ~~move C-style static vars to class internal statics - check size~~ size doesn't matter
-    - ~~WHY CONST uint8_t appears as variables??? it's variables~~
     - I2C restart in case of stuck - if device returned error. BMP280 likes to stuck. This bit can be used to reinitialize the peripheral after an error or a locked state. As an example, if the BUSY bit is set and remains locked due to a glitch on the bus, the SWRST bit can be used to exit from this state.
     - if some device disconnected - doesn't work correct with next one
-    - *may be can use Busy FLAG check ???*
+    - ~~may be can use Busy FLAG check ???~~
     - const expr to create DMA channel instance
     - i2c error handling to devices
     - issue with last symbol in USART DMA transmition
     - optimize stdLib inline and so on
     - use bit-banding in perepherial drivers
-    - change to constexpr everything that's possible
+    - ~~change to constexpr everything that's possible~~
     - Try precompiled header for STD_PERIPH ???
-3. doxygen
+    
+3. doxygen - in process
 4. voltmeter
 5. os core
     - tasks

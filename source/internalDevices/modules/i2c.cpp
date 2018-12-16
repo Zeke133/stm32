@@ -117,13 +117,14 @@ inline void I2c::stopDmaTransmission(I2C_TypeDef* port) {
         else if (event & (uint32_t)0x30040) {
 
             I2C_ReceiveData(port);  // 30040 than RxNE disapear >> 30000
-            I2C_GenerateSTOP(port, ENABLE);
+            // I2C_GenerateSTOP(port, ENABLE);
         }
         else {
 
             // does not react on STOP. 30000 BUSY MSL are still set 4ever
             // if (event & (uint32_t)0x30000)
             BitBanding::setBit((void*)&(GPIOC->BSRR), 13);
+            //*((uint32_t *)(0x40000000 + 0x10000 + 0x1000 + 4*4)) = (1<<12);
             break;
         }
     }

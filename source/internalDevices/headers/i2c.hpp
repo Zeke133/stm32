@@ -32,7 +32,13 @@ class I2c {
 
 public:
 
-    I2c(uint8_t portNumber, DMA& txDMA, DMA& rxDMA, OStream& cout, uint32_t speedClk = 100000, uint8_t ownAddress = 0x15);
+    I2c(uint8_t portNumber,
+        DMA& txDMA,
+        DMA& rxDMA,
+        OStream& cout,
+        uint32_t speedClk = 100000,
+        uint8_t ownAddress = 0x15);
+        
     I2c(const I2c&) = delete;               /**< Delete copy constructor. */
     I2c& operator=(const I2c&) = delete;    /**< Delete assignment operator. */
 
@@ -71,7 +77,6 @@ private:
     Status sendByte(uint8_t byte) const;
     uint8_t receiveByte(void) const;
     
-
     /** Maximum amount of attempts during work with peripheral. */ 
     static constexpr uint32_t maxAttempts = 7200000;
 
