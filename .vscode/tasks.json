@@ -70,55 +70,14 @@
             "problemMatcher": []
         },
         {
-            // Flashes target MCU via Usart and default bootloader
-            "label": "upload",
-            "identifier": "upload",
+            // Run GDBGUI debug session
+            "label": "gdbgui",
+            "identifier": "gdbgui",
             "type": "shell",
-            "command": "${workspaceRoot}\\loader\\STMFlashLoader.exe",
-            "args": [
-                "-c",
-                "--pn",
-                "5",
-                "-i",
-                "STM32F1_Med-density_128K",
-                "-e",
-                "--sec",
-                "30",
-                "0",
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "6",
-                "7",
-                "8",
-                "9",
-                "10",
-                "11",
-                "12",
-                "13",
-                "14",
-                "15",
-                "16",
-                "17",
-                "18",
-                "19",
-                "20",
-                "21",
-                "22",
-                "23",
-                "24",
-                "25",
-                "26",
-                "27",
-                "28",
-                "29",
-                "-d",
-                "--fn",
-                "${workspaceRoot}\\bin\\app.hex"
-            ],
-            "problemMatcher": "$gcc"
+            "windows": {
+                "command": "${workspaceRoot}\\scripts\\cmd\\debug.bat"
+            },
+            "problemMatcher": []
         }
     ]
 }

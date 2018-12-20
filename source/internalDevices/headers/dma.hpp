@@ -141,10 +141,10 @@ public:
     };
 
     DMA(ServicedDevice device);
-    DMA(const DMA&) = delete;             /**< Delete copy constructor. */
-    DMA& operator=(const DMA&) = delete;  /**< Delete assignment operator. */
+    DMA(const DMA&) = delete;               /**< Delete copy constructor. */
+    DMA& operator=(const DMA&) = delete;    /**< Delete assignment operator. */
 
-    typedef void (*CallbackFunc)();       /**< Callback function type. */
+    using CallbackFunc = void (*)(void);    /**< Callback function type. */
     
     void turnOnCallback(void);
     void setCallback(CallbackFunc func);

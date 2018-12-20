@@ -110,14 +110,17 @@ inline void I2c::stopDmaTransmission(I2C_TypeDef* port) {
             
             break;
         }
-        else if (event & (uint32_t)0x30044) {
+        else if (event & (uint32_t)(I2C_SR1_BTF | I2C_SR1_RXNE)) {
 
-            I2C_ReceiveData(port);  // 30044 first BTF disapear >> 30040
+            I2C_ReceiveData(port);
+            // 30044 first BTF disapear >> 30040
+            // 30040 than RxNE disapear >> 30000
         }
-        else if (event & (uint32_t)0x30040) {
+        else if (event & (uint32_t)((I2C_SR2_MSL | I2C_SR2_BUSY)<<16)) {
 
-            I2C_ReceiveData(port);  // 30040 than RxNE disapear >> 30000
-            // I2C_GenerateSTOP(port, ENABLE);
+            I2C_GenerateSTOP(port, ENABLE);
+            // 30044 first BTF disapear >> 30040
+            // 30040 than RxNE disapear >> 30000
         }
         else {
 
@@ -125,6 +128,8 @@ inline void I2c::stopDmaTransmission(I2C_TypeDef* port) {
             // if (event & (uint32_t)0x30000)
             BitBanding::setBit((void*)&(GPIOC->BSRR), 13);
             //*((uint32_t *)(0x40000000 + 0x10000 + 0x1000 + 4*4)) = (1<<12);
+
+            // I2C_CR1_SWRST I2C_CR1
             break;
         }
     }

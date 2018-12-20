@@ -7,6 +7,8 @@
     - main driver features
     - check what is going in TC interrupt i2c
 2. refactoring
+    - includes of libs to sources
+    - move tacho to devices
     - I2C restart in case of stuck - if device returned error. BMP280 likes to stuck. This bit can be used to reinitialize the peripheral after an error or a locked state. As an example, if the BUSY bit is set and remains locked due to a glitch on the bus, the SWRST bit can be used to exit from this state.
     - if some device disconnected - doesn't work correct with next one
     - ~~may be can use Busy FLAG check ???~~

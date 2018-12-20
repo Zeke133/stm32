@@ -1,0 +1,1 @@
+..\gdbgui_0.13.1.1.exe -g arm-none-eabi-gdb.exe -n

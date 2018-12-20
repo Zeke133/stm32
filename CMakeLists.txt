@@ -47,6 +47,7 @@ target_link_libraries(app.elf PRIVATE startup modules)
 # For UnitTests
 set_target_properties(
         unitTests
+        app.elf
     PROPERTIES
         COMPILE_FEATURES
             cxx_std_17
