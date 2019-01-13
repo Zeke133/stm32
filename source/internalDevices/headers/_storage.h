@@ -2,7 +2,7 @@
 #define _STORAGE_H
 
 extern "C" {
-#include <stm32f10x_flash.h>
+// #include <stm32f1xx_flash.h>
 }
 
 /*

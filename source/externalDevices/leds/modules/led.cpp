@@ -1,21 +1,21 @@
 #include <led.h>
 
-LED::LED(GPIO_TypeDef* port, uint16_t pin)
+LED::LED(GPIO_TypeDef* port, uint32_t pin)
     : port(port), pin(pin) {
 
-    GPIO_Init_My(port, pin, GPIO_Mode_Out_PP, GPIO_Speed_50MHz);
+    GPIO::initPins(port, pin, LL_GPIO_MODE_OUTPUT, LL_GPIO_OUTPUT_PUSHPULL, LL_GPIO_PULL_DOWN, LL_GPIO_SPEED_FREQ_HIGH);
     state = 1;
 }
 
-void LED::on() {
+inline void LED::on() {
 
-    GPIO_ResetBits(port, pin);
+    LL_GPIO_ResetOutputPin(port, pin);
     state = 1;
 }
 
-void LED::off() {
+inline void LED::off() {
 
-    GPIO_SetBits(port, pin);
+    LL_GPIO_SetOutputPin(port, pin);
     state = 0;
 }
 

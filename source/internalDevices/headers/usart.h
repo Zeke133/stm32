@@ -5,9 +5,8 @@
 #include <ITextOutput.h>
 // using
 extern "C" {
-#include <stm32f10x_usart.h>
+#include <stm32f1xx_ll_usart.h>
 }
-#include <misc.h>
 #include <gpio.h>
 #include <dma.hpp>
 
@@ -35,9 +34,9 @@ public:
     Usart(int usartN,
           DMA& txDMA,
           uint32_t bauld = 115200,
-          uint16_t dataBits = USART_WordLength_8b,
-          uint16_t stopBits = USART_StopBits_1,
-          uint16_t parity = USART_Parity_No);
+          uint32_t dataBits = LL_USART_DATAWIDTH_8B,
+          uint32_t stopBits = LL_USART_STOPBITS_1,
+          uint32_t parity = LL_USART_PARITY_NONE);
 
     // delete copy constructor and assignment operator
     Usart(const Usart&) = delete;
@@ -55,11 +54,11 @@ public:
     void clear(void);
 
     // --- SETUP
-    void setUart(uint32_t bauld, uint16_t dataBits, uint16_t stopBits, uint16_t parity);
+    void setUart(uint32_t bauld, uint32_t dataBits, uint32_t stopBits, uint32_t parity);
 
 private:
 
-    void setNvic(uint8_t irqChannel);
+    // void setNvic(uint8_t irqChannel);
 
     USART_TypeDef * usart;
     DMA& txDMA;

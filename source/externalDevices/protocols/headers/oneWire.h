@@ -5,11 +5,6 @@
 #include <IOneWire.h>
 // using
 #include <IDelayer.h>
-extern "C"
-{
-#include <stm32f10x_rcc.h>
-#include <stm32f10x_gpio.h>
-}
 
 #include <gpio.h>
 #include <delay.h>
@@ -24,7 +19,7 @@ class OneWire : public IOneWire {
 
 public:
 
-    OneWire(IDelayer &timer, GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin);
+    OneWire(IDelayer &timer, GPIO_TypeDef *GPIOx, uint32_t GPIO_Pin);
 
     // delete copy constructor and assignment operator
     OneWire(const OneWire &) = delete;
@@ -49,7 +44,7 @@ protected:
 private:
 
     GPIO_TypeDef *GPIOx;        // Port to run
-    const uint16_t GPIO_Pin;    // Pin of port for communication
+    const uint32_t GPIO_Pin;    // Pin of port for communication
 
     static constexpr uint8_t InitTOs[3] = {48, 7, 41}; // Timeouts in initialization - us
     static constexpr uint8_t WriteTOs[3] = {3, 90, 5}; // Timeouts in write timeslot - us

@@ -13,7 +13,7 @@ RealTimeClock::RealTimeClock(IDelayer& delayer) {
             .date = 1,
             .wday = 0,
             .month = 1,
-            .year = 2018
+            .year = 2019
         };
 
         // Must have a delay after RTC initialization to set a time
@@ -25,28 +25,29 @@ RealTimeClock::RealTimeClock(IDelayer& delayer) {
 uint8_t RealTimeClock::init(void) {
 
     // Enable tacting of PowerManagement and BackupManagement modules
-    RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR | RCC_APB1Periph_BKP, ENABLE);
+    LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_PWR | LL_APB1_GRP1_PERIPH_BKP);
     // Enable access to Backup data sector
-    PWR_BackupAccessCmd(ENABLE);
+    LL_PWR_EnableBkUpAccess();
 
     // Initialize RTC if it's OFF
-    if ((RCC->BDCR & RCC_BDCR_RTCEN) != RCC_BDCR_RTCEN) {
+    if (!LL_RCC_IsEnabledRTC()) {
 
-        RCC_BackupResetCmd(ENABLE);
-        RCC_BackupResetCmd(DISABLE);
+        LL_RCC_ForceBackupDomainReset();
+        LL_RCC_ReleaseBackupDomainReset();
 
         // Set clock source 32768 oscillator
-        RCC_LSEConfig(RCC_LSE_ON);
-        while ((RCC->BDCR & RCC_BDCR_LSERDY) != RCC_BDCR_LSERDY) {}
-        RCC_RTCCLKConfig(RCC_RTCCLKSource_LSE);
+        LL_RCC_LSE_Enable();
+        
+        while (!LL_RCC_LSE_IsReady()) ;
+        LL_RCC_SetRTCClockSource(LL_RCC_RTC_CLKSOURCE_LSE);
 
         // Set divider to count seconds with RTC
-        RTC_SetPrescaler(0x7FFF);
+        LL_RTC_SetAsynchPrescaler(RTC, 0x7FFF);
 
         // Turn ON RTC
-        RCC_RTCCLKCmd(ENABLE);
+        LL_RCC_EnableRTC();
 
-        RTC_WaitForSynchro();
+        LL_RTC_WaitForSynchro(RTC);
 
         return 1;
     }
@@ -55,20 +56,20 @@ uint8_t RealTimeClock::init(void) {
 
 void RealTimeClock::setTime(const struct DateTime& dateTime) {
 
-    RTC_SetCounter(dateTime2Unix(dateTime));
+    LL_RTC_TIME_Set(RTC, dateTime2Unix(dateTime));
 }
 
 void RealTimeClock::setTime(uint32_t unixTime) {
 
-    RTC_SetCounter(unixTime);
+    LL_RTC_TIME_Set(RTC, unixTime);
 }
 
 void RealTimeClock::getTime(struct DateTime& dateTime) const {
 
-    unix2DateTime(dateTime, RTC_GetCounter());
+    unix2DateTime(dateTime, LL_RTC_TIME_Get(RTC));
 }
 
 uint32_t RealTimeClock::getUnixTime(void) const {
 
-    return RTC_GetCounter();
+    return LL_RTC_TIME_Get(RTC);
 }

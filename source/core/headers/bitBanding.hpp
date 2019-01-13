@@ -15,7 +15,7 @@
 #define _BIT_BANDING_H
 
 // using
-#include <stm32f10x.h>
+#include <stm32f1xx.h>
 
 /**
  * Bit banding implementation.

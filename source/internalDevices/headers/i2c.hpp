@@ -16,7 +16,7 @@
 
 // using
 extern "C" {
-#include <stm32f10x_i2c.h>
+#include <stm32f1xx_ll_i2c.h>
 }
 #include <gpio.h>
 #include <dma.hpp>
@@ -56,8 +56,6 @@ public:
         SendByte = 40,
         RvBuffSize = 50
     };
-
-    Status sendWOStop(uint8_t slaveAddress, uint8_t data) const;
 
     Status send(uint8_t slaveAddress, uint8_t data) const;
     Status send(uint8_t slaveAddress, const uint8_t * data, uint32_t size) const;

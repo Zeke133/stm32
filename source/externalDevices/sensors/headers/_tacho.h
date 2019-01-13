@@ -3,7 +3,7 @@
 
 // using
 extern "C" {
-#include <stm32f10x_tim.h>
+#include <stm32f1xx_ll_tim.h>
 }
 #include <gpio.h>
 
@@ -55,7 +55,7 @@ private:
     const uint32_t timerClk = 100000;   // 10uS for tick
     const uint32_t timerPrescaler = SystemCoreClock / timerClk;
 
-    static uint16_t currentTicks;
+    static uint32_t currentTicks;
     static uint32_t ticks;
 
     uint32_t rotateLength;  // in mm km10-6

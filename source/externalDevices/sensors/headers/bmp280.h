@@ -5,7 +5,6 @@
 #include <i2c.hpp>
 #include <IDelayer.h>
 #include <OStream.h>    // ??? debug
-#include <stm32f10x_i2c.h>
 
 /**
 Bosch BMP280 digital pressure / temperature sensor API

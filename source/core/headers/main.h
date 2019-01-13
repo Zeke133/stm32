@@ -18,7 +18,7 @@
 
 #include <rtc.h>
 #include <adc.h>
-#include <_storage.h>
+// #include <_storage.h>
 
 #include <_tacho.h>
 

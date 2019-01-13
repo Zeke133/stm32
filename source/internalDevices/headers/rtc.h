@@ -3,9 +3,10 @@
 
 // using
 extern "C" {
-#include <stm32f10x_rcc.h>
-#include <stm32f10x_rtc.h>
-#include <stm32f10x_pwr.h>
+#include <stm32f1xx_ll_rcc.h>
+#include <stm32f1xx_ll_pwr.h>
+#include <stm32f1xx_ll_bus.h>
+#include <stm32f1xx_ll_rtc.h>
 }
 #include <IDelayer.h>
 #include <convertation.h>

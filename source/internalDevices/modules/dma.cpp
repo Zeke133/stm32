@@ -24,44 +24,44 @@ DMA::CallbackFunc DMA::callbacks[7] = {
 
 void DMA1_Channel1_IRQHandler(void) {
 
-    DMA_ClearITPendingBit(DMA1_IT_TC1);
-    DMA_Cmd(DMA1_Channel1, DISABLE);
+    LL_DMA_ClearFlag_TC1(DMA1);
+    LL_DMA_DisableChannel(DMA1, LL_DMA_CHANNEL_1);
     if (DMA::callbacks[0] != nullptr) DMA::callbacks[0]();
 }
 void DMA1_Channel2_IRQHandler(void) {
 
-    DMA_ClearITPendingBit(DMA1_IT_TC2);
-    DMA_Cmd(DMA1_Channel2, DISABLE);
+    LL_DMA_ClearFlag_TC2(DMA1);
+    LL_DMA_DisableChannel(DMA1, LL_DMA_CHANNEL_2);
     if (DMA::callbacks[1] != nullptr) DMA::callbacks[1]();
 }
 void DMA1_Channel3_IRQHandler(void) {
 
-    DMA_ClearITPendingBit(DMA1_IT_TC3);
-    DMA_Cmd(DMA1_Channel3, DISABLE);
+    LL_DMA_ClearFlag_TC3(DMA1);
+    LL_DMA_DisableChannel(DMA1, LL_DMA_CHANNEL_3);
     if (DMA::callbacks[2] != nullptr) DMA::callbacks[2]();
 }
 void DMA1_Channel4_IRQHandler(void) {
 
-    DMA_ClearITPendingBit(DMA1_IT_TC4);
-    DMA_Cmd(DMA1_Channel4, DISABLE);
+    LL_DMA_ClearFlag_TC4(DMA1);
+    LL_DMA_DisableChannel(DMA1, LL_DMA_CHANNEL_4);
     if (DMA::callbacks[3] != nullptr) DMA::callbacks[3]();
 }
 void DMA1_Channel5_IRQHandler(void) {
 
-    DMA_ClearITPendingBit(DMA1_IT_TC5);
-    DMA_Cmd(DMA1_Channel5, DISABLE);
+    LL_DMA_ClearFlag_TC5(DMA1);
+    LL_DMA_DisableChannel(DMA1, LL_DMA_CHANNEL_5);
     if (DMA::callbacks[4] != nullptr) DMA::callbacks[4]();
 }
 void DMA1_Channel6_IRQHandler(void) {
 
-    DMA_ClearITPendingBit(DMA1_IT_TC6);
-    DMA_Cmd(DMA1_Channel6, DISABLE);
+    LL_DMA_ClearFlag_TC6(DMA1);
+    LL_DMA_DisableChannel(DMA1, LL_DMA_CHANNEL_6);
     if (DMA::callbacks[5] != nullptr) DMA::callbacks[5]();
 }
 void DMA1_Channel7_IRQHandler(void) {
 
-    DMA_ClearITPendingBit(DMA1_IT_TC7);
-    DMA_Cmd(DMA1_Channel7, DISABLE);
+    LL_DMA_ClearFlag_TC7(DMA1);
+    LL_DMA_DisableChannel(DMA1, LL_DMA_CHANNEL_7);
     if (DMA::callbacks[6] != nullptr) DMA::callbacks[6]();
 }
 
@@ -140,28 +140,29 @@ DMA::DMA(ServicedDevice device)
 
     if (description.controllerNumber == 1) {
 
-        RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
+        dma = DMA1;
+        LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_DMA1);
         switch (description.channelNumber)
         {
-            case 1: dmaChannel = DMA1_Channel1;
+            case 1: dmaChannel = LL_DMA_CHANNEL_1;
                     dmaIrq = DMA1_Channel1_IRQn;
                 break;
-            case 2: dmaChannel = DMA1_Channel2;
+            case 2: dmaChannel = LL_DMA_CHANNEL_2;
                     dmaIrq = DMA1_Channel2_IRQn;
                 break;
-            case 3: dmaChannel = DMA1_Channel3;
+            case 3: dmaChannel = LL_DMA_CHANNEL_3;
                     dmaIrq = DMA1_Channel3_IRQn;
                 break;
-            case 4: dmaChannel = DMA1_Channel4;
+            case 4: dmaChannel = LL_DMA_CHANNEL_4;
                     dmaIrq = DMA1_Channel4_IRQn;
                 break;
-            case 5: dmaChannel = DMA1_Channel5;
+            case 5: dmaChannel = LL_DMA_CHANNEL_5;
                     dmaIrq = DMA1_Channel5_IRQn;
                 break;
-            case 6: dmaChannel = DMA1_Channel6;
+            case 6: dmaChannel = LL_DMA_CHANNEL_6;
                     dmaIrq = DMA1_Channel6_IRQn;
                 break;
-            case 7: dmaChannel = DMA1_Channel7;
+            case 7: dmaChannel = LL_DMA_CHANNEL_7;
                     dmaIrq = DMA1_Channel7_IRQn;
                 break;
             default:
@@ -170,23 +171,23 @@ DMA::DMA(ServicedDevice device)
     } else {
         
         // assert ??? NOT IMPLEMENTED
-        
-        // RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA2, ENABLE);
+        // dma = DMA2;
+        // LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_DMA2);
         // switch (dmaChannelNumber)
         // {
-        //     case 1: dmaChannel = DMA2_Channel1;
+        //     case 1: dmaChannel = LL_DMA_CHANNEL_1;
         //             dmaIrq = DMA2_Channel1_IRQn;
         //         break;
-        //     case 2: dmaChannel = DMA2_Channel2;
+        //     case 2: dmaChannel = LL_DMA_CHANNEL_2;
         //             dmaIrq = DMA2_Channel2_IRQn;
         //         break;
-        //     case 3: dmaChannel = DMA2_Channel3;
+        //     case 3: dmaChannel = LL_DMA_CHANNEL_3;
         //             dmaIrq = DMA2_Channel3_IRQn;
         //         break;
-        //     case 4: dmaChannel = DMA2_Channel4;
+        //     case 4: dmaChannel = LL_DMA_CHANNEL_4;
         //             dmaIrq = DMA2_Channel4_5_IRQn;
         //         break;
-        //     case 5: dmaChannel = DMA2_Channel5;
+        //     case 5: dmaChannel = LL_DMA_CHANNEL_5;
         //             dmaIrq = DMA2_Channel4_5_IRQn;
         //         break;
         //     default:
@@ -212,7 +213,7 @@ void DMA::setCallback(CallbackFunc func) {
 void DMA::turnOnCallback(void) {
 
     // Enables DMA interrupt on transmition complete
-    DMA_ITConfig(dmaChannel, DMA_IT_TC, ENABLE);
+    LL_DMA_EnableIT_TC(dma, dmaChannel);
     NVIC_EnableIRQ(dmaIrq);
 }
 
@@ -224,34 +225,32 @@ void DMA::turnOnCallback(void) {
  * @retval None
  */
 void DMA::runDataTransfer(void * perephPtr, const uint8_t * memoryPtr, uint32_t size) const {
+    
+    LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_DMA1);
+    // if DMA transfers data to peripheral - "inputOutput" flag value is 1
+    uint32_t direction = descriptions[(uint8_t)servicedDevice].inputOutput
+                                            ?
+                                            LL_DMA_DIRECTION_MEMORY_TO_PERIPH :
+                                            LL_DMA_DIRECTION_PERIPH_TO_MEMORY;
 
-    DMA_InitTypeDef DMA_InitStruct;
+    LL_DMA_InitTypeDef params;
 
-    DMA_InitStruct.DMA_PeripheralBaseAddr = (uint32_t)perephPtr;
-    DMA_InitStruct.DMA_MemoryBaseAddr = (uint32_t)memoryPtr;
+    params.PeriphOrM2MSrcAddress = (uint32_t)perephPtr;
+    params.MemoryOrM2MDstAddress = (uint32_t)memoryPtr;
 
-    // if DMA transfers data to peripheral - "output" flag value is 1
-    if (descriptions[(uint8_t)servicedDevice].inputOutput) {
+    params.Direction = direction;
 
-        DMA_InitStruct.DMA_DIR = DMA_DIR_PeripheralDST;
-    } else {
+    params.PeriphOrM2MSrcIncMode = LL_DMA_PERIPH_NOINCREMENT;
+    params.MemoryOrM2MDstIncMode = LL_DMA_MEMORY_INCREMENT;
 
-        DMA_InitStruct.DMA_DIR = DMA_DIR_PeripheralSRC;
-    }
+    params.PeriphOrM2MSrcDataSize = LL_DMA_PDATAALIGN_BYTE;
+    params.MemoryOrM2MDstDataSize = LL_DMA_PDATAALIGN_BYTE;
 
-    DMA_InitStruct.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
-    DMA_InitStruct.DMA_MemoryInc = DMA_MemoryInc_Enable;
+    params.Mode = LL_DMA_MODE_NORMAL;   // LL_DMA_MODE_CIRCULAR
+    params.Priority = LL_DMA_PRIORITY_LOW;
 
-    DMA_InitStruct.DMA_BufferSize = size;
-    DMA_InitStruct.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
-    DMA_InitStruct.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
-
-    DMA_InitStruct.DMA_Mode = DMA_Mode_Normal;  // also DMA_Mode_Circular is
-    DMA_InitStruct.DMA_Priority = DMA_Priority_Low;
-    DMA_InitStruct.DMA_M2M = DMA_M2M_Disable;
-
-    DMA_Init(dmaChannel, &DMA_InitStruct);
-
-    dmaChannel->CNDTR = size;   // exact size to transfer
-    DMA_Cmd(dmaChannel, ENABLE);
+    params.NbData = size;
+    
+    LL_DMA_Init(dma, dmaChannel, &params);
+    LL_DMA_EnableChannel(dma, dmaChannel);
 }

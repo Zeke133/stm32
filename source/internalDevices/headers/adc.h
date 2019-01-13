@@ -3,9 +3,9 @@
 
 // using
 extern "C" {
-#include <stm32f10x_adc.h>
-#include <stm32f10x_rcc.h>
-#include <stm32f10x_dma.h>
+#include <stm32f1xx_ll_adc.h>
+#include <stm32f1xx_ll_rcc.h>
+#include <stm32f1xx_ll_dma.h>
 }
 #include <gpio.h>
 
@@ -19,7 +19,7 @@ class ADC {
 
 public:
 
-    enum class ResultStoreMode {
+    enum class ResultStoreMode : uint8_t {
         Injected,
         Regular
     };
@@ -46,11 +46,11 @@ private:
     uint32_t useDMA;                    // flag of using DMA for results storing
     uint16_t dataStorage[12];           // conversion rusults stored by DMA
 
-    const uint8_t mapChannel2Injected[4] = {
-        ADC_InjectedChannel_1,
-        ADC_InjectedChannel_2,
-        ADC_InjectedChannel_3,
-        ADC_InjectedChannel_4
+    const uint32_t mapChannel2Injected[4] = {    // constexpr?
+        LL_ADC_INJ_RANK_1,
+        LL_ADC_INJ_RANK_2,
+        LL_ADC_INJ_RANK_3,
+        LL_ADC_INJ_RANK_4
     };
 
 };

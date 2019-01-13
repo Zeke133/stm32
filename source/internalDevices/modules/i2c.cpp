@@ -22,15 +22,15 @@ I2c::I2c(uint8_t portNumber, DMA& txDMA, DMA& rxDMA, OStream& cout, uint32_t spe
       cout(cout) {
 
     GPIO_TypeDef* gpioPort;
-    uint16_t gpioPins;
+    uint32_t gpioPins;
 
     if (portNumber == 1) {
 
         port = I2C1;
         gpioPort = GPIOB;
-        gpioPins = GPIO_Pin_6 | GPIO_Pin_7;
+        gpioPins = LL_GPIO_PIN_6 | LL_GPIO_PIN_7;
 
-        RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1, ENABLE);
+        LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_I2C1);
 
         txDMA.setCallback(&callbackOnTransmissionCompletePort1);
         rxDMA.setCallback(&callbackOnTransmissionCompletePort1);
@@ -39,26 +39,25 @@ I2c::I2c(uint8_t portNumber, DMA& txDMA, DMA& rxDMA, OStream& cout, uint32_t spe
 
         port = I2C2;
         gpioPort = GPIOB;
-        gpioPins = GPIO_Pin_10 | GPIO_Pin_11;
+        gpioPins = LL_GPIO_PIN_10 | LL_GPIO_PIN_11;
 
-        RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C2, ENABLE);
+        LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_I2C2);
 
         txDMA.setCallback(&callbackOnTransmissionCompletePort2);
         rxDMA.setCallback(&callbackOnTransmissionCompletePort2);
     }
 
     // Turn needed modules tacting
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
+    LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_AFIO);
 
     // I2C configuration
     setI2c(speedClk, ownAddress);
 
     // GPIO init for I2C
-    GPIO_Init_My(gpioPort, gpioPins, GPIO_Mode_AF_OD, GPIO_Speed_50MHz);
+    GPIO::initPins(gpioPort, gpioPins, LL_GPIO_MODE_ALTERNATE, LL_GPIO_OUTPUT_OPENDRAIN, LL_GPIO_PULL_DOWN, LL_GPIO_SPEED_FREQ_HIGH);
 
     // Enables the specified I2C peripheral.
-    I2C_Cmd(port, ENABLE);
+    LL_I2C_Enable(port);
 
     txDMA.turnOnCallback();
     rxDMA.turnOnCallback();
@@ -72,16 +71,16 @@ I2c::I2c(uint8_t portNumber, DMA& txDMA, DMA& rxDMA, OStream& cout, uint32_t spe
  */
 inline void I2c::setI2c(uint32_t speedClk, uint8_t ownAddress) {
 
-    I2C_InitTypeDef i2c;
+    LL_I2C_InitTypeDef params {
+        .PeripheralMode = LL_I2C_MODE_I2C,
+        .ClockSpeed = speedClk,
+        .DutyCycle = LL_I2C_DUTYCYCLE_2,
+        .OwnAddress1 = ownAddress,
+        .TypeAcknowledge = LL_I2C_ACK,
+        .OwnAddrSize = LL_I2C_OWNADDRESS1_7BIT
+    };
 
-    i2c.I2C_ClockSpeed = speedClk;
-    i2c.I2C_Mode = I2C_Mode_I2C;
-    i2c.I2C_DutyCycle = I2C_DutyCycle_2;
-    i2c.I2C_OwnAddress1 = ownAddress;
-    i2c.I2C_Ack = I2C_Ack_Enable;
-    i2c.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
-
-    I2C_Init(port, &i2c);
+    LL_I2C_Init(port, &params);
 }
 
 /**
@@ -95,43 +94,47 @@ inline void I2c::setI2c(uint32_t speedClk, uint8_t ownAddress) {
  */
 inline void I2c::stopDmaTransmission(I2C_TypeDef* port) {
     
-    I2C_DMACmd(port, DISABLE);
+    LL_I2C_DisableDMAReq_TX(port);
+    // LL_I2C_DisableDMAReq_RX(port); // - same as previous
+
     // EV8_2: Wait until BTF is set before programming the STOP
-    while ( (port->SR1 & I2C_FLAG_BTF) == 0);
-    I2C_GenerateSTOP(port, ENABLE);
+    while ( !LL_I2C_IsActiveFlag_BTF(port) );
+    LL_I2C_GenerateStopCondition(port);
 
     // --- custom part BUGGY
-    uint32_t event;
-
     while (1) {
-        event = I2C_GetLastEvent(port);
+    
+        // volatile uint32_t cr1 = port->CR1, cr2 = port->CR2;
+        uint32_t SR1 = port->SR1;
+        uint32_t SR2 = port->SR2;
 
-        if (event == I2C_EVENT_MASTER_BYTE_TRANSMITTED) {
-            
-            break;
-        }
-        else if (event & (uint32_t)(I2C_SR1_BTF | I2C_SR1_RXNE)) {
+        if ( (SR1 | SR2) == 0 ) // in case of DMA transmit it's usually 0 but not an I2C_EVENT_MASTER_BYTE_TRANSMITTED
+            return;
 
-            I2C_ReceiveData(port);
-            // 30044 first BTF disapear >> 30040
-            // 30040 than RxNE disapear >> 30000
-        }
-        else if (event & (uint32_t)((I2C_SR2_MSL | I2C_SR2_BUSY)<<16)) {
-
-            I2C_GenerateSTOP(port, ENABLE);
-            // 30044 first BTF disapear >> 30040
-            // 30040 than RxNE disapear >> 30000
-        }
-        else {
-
-            // does not react on STOP. 30000 BUSY MSL are still set 4ever
-            // if (event & (uint32_t)0x30000)
+        else if ( SR2 == (I2C_SR2_MSL | I2C_SR2_BUSY | I2C_SR2_TRA) &&  // I2C_EVENT_MASTER_BYTE_TRANSMITTED
+                  SR1 == (I2C_SR1_TXE | I2C_SR1_BTF) ) {                // usually not triggered - check
             BitBanding::setBit((void*)&(GPIOC->BSRR), 13);
-            //*((uint32_t *)(0x40000000 + 0x10000 + 0x1000 + 4*4)) = (1<<12);
-
-            // I2C_CR1_SWRST I2C_CR1
-            break;
+            return;
         }
+
+        else if ( SR2 == (I2C_SR2_MSL | I2C_SR2_BUSY) &&    // 30044
+                  SR1 == (I2C_SR1_BTF | I2C_SR1_RXNE) ) {
+            // after receiving second last byte need to programm NACK and STOP
+            LL_I2C_AcknowledgeNextData(port, LL_I2C_NACK);
+            LL_I2C_GenerateStopCondition(port);
+            LL_I2C_ReceiveData8(port);
+        }
+
+        else if ( SR2 == (I2C_SR2_MSL | I2C_SR2_BUSY) &&    // 30040
+                  SR1 == I2C_SR1_RXNE )
+            LL_I2C_ReceiveData8(port);
+
+        else if ( SR2 == (I2C_SR2_MSL | I2C_SR2_BUSY) &&    // 30000
+                  SR1 == 0 ) {
+            LL_I2C_EnableReset(port);                       // SOFT RESET. i2c is stucked.
+            return;
+        }
+
     }
 }
 /**
@@ -163,17 +166,18 @@ inline I2c::Status I2c::startTransmitter(uint8_t slaveAddress) const {
     // Waiting for free bus
     for (attempts = maxAttempts; attempts > 0; --attempts) {
 
-        if (!I2C_GetFlagStatus(port, I2C_FLAG_BUSY)) break;
+        if (!LL_I2C_IsActiveFlag_BUSY(port)) break;
         
     }
     if (attempts == 0) return Status::StartTrBusy;
 
-    I2C_GenerateSTART(port, ENABLE);
+    LL_I2C_GenerateStartCondition(port);
 
     // Wait flag SB=1.
     // Cleared by reading SR1 register followed by writing the DR register
     for (attempts = maxAttempts; attempts > 0; --attempts) {
-        if (I2C_CheckEvent(port, I2C_EVENT_MASTER_MODE_SELECT))
+        if ( port->SR1 == I2C_SR1_SB &&
+             port->SR2 == (I2C_SR2_MSL | I2C_SR2_BUSY) ) // I2C_EVENT_MASTER_MODE_SELECT
             break;
     }
     if (attempts == 0) return Status::StartTrGenStart;
@@ -181,12 +185,13 @@ inline I2c::Status I2c::startTransmitter(uint8_t slaveAddress) const {
     // Send slave address. LSB of address byte is used for
     // transmission direction indication. So device address need
     // to be shifted 1 bit left previously.
-    I2C_Send7bitAddress(port, slaveAddress, I2C_Direction_Transmitter);
+    LL_I2C_TransmitData8(port, slaveAddress | 1);
 
     // Waiting flag ADDR=1.
     // Cleared by reading SR1 resister followed by reading SR2 register.
     for (attempts = maxAttempts; attempts > 0; --attempts) {
-        if (I2C_CheckEvent(port, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED))
+        if ( port->SR1 == (I2C_SR1_TXE | I2C_SR1_ADDR) &&
+             port->SR2 == (I2C_SR2_MSL | I2C_SR2_BUSY | I2C_SR2_TRA) ) // I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED
             break;
     }
     if (attempts == 0) return Status::StartTrAddress;
@@ -203,36 +208,39 @@ inline I2c::Status I2c::startTransmitter(uint8_t slaveAddress) const {
 I2c::Status I2c::startReceiver(uint8_t slaveAddress, uint8_t onlyOneByte) const {
 
     // Don't wait for free bus
-    I2C_GenerateSTART(port, ENABLE);
+    LL_I2C_GenerateStartCondition(port);
 
     uint32_t attempts;
 
     // Wait flag SB=1.
     // Cleared by reading SR1 register followed by writing the DR register
     for (attempts = maxAttempts; attempts > 0; --attempts) {
-        if (I2C_CheckEvent(port, I2C_EVENT_MASTER_MODE_SELECT))
+        if ( port->SR1 == I2C_SR1_SB &&
+             port->SR2 == (I2C_SR2_MSL | I2C_SR2_BUSY) ) // I2C_EVENT_MASTER_MODE_SELECT
             break;
     }
     if (attempts == 0) return Status::StartRvGenStart;
 
-    I2C_NACKPositionConfig(port, I2C_NACKPosition_Current); // check with I2C_NACKPosition_Next
+    // ACK bit controls the (N)ACK of the current byte received
+    LL_I2C_DisableBitPOS(port);
 
     // Send slave address. LSB of address byte is used for
     // transmission direction indication. So device address need
     // to be shifted 1 bit left previously.
-    I2C_Send7bitAddress(port, slaveAddress, I2C_Direction_Receiver);
+    LL_I2C_TransmitData8(port, slaveAddress & 0xFE);
 
-    if (onlyOneByte) I2C_AcknowledgeConfig(port, DISABLE);
+    if (onlyOneByte) LL_I2C_AcknowledgeNextData(port, LL_I2C_NACK);
 
     // Waiting flag ADDR=1.
     // Cleared by reading SR1 resister followed by reading SR2 register.
     for (attempts = maxAttempts; attempts > 0; --attempts) {
-        if (I2C_CheckEvent(port, I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED))
+        if ( port->SR1 == I2C_SR1_ADDR &&
+             port->SR2 == (I2C_SR2_MSL | I2C_SR2_BUSY) ) // I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED
             break;
     }
     if (attempts == 0) return Status::StartRvAddress;
 
-    if (onlyOneByte) I2C_GenerateSTOP(port, ENABLE);
+    if (onlyOneByte) LL_I2C_GenerateStopCondition(port);
 
     return Status::SUCCESS;
 }
@@ -243,11 +251,12 @@ I2c::Status I2c::startReceiver(uint8_t slaveAddress, uint8_t onlyOneByte) const 
  */
 inline I2c::Status I2c::stopTransmission(void) const {
 
-    I2C_GenerateSTOP(port, ENABLE);
+    LL_I2C_GenerateStopCondition(port);
 
     uint32_t attempts;
     for (attempts = maxAttempts; attempts > 0; --attempts) {
-        if (I2C_CheckEvent(port, I2C_EVENT_MASTER_BYTE_TRANSMITTED))
+        if ( port->SR1 == (I2C_SR1_TXE | I2C_SR1_BTF) &&
+             port->SR2 == (I2C_SR2_MSL | I2C_SR2_BUSY | I2C_SR2_TRA) ) // I2C_EVENT_MASTER_BYTE_TRANSMITTED
             break;
     }
     if (attempts == 0) return Status::StopTransm;
@@ -262,16 +271,29 @@ inline I2c::Status I2c::stopTransmission(void) const {
  */
 inline I2c::Status I2c::sendByte(uint8_t data) const {
 
-    I2C_SendData(port, data);
+    LL_I2C_TransmitData8(port, data);
 
     uint32_t attempts;
     for (attempts = maxAttempts; attempts > 0; --attempts) {
-        if (I2C_CheckEvent(port, I2C_EVENT_MASTER_BYTE_TRANSMITTED))
+
+        // I2C_EVENT_MASTER_BYTE_TRANSMITTING
+        /* TRA, BUSY, MSL, TXE flags
+        EV8: TxE=1, shift register not empty, data register empty,
+        cleared by writing DR register */
+        if ( port->SR1 == (I2C_SR1_TXE | I2C_SR1_BTF) &&
+             port->SR2 == (I2C_SR2_MSL | I2C_SR2_BUSY | I2C_SR2_TRA) )
+        // I2C_EVENT_MASTER_BYTE_TRANSMITTED
+        /* TRA, BUSY, MSL, TXE and BTF flags
+        EV8_2: TxE=1, BTF = 1, Program Stop request.
+        TxE and BTF are cleared by hardware by the Stop condition
+        */
             break;
     }
     if (attempts == 0) return Status::SendByte;
 
     return Status::SUCCESS;
+
+    // Note: Stop condition should be programmed during EV8_2 event, when either TxE or BTF is set.
 }
 
 /**
@@ -283,15 +305,14 @@ uint8_t I2c::receiveByte(void) const {
     uint8_t receivedByte = 0x77;    // Value can be used like Magic Constant
                                     // indicating problems in transmission.
 
-    uint32_t attempts, flags;
+    uint32_t attempts;
+    
     for (attempts = maxAttempts; attempts > 0; --attempts) {
 
-        flags = I2C_GetLastEvent(port);
-
         // Check for Receive Buffer Not Empty flag
-        if (flags & I2C_FLAG_RXNE) {
+        if ( LL_I2C_IsActiveFlag_RXNE(port) ) {
 
-            receivedByte = I2C_ReceiveData(port);
+            receivedByte = LL_I2C_ReceiveData8(port);
             break;
         }
     }
@@ -311,32 +332,9 @@ I2c::Status I2c::send(uint8_t slaveAddress, uint8_t data) const {
     
     if ( (status = startTransmitter(slaveAddress)) != Status::SUCCESS ||
          (status = sendByte(data)) != Status::SUCCESS ||
-         (status = stopTransmission()) != Status::SUCCESS ) { // ??? stuck here for a long
+         (status = stopTransmission()) != Status::SUCCESS ) {
 
         cout << "\r\n send() 1 byte ERROR = " << itoa((uint8_t)status);
-        return status;
-    }
-    else {
-
-        cout << "\r\n send() END";
-        return Status::SUCCESS;
-    }
-}
-
-/**
- * @brief  Send data byte. Use CPU for transmission. Blocks thread.
- * @param  slaveAddress: I2C address of slave device shifted 1 bit left.
- * @param  data: Data byte.
- * @retval enum class Status.
- */
-I2c::Status I2c::sendWOStop(uint8_t slaveAddress, uint8_t data) const {
-
-    Status status;
-    
-    if ( (status = startTransmitter(slaveAddress)) != Status::SUCCESS ||
-         (status = sendByte(data)) != Status::SUCCESS ) {
-
-        cout << "\r\n sendWOStop() 1 byte ERROR = " << itoa((uint8_t)status);
         return status;
     }
     else {
@@ -406,7 +404,8 @@ I2c::Status I2c::sendBufferized(uint8_t slaveAddress, const uint8_t * data, uint
 
     // Turn ON DMA requests
     // Should be turned off after transmission
-    I2C_DMACmd(port, ENABLE);
+    LL_I2C_EnableDMAReq_TX(port);
+
     
     txDMA.runDataTransfer((void*)&port->DR, data, size);
 
@@ -450,8 +449,8 @@ I2c::Status I2c::receiveBufferized(uint8_t slaveAddress, const uint8_t * data, u
 
     // Turn ON DMA requests
     // Should be turned off after transmission
-    I2C_DMALastTransferCmd(port, ENABLE);
-    I2C_DMACmd(port, ENABLE);
+    // LL_I2C_EnableLastDMA(port);
+    LL_I2C_EnableDMAReq_RX(port);
 
     cout << "\r\n receiveBufferized() END";
     return Status::SUCCESS;

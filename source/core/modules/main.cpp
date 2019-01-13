@@ -3,7 +3,7 @@
 int main(void) {
 
     SetSysClockTo72();
-    LED led(GPIOC, GPIO_Pin_13);
+    LED led(GPIOC, LL_GPIO_PIN_13);
     Delay delayer;
 
     DMA dmaUsart1Tx(DMA::ServicedDevice::USART1_TX);
@@ -27,11 +27,11 @@ int main(void) {
         cout << " " << dt.hours << ":" << dt.minutes << "." << dt.seconds;
     }
 
-    Storage flash;
-    flash.data.var1 ++;
-    flash.writeToFlash();
-    flash.readToRam();
-    cout << "\r\nReload after ERASING: " << OStream::OutSet::dec << flash.data.var1;
+    // Storage flash;
+    // flash.data.var1 ++;
+    // flash.writeToFlash();
+    // flash.readToRam();
+    // cout << "\r\nReload after ERASING: " << OStream::OutSet::dec << flash.data.var1;
 
     DMA dmaForI2c1tx(DMA::ServicedDevice::I2C1_TX);
     DMA dmaForI2c1rx(DMA::ServicedDevice::I2C1_RX);
@@ -51,14 +51,14 @@ int main(void) {
     Tacho tacho;
 
     uint8_t rom[8] = {0x28, 0x82, 0x65, 0x5B, 0x05, 0x00, 0x00, 0x20};
-    OneWire oneWire(delayer, GPIOA, GPIO_Pin_8);
+    OneWire oneWire(delayer, GPIOA, LL_GPIO_PIN_8);
     Ds18b20 tempSensor(oneWire, delayer, rom);
     cout << "\r\nDs18b20 state - " << (tempSensor.isErrorState() ? "ERR" : "OK");
     cout << "\r\nTemp: " << (tempSensor.getTemperature());
 
     uint8_t channels[] = {16, 17};
     ADC adc1(   1, 
-                RCC_PCLK2_Div6,
+                LL_RCC_ADC_CLKSRC_PCLK2_DIV_6,
                 ADC::ResultStoreMode::Injected,
                 2, 
                 channels);          // ADC setup
@@ -68,8 +68,8 @@ int main(void) {
     cout << adc1.getValue(0) << ", ";    // temp
     cout << adc1.getValue(1);            // Vref
 
-    cout << "\r\nBmp280 test:";
-    Bmp280 bmp280(i2cPort, delayer, cout);
+    // cout << "\r\nBmp280 test:";
+    // Bmp280 bmp280(i2cPort, delayer, cout);
 
     uint8_t key;
 

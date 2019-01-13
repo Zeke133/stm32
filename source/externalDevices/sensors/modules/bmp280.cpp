@@ -15,15 +15,15 @@ void Bmp280::initialization() {
     for (uint32_t i = 0; i < sizeof receivedData; ++i) {
         receivedData[i] = 0x33;
     }
-    I2c::Status status;
+    // I2c::Status status;
     
     // can try to use without i2c.stop inside
-    status = i2c.sendWOStop(address << 1, (uint8_t)Bmp280::Register::id);
+    i2c.send(address << 1, (uint8_t)Bmp280::Register::id);
 
     // ---
     // receivedData[0] = i2c.receive(address << 1);
     // ---
-    status = i2c.receiveBufferized(address << 1, receivedData, 10);
+    i2c.receiveBufferized(address << 1, receivedData, 10);
     // ---
 
     cout << "\r\nreceivedData: ";

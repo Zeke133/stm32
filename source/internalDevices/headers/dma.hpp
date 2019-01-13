@@ -16,8 +16,9 @@
 
 // using
 extern "C" {
-#include <stm32f10x_rcc.h>
-#include <stm32f10x_dma.h>
+#include <stm32f1xx_ll_rcc.h>
+#include <stm32f1xx_ll_bus.h>
+#include <stm32f1xx_ll_dma.h>
 }
 
 // IRQ handlers. Extern "C" macro is needed for correct link procedure.
@@ -175,7 +176,8 @@ private:
     static CallbackFunc callbacks[7];
     
     ServicedDevice servicedDevice;      /**< Device index in 'ServicedDevice' enum. */
-    DMA_Channel_TypeDef * dmaChannel;   /**< Configured DMA channel. */
+    DMA_TypeDef * dma;                  /**< Configured DMA peripheral device. */
+    uint32_t dmaChannel;                /**< Configured DMA channel. */
     IRQn_Type dmaIrq;                   /**< Configured interrupt. */
 
 };

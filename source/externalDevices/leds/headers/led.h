@@ -11,7 +11,7 @@ class LED {
 
 public:
 
-    LED(GPIO_TypeDef* port, uint16_t pin);
+    LED(GPIO_TypeDef* port, uint32_t pin);
 
     // delete copy constructor and assignment operator
     LED(const LED&) = delete;
@@ -24,7 +24,7 @@ public:
 private:
 
     GPIO_TypeDef* port;
-    uint16_t pin;
+    uint32_t pin;
     uint32_t state;
 
 };

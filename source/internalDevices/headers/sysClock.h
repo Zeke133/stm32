@@ -3,8 +3,9 @@
 
 // using
 extern "C" {
-#include <stm32f10x_rcc.h>
-#include <stm32f10x_flash.h>
+#include <stm32f1xx_ll_rcc.h>
+#include <stm32f1xx_ll_system.h>
+#include <stm32f1xx_ll_utils.h>
 }
 
 /*

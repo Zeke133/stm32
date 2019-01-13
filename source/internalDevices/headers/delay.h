@@ -6,7 +6,7 @@
 #include <IProfiler.h>
 // using
 extern "C" {
-#include <stm32f10x.h>
+#include <stm32f1xx.h>
 }
 
 extern "C" {

@@ -24,7 +24,7 @@ add_test(
 )
 
 # ------------------------------------------------------------
-# Libraries CMSIS and STD_Peripherial
+# Libraries CMSIS and STM_LL
 add_subdirectory(libs)
 # User Modules library
 add_subdirectory(source)
@@ -79,7 +79,7 @@ set_property(
 set_property(
     TARGET
         cmsis
-        std_peripherial
+        stm_ll
         modules
     APPEND
     PROPERTY

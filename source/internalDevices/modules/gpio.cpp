@@ -1,23 +1,49 @@
 #include <gpio.h>
 
-void GPIO_Init_My(GPIO_TypeDef* port, uint16_t pins, GPIOMode_TypeDef mode, GPIOSpeed_TypeDef speed) {
+/**
+  * @brief  Configure GPIO for a dedicated pins on dedicated port.
+  * @param  port GPIO Port
+  * @param  pins This parameter can be one of the following values:
+  *         LL_GPIO_PIN_0 ... LL_GPIO_PIN_15 or combination '|' of pins
+  * @param  mode This parameter can be one of the following values:
+  *         LL_GPIO_MODE_ANALOG
+  *         LL_GPIO_MODE_FLOATING
+  *         LL_GPIO_MODE_INPUT
+  *         LL_GPIO_MODE_OUTPUT
+  *         LL_GPIO_MODE_ALTERNATE
+  * @param  outType This parameter can be one of the following values:
+  *         LL_GPIO_OUTPUT_PUSHPULL
+  *         LL_GPIO_OUTPUT_OPENDRAIN
+  * @param  pull This parameter can be one of the following values:
+  *         LL_GPIO_PULL_DOWN
+  *         LL_GPIO_PULL_UP
+  * @param  speed This parameter can be one of the following values:
+  *         LL_GPIO_SPEED_FREQ_LOW
+  *         LL_GPIO_SPEED_FREQ_MEDIUM
+  *         LL_GPIO_SPEED_FREQ_HIGH - 50Mhz
+  * @retval None
+  */
+void GPIO::initPins(GPIO_TypeDef* port, uint32_t pins, uint32_t mode, uint32_t outType, uint32_t pull, uint32_t speed) {
 
-    uint32_t RCC_APB2Periph_GPIOx;
+    uint32_t APB2_Periph;
 
-    if (port == GPIOA) RCC_APB2Periph_GPIOx = RCC_APB2Periph_GPIOA;
-    else if (port == GPIOB) RCC_APB2Periph_GPIOx = RCC_APB2Periph_GPIOB;
-    else if (port == GPIOC) RCC_APB2Periph_GPIOx = RCC_APB2Periph_GPIOC;
-    else if (port == GPIOD) RCC_APB2Periph_GPIOx = RCC_APB2Periph_GPIOD;
-    else if (port == GPIOE) RCC_APB2Periph_GPIOx = RCC_APB2Periph_GPIOE;
-    else if (port == GPIOF) RCC_APB2Periph_GPIOx = RCC_APB2Periph_GPIOF;
-    else if (port == GPIOG) RCC_APB2Periph_GPIOx = RCC_APB2Periph_GPIOG;
+    if (port == GPIOA) APB2_Periph = LL_APB2_GRP1_PERIPH_GPIOA;
+    else if (port == GPIOB) APB2_Periph = LL_APB2_GRP1_PERIPH_GPIOB;
+    else if (port == GPIOC) APB2_Periph = LL_APB2_GRP1_PERIPH_GPIOC;
+    else if (port == GPIOD) APB2_Periph = LL_APB2_GRP1_PERIPH_GPIOD;
+    else if (port == GPIOE) APB2_Periph = LL_APB2_GRP1_PERIPH_GPIOE;
     else return;
 
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOx , ENABLE);
+    // Turn ON Clock for specified port
+    LL_APB2_GRP1_EnableClock(APB2_Periph);
 
-    GPIO_InitTypeDef GPIO_InitStructure;
-    GPIO_InitStructure.GPIO_Pin = pins;
-    GPIO_InitStructure.GPIO_Mode = mode;
-    GPIO_InitStructure.GPIO_Speed = speed;
-    GPIO_Init( port , &GPIO_InitStructure);
+    LL_GPIO_InitTypeDef params {
+        .Pin = pins,
+        .Mode = mode,
+        .Speed = speed,
+        .OutputType = outType,
+        .Pull = pull
+    };
+
+    LL_GPIO_Init(port, &params);
 }
