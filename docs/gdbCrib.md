@@ -7,10 +7,11 @@
 
 ## Running programm
 
-- monitor reset halt
+- monitor reset init
 - load
-- r
 - continue
+- monitor reset halt
+- r
 
 ## Breakpoint
 

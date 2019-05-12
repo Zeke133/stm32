@@ -9,13 +9,14 @@ int main(void) {
     DMA dmaUsart1Tx(DMA::ServicedDevice::USART1_TX);
     Usart usartPC(1, dmaUsart1Tx, 115200);
 
-    DMA dmaUsart3Tx(DMA::ServicedDevice::USART3_TX);        // DUMMY needed for USART ??? make not nesesary
-    Usart usartRadio(3, dmaUsart3Tx, 300);      // 300 8n1
+    DMA dmaUsart3Tx(DMA::ServicedDevice::USART3_TX);    // DUMMY needed for USART ??? make not nesesary
+    Usart usartRadio(3, dmaUsart3Tx, 300);
     OStream cout(usartPC);
-    cout << "\r\n\r\nFirmware: " << __DATE__ << ' ' << __TIME__;
+    cout << "\r\n\r\nBluePill sysClk: " << itoa(SystemCoreClock) << "Hz";
+    cout << "\r\nFirmware: " << __DATE__ << ' ' << __TIME__;
 
     usartPC.putsBufferized("\r\n0123456789");
-    usartPC.putsBufferized("0123456789");    // instead of '.' '0x0a' put out
+    usartPC.putsBufferized("0123456789");    // instead of '.' '0x0a' put out BUG in my code!!!
     usartPC.putsBufferized("0123456789");
 
     RealTimeClock rtc(delayer);

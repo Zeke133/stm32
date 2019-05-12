@@ -185,7 +185,7 @@ inline I2c::Status I2c::startTransmitter(uint8_t slaveAddress) const {
     // Send slave address. LSB of address byte is used for
     // transmission direction indication. So device address need
     // to be shifted 1 bit left previously.
-    LL_I2C_TransmitData8(port, slaveAddress | 1);
+    LL_I2C_TransmitData8(port, slaveAddress & 0xFE);
 
     // Waiting flag ADDR=1.
     // Cleared by reading SR1 resister followed by reading SR2 register.
@@ -227,7 +227,7 @@ I2c::Status I2c::startReceiver(uint8_t slaveAddress, uint8_t onlyOneByte) const 
     // Send slave address. LSB of address byte is used for
     // transmission direction indication. So device address need
     // to be shifted 1 bit left previously.
-    LL_I2C_TransmitData8(port, slaveAddress & 0xFE);
+    LL_I2C_TransmitData8(port, slaveAddress | 1);
 
     if (onlyOneByte) LL_I2C_AcknowledgeNextData(port, LL_I2C_NACK);
 
@@ -280,9 +280,13 @@ inline I2c::Status I2c::sendByte(uint8_t data) const {
         /* TRA, BUSY, MSL, TXE flags
         EV8: TxE=1, shift register not empty, data register empty,
         cleared by writing DR register */
-        if ( port->SR1 == (I2C_SR1_TXE | I2C_SR1_BTF) &&
-             port->SR2 == (I2C_SR2_MSL | I2C_SR2_BUSY | I2C_SR2_TRA) )
-        // I2C_EVENT_MASTER_BYTE_TRANSMITTED
+        
+        cout << "\r\n SR1() " << itoa(port->SR1, 16, 4);    // 82 1000 0010
+        cout << "\r\n SR2() " << itoa(port->SR2, 16, 4);    // 7  0000 0111
+
+        // if ( port->SR1 == (I2C_SR1_TXE | I2C_SR1_BTF) &&
+        //      port->SR2 == (I2C_SR2_MSL | I2C_SR2_BUSY | I2C_SR2_TRA) )
+        // 0x00070084 I2C_EVENT_MASTER_BYTE_TRANSMITTED
         /* TRA, BUSY, MSL, TXE and BTF flags
         EV8_2: TxE=1, BTF = 1, Program Stop request.
         TxE and BTF are cleared by hardware by the Stop condition
